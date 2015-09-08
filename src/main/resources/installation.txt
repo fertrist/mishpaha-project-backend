@@ -1,0 +1,23 @@
+#install database postgres
+sudo apt-get update
+sudo apt-get install postgresql postgresql-contrib
+
+psql
+
+#create user
+#man createuser
+createuser --interactive
+
+createdb mishpaha
+
+#change linux user
+sudo -i -u myuser
+
+#access myuser database
+psql
+
+#access another database
+psql -d mishpaha
+
+#check my connection
+\conninfo

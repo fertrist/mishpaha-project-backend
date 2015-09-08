@@ -1,4 +1,4 @@
-package hello.org.mishpaha.project.model;
+package org.mishpaha.project.data.model;
 
 public class District {
     private int id;

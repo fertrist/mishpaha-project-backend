@@ -1,10 +1,10 @@
-package hello.org.mishpaha.project.controller;
+package org.mishpaha.project.controller;
 
+import org.mishpaha.project.data.dao.DistrictDAO;
+import org.mishpaha.project.data.model.District;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import hello.org.mishpaha.project.dao.DistrictDAO;
-import hello.org.mishpaha.project.model.District;
 
 @RestController
 public class DistrictController {

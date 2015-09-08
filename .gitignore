@@ -25,7 +25,6 @@ target
 
 # Eclipse
 .classpath
-.hello.org.mishpaha.project
 .settings
 .externalToolBuilders
 maven-eclipse.xml

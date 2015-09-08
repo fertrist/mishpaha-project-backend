@@ -1,0 +1,54 @@
+package org.mishpaha.project.config;
+
+import org.mishpaha.project.data.dao.DistrictDAO;
+import org.mishpaha.project.data.dao.DistrictDAOImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+
+import javax.sql.DataSource;
+
+@Configuration
+@ComponentScan(basePackages="org.mishpaha.project")
+public class MvcConfiguration {
+
+//	@Profile("prod")
+//	@Bean
+//	public DataSource getProductionDataSource() {
+//		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+//		dataSource.setDriverClass(org.postgresql.Driver.class);
+//		dataSource.setUrl("jdbc:postgresql://localhost:5432/mishpaha");
+//		dataSource.setUsername("fertrist");
+//		dataSource.setPassword("password");
+//		return dataSource;
+//	}
+//
+//	@Profile("dev")
+//	@Bean
+//	public DataSource getDevelopmentDataSource() {
+//		BasicDataSource dataSource = new BasicDataSource();
+//		dataSource.setDriverClassName("org.h2.Driver");
+//		dataSource.setUrl("jdbc:h2:mem:testDb");
+//		dataSource.setUsername("sa");
+//		dataSource.setPassword("");
+//		dataSource.setInitialSize(5);
+//		dataSource.setMaxActive(10);
+//		return dataSource;
+//	}
+
+	@Bean
+	public DistrictDAO getDistrictDAO(DataSource dataSource) {
+		return new DistrictDAOImpl(dataSource);
+	}
+
+	@Bean
+	public DataSource getTestingDataSource() {
+		return new EmbeddedDatabaseBuilder()
+			.setType(EmbeddedDatabaseType.H2)
+			.addScript("sql/h2/schema.sql")
+			.build();
+	}
+
+}

@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>my.rest.app</groupId>
-    <artifactId>my-app</artifactId>
+    <groupId>mishpaha-project-backend</groupId>
+    <artifactId>mishpaha-project-backend</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>my-app Maven Webapp</name>
     <url>http://maven.apache.org</url>
@@ -30,9 +30,9 @@
         </dependency>
 
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.36</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.3-1100-jdbc41</version>
         </dependency>
 
         <dependency>
@@ -42,6 +42,27 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
+
+        <!--dependency for testing-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!--dependency for H2 database-->
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.189</version>
+        </dependency>
+
     </dependencies>
 
     <build>
