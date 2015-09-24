@@ -1,5 +1,8 @@
 package org.mishpaha.project.data.model;
 
+/**
+ * Model class which represents city District.
+ */
 public class District {
     private int id;
     private String district;
@@ -8,6 +11,10 @@ public class District {
 
     public District(int id, String district) {
         this.id = id;
+        this.district = district;
+    }
+
+    public District(String district) {
         this.district = district;
     }
 
@@ -25,5 +32,10 @@ public class District {
 
     public void setDistrict(String district) {
         this.district = district;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%d : %s", getId(), getDistrict());
     }
 }

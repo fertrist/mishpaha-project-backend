@@ -8,11 +8,11 @@ import javax.sql.DataSource;
 import java.util.List;
 
 
-public class DistrictDAOImpl implements DistrictDAO {
+public class DistrictDaoImpl implements DistrictDao {
 
     private JdbcOperations jdbcTemplate;
 
-    public DistrictDAOImpl(DataSource dataSource) {
+    public DistrictDaoImpl(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
@@ -40,10 +40,7 @@ public class DistrictDAOImpl implements DistrictDAO {
         String sql = "SELECT * FROM districts WHERE id=" + districtId;
         return jdbcTemplate.query(sql, rs -> {
             if (rs.next()) {
-                District district = new District();
-                district.setId(rs.getInt("id"));
-                district.setDistrict(rs.getString("district"));
-                return district;
+                return new District(rs.getInt("id"), rs.getString("district"));
             }
             return null;
         });
@@ -53,10 +50,7 @@ public class DistrictDAOImpl implements DistrictDAO {
     public List<District> list() {
         String sql = "SELECT * FROM districts";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            District district = new District();
-            district.setId(rs.getInt("id"));
-            district.setDistrict(rs.getString("district"));
-            return district;
+            return new District(rs.getInt("id"), rs.getString("district"));
         });
     }
 }

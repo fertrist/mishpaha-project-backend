@@ -4,7 +4,7 @@ import org.mishpaha.project.data.model.District;
 
 import java.util.List;
 
-public interface DistrictDAO {
+public interface DistrictDao {
 
     int saveOrUpdate(District district);
 

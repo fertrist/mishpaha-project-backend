@@ -5,11 +5,22 @@ CREATE TABLE districts(
 	UNIQUE(district)
 );
 
+--initial test data
 INSERT INTO districts (district) values ('Оболонь');
 INSERT INTO districts (district) values ('Подол');
 INSERT INTO districts (district) values ('Дорогожичи');
 INSERT INTO districts (district) values ('Шулявка');
 
+CREATE TABLE phones(
+	personId int NOT NULL,
+	phone varchar(60),
+	PRIMARY KEY(personId, phone)
+);
+
+INSERT INTO phones (personId, phone) values (1, '06345612378');
+INSERT INTO phones (personId, phone) values (2, '06778945612');
+INSERT INTO phones (personId, phone) values (3, '09845612389');
+INSERT INTO phones (personId, phone) values (4, '07312365489');
 
 --CREATE TABLE persons(
 --	id int NOT NULL AUTO_INCREMENT,

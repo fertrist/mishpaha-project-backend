@@ -1,5 +1,4 @@
 package org.mishpaha.project.data.dao;
 
-public interface PersonDao {
-
+public interface PhoneDao {
 }

@@ -1,7 +1,7 @@
 package org.mishpaha.project.config;
 
-import org.mishpaha.project.data.dao.DistrictDAO;
-import org.mishpaha.project.data.dao.DistrictDAOImpl;
+import org.mishpaha.project.data.dao.DistrictDao;
+import org.mishpaha.project.data.dao.DistrictDaoImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -39,8 +39,8 @@ public class MvcConfiguration {
 //	}
 
 	@Bean
-	public DistrictDAO getDistrictDAO(DataSource dataSource) {
-		return new DistrictDAOImpl(dataSource);
+	public DistrictDao getDistrictDAO(DataSource dataSource) {
+		return new DistrictDaoImpl(dataSource);
 	}
 
 	@Bean
