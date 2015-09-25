@@ -13,6 +13,7 @@ public class DistrictDaoImpl implements DistrictDao {
     private JdbcOperations jdbcTemplate;
 
     public DistrictDaoImpl(DataSource dataSource) {
+        //setTable(this.getClass());
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 

@@ -1,7 +1,7 @@
 package org.mishpaha.project.data.model;
 
 /**
- * Model class which represents city District.
+ * Model class which represents city district.
  */
 public class District {
     private int id;
