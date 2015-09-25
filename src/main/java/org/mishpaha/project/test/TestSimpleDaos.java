@@ -4,7 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mishpaha.project.config.MvcConfiguration;
-import org.mishpaha.project.data.dao.DistrictDao;
+import org.mishpaha.project.data.dao.GenericDao;
+import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.District;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,16 +18,18 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcConfiguration.class)
-public class TestDistrictDao {
+public class TestSimpleDaos {
 
     private final String shouldSucceedMessage = "Request should succeed.";
     private final String shouldFailMessage = "Request should fail.";
 
     @Autowired
-    private DistrictDao districtDao;
+    private GenericDao<District> districtDao;
+    @Autowired
+    private GenericDao<Category> categoryDao;
 
     @Test
-    public void testInsertionList() {
+    public void testListInsertDistrict() {
         List<District> districtList = districtDao.list();
         districtList.forEach(System.out::println);
         District newDistrict = new District("Дарницкий");
@@ -37,7 +40,7 @@ public class TestDistrictDao {
     }
 
     @Test
-    public void testUpdateDelete() {
+    public void testUpdateDeleteDistrict() {
         int id = 1;
         //check that district is present
         District result = districtDao.get(id);
@@ -53,7 +56,7 @@ public class TestDistrictDao {
         //test delete district
         List<District> initialList = districtDao.list();
         initialList.forEach(System.out::println);
-        Assert.assertEquals(shouldSucceedMessage, districtDao.delete(id), 1);
+        Assert.assertEquals(shouldSucceedMessage, 1, districtDao.delete(id));
         List<District> finalList = districtDao.list();
         finalList.forEach(System.out::println);
 
@@ -63,7 +66,7 @@ public class TestDistrictDao {
     }
 
     @Test
-    public void testInsertListPhones() {
+    public void testListInsertCategory() {
 
     }
 }

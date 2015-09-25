@@ -1,45 +1,32 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.District;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.util.List;
 
 
-public class DistrictDaoImpl implements DistrictDao {
+public class DistrictDaoImpl extends DaoImplementation<District> {
 
-    private JdbcOperations jdbcTemplate;
-
-    public DistrictDaoImpl(DataSource dataSource) {
-        //setTable(this.getClass());
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    public DistrictDaoImpl(DataSource dataSource, String table) {
+        super(dataSource, table);
     }
 
     @Override
-    public int saveOrUpdate(District district) {
-        if (district.getId() > 0) {
-            //update
-            String sql = "UPDATE districts SET district=? WHERE id=?";
-            return jdbcTemplate.update(sql, district.getDistrict(), district.getId());
+    public int saveOrUpdate(District entity) {
+        if (entity.getId() > 0) {
+            String sql = String.format("UPDATE %s SET district=? WHERE id=?", table);
+            return jdbcOperations.update(sql, entity.getDistrict(), entity.getId());
         } else {
-            //insert
-            String sql = "INSERT INTO districts (district) values (?)";
-            return jdbcTemplate.update(sql, district.getDistrict());
+            String sql = String.format("INSERT INTO %s (district) values (?)", table);
+            return jdbcOperations.update(sql, entity.getDistrict());
         }
     }
 
     @Override
-    public int delete(int districtId) {
-        String sql = "DELETE FROM districts WHERE id=?";
-        return jdbcTemplate.update(sql, districtId);
-    }
-
-    @Override
-    public District get(int districtId) {
-        String sql = "SELECT * FROM districts WHERE id=" + districtId;
-        return jdbcTemplate.query(sql, rs -> {
+    public District get(int id) {
+        String sql = String.format(SELECT, table, id);
+        return jdbcOperations.query(sql, rs -> {
             if (rs.next()) {
                 return new District(rs.getInt("id"), rs.getString("district"));
             }
@@ -49,8 +36,7 @@ public class DistrictDaoImpl implements DistrictDao {
 
     @Override
     public List<District> list() {
-        String sql = "SELECT * FROM districts";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+        return jdbcOperations.query(String.format(SELECT_ALL, table), (rs, rowNum) -> {
             return new District(rs.getInt("id"), rs.getString("district"));
         });
     }

@@ -1,6 +1,7 @@
 package org.mishpaha.project.data.model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by fertrist on 24.09.15.
@@ -16,13 +17,13 @@ public class Person {
     private Date birthDay;
     private int districtId;
     private String address;
-    private String email;
     private boolean isJew;
     private boolean givesTithe;
     private Date wasAdded;
+    private List<String> emails;
 
     public Person(String firstName, String midName, String lastName, boolean sex, Date birthDay, int districtId,
-                  String address, String email, boolean isJew, boolean givesTithe, Date wasAdded) {
+                  String address, boolean isJew, boolean givesTithe, Date wasAdded) {
         this.firstName = firstName;
         this.midName = midName;
         this.lastName = lastName;
@@ -30,7 +31,6 @@ public class Person {
         this.birthDay = birthDay;
         this.districtId = districtId;
         this.address = address;
-        this.email = email;
         this.isJew = isJew;
         this.givesTithe = givesTithe;
         this.wasAdded = wasAdded;
@@ -100,14 +100,6 @@ public class Person {
         this.address = address;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public boolean isJew() {
         return isJew;
     }
@@ -143,7 +135,6 @@ public class Person {
             ", birthDay=" + birthDay +
             ", districtId=" + districtId +
             ", address='" + address + '\'' +
-            ", email='" + email + '\'' +
             ", isJew=" + isJew +
             ", givesTithe=" + givesTithe +
             ", wasAdded=" + wasAdded +

@@ -22,6 +22,14 @@ INSERT INTO phones (personId, phone) values (2, '06778945612');
 INSERT INTO phones (personId, phone) values (3, '09845612389');
 INSERT INTO phones (personId, phone) values (4, '07312365489');
 
+CREATE TABLE tribes(
+	id int NOT NULL AUTO_INCREMENT,
+	leaderId int NOT NULL,
+	name varchar(60),
+	PRIMARY KEY (id),
+	UNIQUE (name)
+);
+
 --CREATE TABLE persons(
 --	id int NOT NULL AUTO_INCREMENT,
 --	firstName varchar(60) NOT NULL,

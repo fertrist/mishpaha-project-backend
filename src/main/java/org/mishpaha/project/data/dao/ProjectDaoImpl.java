@@ -1,15 +1,15 @@
 package org.mishpaha.project.data.dao;
 
-import org.mishpaha.project.data.model.Training;
+import org.mishpaha.project.data.model.Project;
 
 import java.util.List;
 
 /**
  * Created by fertrist on 24.09.15.
  */
-public class TrainingDaoImpl implements GenericDao<Training>{
+public class ProjectDaoImpl implements GenericDao<Project>{
     @Override
-    public int saveOrUpdate(Training entity) {
+    public int saveOrUpdate(Project entity) {
         return 0;
     }
 
@@ -19,12 +19,12 @@ public class TrainingDaoImpl implements GenericDao<Training>{
     }
 
     @Override
-    public Training get(int id) {
+    public Project get(int id) {
         return null;
     }
 
     @Override
-    public List<Training> list() {
+    public List<Project> list() {
         return null;
     }
 }

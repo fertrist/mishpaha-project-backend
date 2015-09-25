@@ -1,31 +1,31 @@
 package org.mishpaha.project.data.dao;
 
+import org.mishpaha.project.data.model.Phone;
+
+import java.util.List;
+
 /**
  * Model class which represents phone No.
  */
-public class PhoneDaoImpl {
+public class PhoneDaoImpl implements GenericDao<Phone>{
 
-    private int personId;
-    private String phone;
-
-    public PhoneDaoImpl(int personId, String phone) {
-        this.personId = personId;
-        this.phone = phone;
+    @Override
+    public int saveOrUpdate(Phone entity) {
+        return 0;
     }
 
-    public int getPersonId() {
-        return personId;
+    @Override
+    public int delete(int id) {
+        return 0;
     }
 
-    public void setPersonId(int personId) {
-        this.personId = personId;
+    @Override
+    public Phone get(int id) {
+        return null;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    @Override
+    public List<Phone> list() {
+        return null;
     }
 }
