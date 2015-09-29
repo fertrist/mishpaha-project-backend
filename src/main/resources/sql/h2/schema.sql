@@ -172,20 +172,99 @@ INSERT INTO volunteers (personId, projectId) values (9, 2);
 INSERT INTO volunteers (personId, projectId) values (10, 3);
 INSERT INTO volunteers (personId, projectId) values (10, 2);
 
---DROP TABLE tribes;
---DROP TABLE regions;
---DROP TABLE groups;
---DROP TABLE volunteers;
---DROP TABLE ministries;
---DROP TABLE districts;
---DROP TABLE persons;
+----------------------------------------------------TABLE
+CREATE TABLE schools(
+	id int AUTO_INCREMENT,
+	schoolLevel SMALLINT,
+	start DATE,
+	graduation DATE,
+	teacher varchar(60) NOT NULL,
+	PRIMARY KEY (id)
+);
+INSERT INTO schools (schoolLevel, start, graduation, teacher)
+ values (2, '2015-02-01', '2015-07-01', 'Русняк');
+INSERT INTO schools (schoolLevel, start, graduation, teacher)
+ values (1, '2015-09-21', '2015-12-01', 'Фурса');
+
+----------------------------------------------------TABLE
+CREATE TABLE graduations(
+	id int AUTO_INCREMENT,
+	schoolId int NOT NULL,
+	personId int NOT NULL,
+	PRIMARY KEY (id),
+	UNIQUE(schoolId, personId)
+);
+INSERT INTO graduations (schoolId, personId)
+ values (1, 5);
+INSERT INTO graduations (schoolId, personId)
+ values (1, 6);
+INSERT INTO graduations (schoolId, personId)
+ values (1, 7);
+ INSERT INTO graduations (schoolId, personId)
+  values (1, 8);
+INSERT INTO graduations (schoolId, personId)
+ values (1, 9);
+INSERT INTO graduations (schoolId, personId)
+ values (1, 10);
+INSERT INTO graduations (schoolId, personId)
+ values (2, 7);
+INSERT INTO graduations (schoolId, personId)
+ values (2, 5);
+INSERT INTO graduations (schoolId, personId)
+ values (2, 10);
+
+----------------------------------------------------TABLE
+
+CREATE TABLE trainings(
+	id int AUTO_INCREMENT,
+	name varchar(60) NOT NULL,
+	tookPlace DATE NOT NULL,
+	PRIMARY KEY (id)
+);
+INSERT INTO trainings (name, tookPlace)
+values ('Эффективный руководитель', '2015-05-01');
+INSERT INTO trainings (name, tookPlace)
+values ('Для промоутеров', '2015-08-19');
 
 
+----------------------------------------------------TABLE
+
+CREATE TABLE doneTrainings(
+	personId INT NOT NULL,
+	trainingId INT NOT NULL,
+	UNIQUE(personId, trainingId)
+);
+INSERT INTO doneTrainings (personId, trainingId)
+values (5, 1);
+INSERT INTO doneTrainings (personId, trainingId)
+values (5, 2);
+INSERT INTO doneTrainings (personId, trainingId)
+values (7, 1);
+INSERT INTO doneTrainings (personId, trainingId)
+values (7, 2);
+INSERT INTO doneTrainings (personId, trainingId)
+values (10, 1);
+INSERT INTO doneTrainings (personId, trainingId)
+values (10, 2);
 
 
-
-
-
-
-
-
+----------------------------------------------------TABLE
+CREATE TABLE changes(
+	tookPlace DATE DEFAULT GETDATE(),
+	personId int NOT NULL,
+	groupId int NOT NULL,
+	wasAdded boolean NOT NULL,
+	comment varchar(60)
+);
+INSERT INTO changes(personId, groupId, wasAdded)
+values(5, 1, true);
+INSERT INTO changes(personId, groupId, wasAdded)
+values(6, 1, true);
+INSERT INTO changes(personId, groupId, wasAdded)
+values(7, 2, true);
+INSERT INTO changes(personId, groupId, wasAdded)
+values(8, 2, true);
+INSERT INTO changes(personId, groupId, wasAdded)
+values(9, 3, true);
+INSERT INTO changes(personId, groupId, wasAdded)
+values(10, 3, true);
