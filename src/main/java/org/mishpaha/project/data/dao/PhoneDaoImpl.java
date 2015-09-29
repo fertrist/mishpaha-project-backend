@@ -2,12 +2,17 @@ package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.Phone;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 /**
  * Model class which represents phone No.
  */
-public class PhoneDaoImpl implements GenericDao<Phone>{
+public class PhoneDaoImpl extends DaoImplementation<Phone>{
+
+    public PhoneDaoImpl(DataSource dataSource, String table) {
+        super(dataSource, table);
+    }
 
     @Override
     public int save(Phone entity) {

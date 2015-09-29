@@ -19,8 +19,9 @@ public class Person {
     private String address;
     private boolean isJew;
     private boolean givesTithe;
-    private Date wasAdded;
     private List<String> emails;
+    private List<String> phones;
+
 
     public Person(String firstName, String midName, String lastName, boolean sex, Date birthDay, int districtId,
                   String address, boolean isJew, boolean givesTithe, Date wasAdded) {
@@ -33,7 +34,6 @@ public class Person {
         this.address = address;
         this.isJew = isJew;
         this.givesTithe = givesTithe;
-        this.wasAdded = wasAdded;
     }
 
     public int getId() {
@@ -116,14 +116,6 @@ public class Person {
         this.givesTithe = givesTithe;
     }
 
-    public Date getWasAdded() {
-        return wasAdded;
-    }
-
-    public void setWasAdded(Date wasAdded) {
-        this.wasAdded = wasAdded;
-    }
-
     @Override
     public String toString() {
         return "Person{" +
@@ -137,7 +129,6 @@ public class Person {
             ", address='" + address + '\'' +
             ", isJew=" + isJew +
             ", givesTithe=" + givesTithe +
-            ", wasAdded=" + wasAdded +
             '}';
     }
 }

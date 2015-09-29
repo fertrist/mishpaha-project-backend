@@ -1,8 +1,6 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.Graduation;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -10,13 +8,10 @@ import java.util.List;
 /**
  * Created by fertrist on 24.09.15.
  */
-public class GraduationDaoImpl implements GenericDao<Graduation>{
+public class GraduationDaoImpl extends DaoImplementation<Graduation>{
 
-    private String table = "categories";
-    private JdbcOperations jdbcOperations;
-
-    public GraduationDaoImpl(DataSource dataSource) {
-        jdbcOperations = new JdbcTemplate(dataSource);
+    public GraduationDaoImpl(DataSource dataSource, String table) {
+        super(dataSource, table);
     }
 
     @Override

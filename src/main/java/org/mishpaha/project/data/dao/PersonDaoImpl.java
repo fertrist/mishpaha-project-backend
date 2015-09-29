@@ -1,19 +1,19 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.Person;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcOperations;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 
 /**
  * Person dao implementation.
  */
-public class PersonDaoImpl implements GenericDao<Person> {
+public class PersonDaoImpl extends DaoImplementation<Person> {
 
-    @Autowired
-    private JdbcOperations jdbcOperations;
+    public PersonDaoImpl(DataSource dataSource, String table) {
+        super(dataSource, table);
+    }
 
     @Override
     public int save(Person entity) {

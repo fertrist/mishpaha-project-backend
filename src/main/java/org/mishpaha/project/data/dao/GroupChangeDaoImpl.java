@@ -1,8 +1,6 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.GroupChange;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -10,13 +8,10 @@ import java.util.List;
 /**
  * Created by fertrist on 24.09.15.
  */
-public class GroupChangeDaoImpl implements GenericDao<GroupChange> {
+public class GroupChangeDaoImpl extends DaoImplementation<GroupChange> {
 
-    private String table = "categories";
-    private JdbcOperations jdbcOperations;
-
-    public GroupChangeDaoImpl(DataSource dataSource) {
-        jdbcOperations = new JdbcTemplate(dataSource);
+    public GroupChangeDaoImpl(DataSource dataSource, String table) {
+        super(dataSource, table);
     }
 
     @Override

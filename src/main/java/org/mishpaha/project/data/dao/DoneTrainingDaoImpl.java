@@ -1,8 +1,6 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.DoneTraining;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -10,13 +8,10 @@ import java.util.List;
 /**
  * Created by fertrist on 24.09.15.
  */
-public class DoneTrainingDaoImpl implements GenericDao<DoneTraining> {
+public class DoneTrainingDaoImpl extends DaoImplementation<DoneTraining> {
 
-    private String table = "categories";
-    private JdbcOperations jdbcOperations;
-
-    public DoneTrainingDaoImpl(DataSource dataSource) {
-        jdbcOperations = new JdbcTemplate(dataSource);
+    public DoneTrainingDaoImpl(DataSource dataSource, String table) {
+        super(dataSource, table);
     }
 
     @Override
