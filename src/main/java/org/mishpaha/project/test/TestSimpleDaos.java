@@ -29,7 +29,8 @@ public class TestSimpleDaos {
     private GenericDao<Category> categoryDao;
 
     @Test
-    public void testListInsertDistrict() {
+    public void testListInsertDeleteDistrict() {
+        int id = 100;
         List<District> districtList = districtDao.list();
         districtList.forEach(System.out::println);
         District newDistrict = new District("Дарницкий");
@@ -37,22 +38,29 @@ public class TestSimpleDaos {
         List<District> resultList = districtDao.list();
         resultList.forEach(System.out::println);
         Assert.assertEquals("New district should be added.", 1, resultList.size() - districtList.size());
+
+        //delete district
+        Assert.assertEquals(shouldSucceedMessage, districtDao.delete(newDistrict.getId()), 1);
     }
 
     @Test
-    public void testUpdateDeleteDistrict() {
+    public void testUpdateDistrict() {
         int id = 1;
         //check that district is present
         District result = districtDao.get(id);
         System.out.println(String.format("Got a district by id=%d: %s", id, result.toString()));
-        Assert.assertEquals("District name must match.", "Оболонь", result.getDistrict());
+        Assert.assertEquals("District name must match.", "Оболонь", result.getName());
 
         //test update
         District updatedDistrict = new District(id, "Абалонь");
         Assert.assertEquals(shouldSucceedMessage, districtDao.saveOrUpdate(updatedDistrict), 1);
         result = districtDao.get(id);
-        Assert.assertEquals("District name must match.", "Абалонь", result.getDistrict());
+        Assert.assertEquals("District name must match.", "Абалонь", result.getName());
+    }
 
+    @Test
+    public void testDeleteDistrict(){
+        int id = 0;
         //test delete district
         List<District> initialList = districtDao.list();
         initialList.forEach(System.out::println);

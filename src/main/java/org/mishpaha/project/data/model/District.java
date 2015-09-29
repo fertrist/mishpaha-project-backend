@@ -5,17 +5,17 @@ package org.mishpaha.project.data.model;
  */
 public class District {
     private int id;
-    private String district;
+    private String name;
 
     public District() {}
 
-    public District(int id, String district) {
+    public District(int id, String name) {
         this.id = id;
-        this.district = district;
+        this.name = name;
     }
 
-    public District(String district) {
-        this.district = district;
+    public District(String name) {
+        this.name = name;
     }
 
     public int getId() {
@@ -26,16 +26,16 @@ public class District {
         this.id = id;
     }
 
-    public String getDistrict() {
-        return district;
+    public String getName() {
+        return name;
     }
 
-    public void setDistrict(String district) {
-        this.district = district;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return String.format("%d : %s", getId(), getDistrict());
+        return String.format("%d : %s", getId(), getName());
     }
 }
