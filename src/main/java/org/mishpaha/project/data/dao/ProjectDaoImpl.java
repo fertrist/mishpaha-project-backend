@@ -9,7 +9,12 @@ import java.util.List;
  */
 public class ProjectDaoImpl implements GenericDao<Project>{
     @Override
-    public int saveOrUpdate(Project entity) {
+    public int save(Project entity) {
+        return 0;
+    }
+
+    @Override
+    public int update(Project entity) {
         return 0;
     }
 

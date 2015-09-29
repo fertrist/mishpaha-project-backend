@@ -9,7 +9,12 @@ import java.util.List;
  */
 public class TimeStampDaoImpl implements GenericDao<TimeStamp>{
     @Override
-    public int saveOrUpdate(TimeStamp entity) {
+    public int save(TimeStamp entity) {
+        return 0;
+    }
+
+    @Override
+    public int update(TimeStamp entity) {
         return 0;
     }
 

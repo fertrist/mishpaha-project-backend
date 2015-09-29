@@ -20,7 +20,12 @@ public class GraduationDaoImpl implements GenericDao<Graduation>{
     }
 
     @Override
-    public int saveOrUpdate(Graduation entity) {
+    public int save(Graduation entity) {
+        return 0;
+    }
+
+    @Override
+    public int update(Graduation entity) {
         return 0;
     }
 

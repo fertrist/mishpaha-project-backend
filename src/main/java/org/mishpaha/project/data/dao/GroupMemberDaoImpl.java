@@ -9,7 +9,12 @@ import java.util.List;
  */
 public class GroupMemberDaoImpl implements GenericDao<GroupMember>{
     @Override
-    public int saveOrUpdate(GroupMember entity) {
+    public int save(GroupMember entity) {
+        return 0;
+    }
+
+    @Override
+    public int update(GroupMember entity) {
         return 0;
     }
 

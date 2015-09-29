@@ -20,7 +20,12 @@ public class GroupChangeDaoImpl implements GenericDao<GroupChange> {
     }
 
     @Override
-    public int saveOrUpdate(GroupChange entity) {
+    public int save(GroupChange entity) {
+        return 0;
+    }
+
+    @Override
+    public int update(GroupChange entity) {
         return 0;
     }
 

@@ -20,7 +20,12 @@ public class DoneTrainingDaoImpl implements GenericDao<DoneTraining> {
     }
 
     @Override
-    public int saveOrUpdate(DoneTraining entity) {
+    public int save(DoneTraining entity) {
+        return 0;
+    }
+
+    @Override
+    public int update(DoneTraining entity) {
         return 0;
     }
 

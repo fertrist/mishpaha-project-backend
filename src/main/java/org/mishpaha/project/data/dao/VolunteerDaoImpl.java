@@ -9,7 +9,12 @@ import java.util.List;
  */
 public class VolunteerDaoImpl implements GenericDao<Volunteer> {
     @Override
-    public int saveOrUpdate(Volunteer entity) {
+    public int save(Volunteer entity) {
+        return 0;
+    }
+
+    @Override
+    public int update(Volunteer entity) {
         return 0;
     }
 

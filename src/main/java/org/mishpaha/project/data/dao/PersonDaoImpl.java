@@ -16,7 +16,12 @@ public class PersonDaoImpl implements GenericDao<Person> {
     private JdbcOperations jdbcOperations;
 
     @Override
-    public int saveOrUpdate(Person entity) {
+    public int save(Person entity) {
+        return 0;
+    }
+
+    @Override
+    public int update(Person entity) {
         return 0;
     }
 

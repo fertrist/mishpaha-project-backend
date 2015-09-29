@@ -30,17 +30,23 @@ public class TestSimpleDaos {
 
     @Test
     public void testListInsertDeleteDistrict() {
+        List<District> initialList = districtDao.list();
+        initialList.forEach(System.out::println);
         int id = 100;
-        List<District> districtList = districtDao.list();
-        districtList.forEach(System.out::println);
-        District newDistrict = new District("Дарницкий");
-        Assert.assertEquals(shouldSucceedMessage, districtDao.saveOrUpdate(newDistrict), 1);
+        District newDistrict = new District(id, "Дарницкий");
+        Assert.assertEquals(shouldSucceedMessage, districtDao.save(newDistrict), 1);
         List<District> resultList = districtDao.list();
         resultList.forEach(System.out::println);
-        Assert.assertEquals("New district should be added.", 1, resultList.size() - districtList.size());
+        Assert.assertEquals("New district should be added.", 1, resultList.size() - initialList.size());
 
         //delete district
-        Assert.assertEquals(shouldSucceedMessage, districtDao.delete(newDistrict.getId()), 1);
+        Assert.assertEquals(shouldSucceedMessage, 1, districtDao.delete(id));
+        List<District> finalList = districtDao.list();
+        finalList.forEach(System.out::println);
+
+        //district is absent
+        Assert.assertEquals("District should be removed.", districtDao.get(id), null);
+        Assert.assertEquals("District should be removed.", resultList.size() - finalList.size(), 1);
     }
 
     @Test
@@ -53,24 +59,9 @@ public class TestSimpleDaos {
 
         //test update
         District updatedDistrict = new District(id, "Абалонь");
-        Assert.assertEquals(shouldSucceedMessage, districtDao.saveOrUpdate(updatedDistrict), 1);
+        Assert.assertEquals(shouldSucceedMessage, districtDao.update(updatedDistrict), 1);
         result = districtDao.get(id);
         Assert.assertEquals("District name must match.", "Абалонь", result.getName());
-    }
-
-    @Test
-    public void testDeleteDistrict(){
-        int id = 0;
-        //test delete district
-        List<District> initialList = districtDao.list();
-        initialList.forEach(System.out::println);
-        Assert.assertEquals(shouldSucceedMessage, 1, districtDao.delete(id));
-        List<District> finalList = districtDao.list();
-        finalList.forEach(System.out::println);
-
-        //district is absent
-        Assert.assertEquals("District should be removed.", districtDao.get(id), null);
-        Assert.assertEquals("District should be removed.", initialList.size() - finalList.size(), 1);
     }
 
     @Test

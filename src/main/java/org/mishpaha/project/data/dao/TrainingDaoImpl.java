@@ -9,7 +9,12 @@ import java.util.List;
  */
 public class TrainingDaoImpl implements GenericDao<Training>{
     @Override
-    public int saveOrUpdate(Training entity) {
+    public int save(Training entity) {
+        return 0;
+    }
+
+    @Override
+    public int update(Training entity) {
         return 0;
     }
 

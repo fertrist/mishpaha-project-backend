@@ -4,7 +4,7 @@ package org.mishpaha.project.data.model;
  * Model class which represents city district.
  */
 public class District {
-    private int id;
+    private int id = -1;
     private String name;
 
     public District() {}

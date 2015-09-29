@@ -13,14 +13,16 @@ public class DistrictDaoImpl extends DaoImplementation<District> {
     }
 
     @Override
-    public int saveOrUpdate(District entity) {
-        if (entity.getId() > 0) {
-            String sql = String.format("UPDATE %s SET name=? WHERE id=?", table);
-            return jdbcOperations.update(sql, entity.getName(), entity.getId());
-        } else {
-            String sql = String.format("INSERT INTO %s (name) values (?)", table);
-            return jdbcOperations.update(sql, entity.getName());
-        }
+    public int save(District entity) {
+        String sql = (entity.getId() <= 0) ? String.format("INSERT INTO %s (name) values (?)", table)
+            : String.format("INSERT INTO %s (id, name) values (%d, ?)", table, entity.getId());
+        return jdbcOperations.update(sql, entity.getName());
+    }
+
+    @Override
+    public int update(District entity) {
+        String sql = String.format("UPDATE %s SET name=? WHERE id=?", table);
+        return jdbcOperations.update(sql, entity.getName(), entity.getId());
     }
 
     @Override

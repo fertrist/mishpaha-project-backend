@@ -10,7 +10,12 @@ import java.util.List;
 public class PhoneDaoImpl implements GenericDao<Phone>{
 
     @Override
-    public int saveOrUpdate(Phone entity) {
+    public int save(Phone entity) {
+        return 0;
+    }
+
+    @Override
+    public int update(Phone entity) {
         return 0;
     }
 

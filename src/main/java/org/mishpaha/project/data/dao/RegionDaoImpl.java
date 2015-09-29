@@ -9,7 +9,12 @@ import java.util.List;
  */
 public class RegionDaoImpl implements GenericDao<Region>{
     @Override
-    public int saveOrUpdate(Region entity) {
+    public int save(Region entity) {
+        return 0;
+    }
+
+    @Override
+    public int update(Region entity) {
         return 0;
     }
 

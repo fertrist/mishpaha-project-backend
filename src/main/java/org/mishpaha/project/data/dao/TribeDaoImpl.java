@@ -9,7 +9,12 @@ import java.util.List;
  */
 public class TribeDaoImpl implements GenericDao<Tribe> {
     @Override
-    public int saveOrUpdate(Tribe entity) {
+    public int save(Tribe entity) {
+        return 0;
+    }
+
+    @Override
+    public int update(Tribe entity) {
         return 0;
     }
 

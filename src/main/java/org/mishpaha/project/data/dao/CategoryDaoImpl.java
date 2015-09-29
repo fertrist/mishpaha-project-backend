@@ -15,7 +15,7 @@ public class CategoryDaoImpl extends DaoImplementation<Category> {
     }
 
     @Override
-    public int saveOrUpdate(Category entity) {
+    public int save(Category entity) {
         if (entity.getId() > 0) {
             String sql = String.format("UPDATE %s SET name=? WHERE id=?", table);
             return jdbcOperations.update(sql, entity.getName(), entity.getId());
@@ -23,6 +23,11 @@ public class CategoryDaoImpl extends DaoImplementation<Category> {
             String sql = String.format("INSERT INTO %s (name) values (?)", table);
             return jdbcOperations.update(sql, entity.getName());
         }
+    }
+
+    @Override
+    public int update(Category entity) {
+        return 0;
     }
 
     @Override
