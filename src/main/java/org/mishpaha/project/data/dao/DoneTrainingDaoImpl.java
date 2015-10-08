@@ -25,11 +25,6 @@ public class DoneTrainingDaoImpl extends DaoImplementation<DoneTraining> {
     }
 
     @Override
-    public int delete(int id) {
-        return 0;
-    }
-
-    @Override
     public DoneTraining get(int id) {
         return null;
     }

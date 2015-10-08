@@ -14,7 +14,7 @@ public class DistrictDaoImpl extends DaoImplementation<District> {
 
     @Override
     public int save(District entity) {
-        String sql = (entity.getId() <= 0) ? String.format("INSERT INTO %s (name) values (?)", table)
+        String sql = (entity.getId() == 0) ? String.format("INSERT INTO %s (name) values (?)", table)
             : String.format("INSERT INTO %s (id, name) values (%d, ?)", table, entity.getId());
         return jdbcOperations.update(sql, entity.getName());
     }

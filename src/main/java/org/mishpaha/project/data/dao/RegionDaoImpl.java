@@ -24,11 +24,6 @@ public class RegionDaoImpl extends DaoImplementation<Region>{
     }
 
     @Override
-    public int delete(int id) {
-        return 0;
-    }
-
-    @Override
     public Region get(int id) {
         return null;
     }

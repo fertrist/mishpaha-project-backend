@@ -25,11 +25,6 @@ public class VolunteerDaoImpl extends DaoImplementation<Volunteer> {
     }
 
     @Override
-    public int delete(int id) {
-        return 0;
-    }
-
-    @Override
     public Volunteer get(int id) {
         return null;
     }

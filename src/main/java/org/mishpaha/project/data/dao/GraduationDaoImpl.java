@@ -25,11 +25,6 @@ public class GraduationDaoImpl extends DaoImplementation<Graduation>{
     }
 
     @Override
-    public int delete(int id) {
-        return 0;
-    }
-
-    @Override
     public Graduation get(int id) {
         return null;
     }

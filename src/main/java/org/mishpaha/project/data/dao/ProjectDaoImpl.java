@@ -25,11 +25,6 @@ public class ProjectDaoImpl extends DaoImplementation<Project>{
     }
 
     @Override
-    public int delete(int id) {
-        return 0;
-    }
-
-    @Override
     public Project get(int id) {
         return null;
     }

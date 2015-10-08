@@ -25,11 +25,6 @@ public class SchoolDaoImpl extends DaoImplementation<School> {
     }
 
     @Override
-    public int delete(int id) {
-        return 0;
-    }
-
-    @Override
     public School get(int id) {
         return null;
     }

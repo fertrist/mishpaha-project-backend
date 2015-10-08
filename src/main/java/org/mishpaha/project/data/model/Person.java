@@ -1,5 +1,6 @@
 package org.mishpaha.project.data.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -13,27 +14,32 @@ public class Person {
     private String midName;
     private String lastName;
     //true means men
-    private boolean sex;
+    private Boolean sex;
     private Date birthDay;
     private int districtId;
     private String address;
-    private boolean isJew;
-    private boolean givesTithe;
+    private Boolean isJew;
+    private Boolean givesTithe;
     private List<String> emails;
     private List<String> phones;
 
 
-    public Person(String firstName, String midName, String lastName, boolean sex, Date birthDay, int districtId,
-                  String address, boolean isJew, boolean givesTithe, Date wasAdded) {
+    public Person(int id, String firstName, String midName, String lastName, boolean sex, Date birthDay, int districtId,
+                  String address, boolean isJew, boolean givesTithe) {
+        this.id = id;
         this.firstName = firstName;
         this.midName = midName;
         this.lastName = lastName;
         this.sex = sex;
-        this.birthDay = birthDay;
+        setBirthDay(birthDay);
         this.districtId = districtId;
         this.address = address;
         this.isJew = isJew;
         this.givesTithe = givesTithe;
+    }
+
+    public Person() {
+
     }
 
     public int getId() {
@@ -68,11 +74,11 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public boolean isSex() {
+    public Boolean getSex() {
         return sex;
     }
 
-    public void setSex(boolean sex) {
+    public void setSex(Boolean sex) {
         this.sex = sex;
     }
 
@@ -81,6 +87,7 @@ public class Person {
     }
 
     public void setBirthDay(Date birthDay) {
+
         this.birthDay = birthDay;
     }
 
@@ -100,20 +107,59 @@ public class Person {
         this.address = address;
     }
 
-    public boolean isJew() {
+    public Boolean isJew() {
         return isJew;
     }
 
-    public void setIsJew(boolean isJew) {
+    public void setIsJew(Boolean isJew) {
         this.isJew = isJew;
     }
 
-    public boolean isGivesTithe() {
+    public Boolean givesTithe() {
         return givesTithe;
     }
 
-    public void setGivesTithe(boolean givesTithe) {
+    public void givesTithe(Boolean givesTithe) {
         this.givesTithe = givesTithe;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Person person = (Person) o;
+
+        if (getId() != person.getId()) return false;
+        if (getSex() != person.getSex()) return false;
+        if (getDistrictId() != person.getDistrictId()) return false;
+        if (isJew() != person.isJew()) return false;
+        if (givesTithe() != person.givesTithe()) return false;
+        if (!getFirstName().equals(person.getFirstName())) return false;
+        if (getMidName() != null ? !getMidName().equals(person.getMidName()) : person.getMidName() != null)
+            return false;
+        if (getLastName() != null ? !getLastName().equals(person.getLastName()) : person.getLastName() != null)
+            return false;
+        if (getBirthDay() != null ? !getBirthdayAsString().equals(person.getBirthdayAsString())
+            : person.getBirthdayAsString() != null)
+            return false;
+        return !(getAddress() != null ? !getAddress().equals(person.getAddress()) : person.getAddress() != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId();
+        result = 31 * result + getFirstName().hashCode();
+        result = 31 * result + (getMidName() != null ? getMidName().hashCode() : 0);
+        result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
+        result = 31 * result + (getSex() ? 1 : 0);
+        result = 31 * result + (getBirthDay() != null ? getBirthDay().hashCode() : 0);
+        result = 31 * result + getDistrictId();
+        result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
+        result = 31 * result + (isJew() ? 1 : 0);
+        result = 31 * result + (givesTithe() ? 1 : 0);
+        return result;
     }
 
     @Override
@@ -124,11 +170,17 @@ public class Person {
             ", midName='" + midName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", sex=" + (sex ? "M" : "W") +
-            ", birthDay=" + birthDay +
+            ", birthDay=" + getBirthdayAsString() +
             ", districtId=" + districtId +
             ", address='" + address + '\'' +
             ", isJew=" + isJew +
             ", givesTithe=" + givesTithe +
             '}';
     }
+
+    public String getBirthdayAsString() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return simpleDateFormat.format(getBirthDay());
+    }
+
 }

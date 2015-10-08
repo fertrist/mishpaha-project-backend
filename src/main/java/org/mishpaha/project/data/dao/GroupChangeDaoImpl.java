@@ -25,11 +25,6 @@ public class GroupChangeDaoImpl extends DaoImplementation<GroupChange> {
     }
 
     @Override
-    public int delete(int id) {
-        return 0;
-    }
-
-    @Override
     public GroupChange get(int id) {
         return null;
     }

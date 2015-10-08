@@ -4,9 +4,11 @@ import org.mishpaha.project.data.dao.CategoryDaoImpl;
 import org.mishpaha.project.data.dao.DistrictDaoImpl;
 import org.mishpaha.project.data.dao.GenericDao;
 import org.mishpaha.project.data.dao.PersonDaoImpl;
+import org.mishpaha.project.data.dao.PhoneDaoImpl;
 import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.District;
 import org.mishpaha.project.data.model.Person;
+import org.mishpaha.project.data.model.Phone;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -56,6 +58,11 @@ public class MvcConfiguration {
 	@Bean
 	public GenericDao<Person> getPersonDAO(DataSource dataSource) {
 		return new PersonDaoImpl(dataSource, "persons");
+	}
+
+	@Bean
+	public GenericDao<Phone> getPhoneDAO(DataSource dataSource) {
+		return new PhoneDaoImpl(dataSource, "phones");
 	}
 
 	@Bean

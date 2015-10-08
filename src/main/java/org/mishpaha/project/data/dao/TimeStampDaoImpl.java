@@ -25,11 +25,6 @@ public class TimeStampDaoImpl extends DaoImplementation<TimeStamp>{
     }
 
     @Override
-    public int delete(int id) {
-        return 0;
-    }
-
-    @Override
     public TimeStamp get(int id) {
         return null;
     }
