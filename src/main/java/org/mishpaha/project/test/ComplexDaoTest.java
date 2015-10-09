@@ -17,7 +17,7 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcConfiguration.class)
-public class ComplexDaoTest {
+public class ComplexDaoTest extends BaseDaoTestClass {
 
     @Autowired
     private GenericDao<Person> personDao;

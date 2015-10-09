@@ -1,5 +1,7 @@
 package org.mishpaha.project.test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -19,4 +21,13 @@ public class TestUtil {
         return cal.getTime();
     }
 
+    public static Date getDate(String dateStr) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            return simpleDateFormat.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

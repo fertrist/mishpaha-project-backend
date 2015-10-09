@@ -87,7 +87,6 @@ public class Person {
     }
 
     public void setBirthDay(Date birthDay) {
-
         this.birthDay = birthDay;
     }
 

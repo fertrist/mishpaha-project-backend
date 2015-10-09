@@ -1,20 +1,20 @@
 package org.mishpaha.project.data.model;
 
-import java.util.Date;
-
 /**
  * Created by fertrist on 24.09.15.
  */
-public class Training {
+public class Ministry {
 
     private int id;
     private String name;
-    private Date tookPlace;
 
-    public Training(int id, String name, Date tookPlace) {
+    public Ministry(int id, String name) {
         this.id = id;
         this.name = name;
-        this.tookPlace = tookPlace;
+    }
+
+    public Ministry(String name) {
+        this.name = name;
     }
 
     public int getId() {
@@ -31,13 +31,5 @@ public class Training {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getTookPlace() {
-        return tookPlace;
-    }
-
-    public void setTookPlace(Date tookPlace) {
-        this.tookPlace = tookPlace;
     }
 }
