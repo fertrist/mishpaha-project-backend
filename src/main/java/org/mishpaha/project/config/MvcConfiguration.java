@@ -1,5 +1,6 @@
 package org.mishpaha.project.config;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.mishpaha.project.data.dao.CategoryDaoImpl;
 import org.mishpaha.project.data.dao.ChangeRecordDaoImpl;
 import org.mishpaha.project.data.dao.DataBaseDao;
@@ -27,7 +28,7 @@ import org.mishpaha.project.data.model.Graduation;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.GroupMember;
 import org.mishpaha.project.data.model.Ministry;
-import org.mishpaha.project.data.model.ModelUtil;
+import org.mishpaha.project.util.ModelUtil;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Phone;
 import org.mishpaha.project.data.model.Region;
@@ -38,8 +39,6 @@ import org.mishpaha.project.data.model.Volunteer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
 
@@ -58,18 +57,18 @@ public class MvcConfiguration {
 //		return dataSource;
 //	}
 //
-//	@Profile("dev")
-//	@Bean
-//	public DataSource getDevelopmentDataSource() {
-//		BasicDataSource dataSource = new BasicDataSource();
-//		dataSource.setDriverClassName("org.h2.Driver");
-//		dataSource.setUrl("jdbc:h2:mem:testDb");
-//		dataSource.setUsername("sa");
-//		dataSource.setPassword("");
-//		dataSource.setInitialSize(5);
-//		dataSource.setMaxActive(10);
-//		return dataSource;
-//	}
+	//@Profile("dev")
+	@Bean
+	public DataSource getDevelopmentDataSource() {
+		BasicDataSource dataSource = new BasicDataSource();
+		dataSource.setDriverClassName("org.h2.Driver");
+		dataSource.setUrl("jdbc:h2:mem:testDb");
+		dataSource.setUsername("sa");
+		dataSource.setPassword("");
+		dataSource.setInitialSize(5);
+		dataSource.setMaxActive(10);
+		return dataSource;
+	}
 
 	@Bean
 	public GenericDao<District> getDistrictDAO(DataSource dataSource) {
@@ -103,7 +102,7 @@ public class MvcConfiguration {
 
     @Bean
     public GenericDao<Tribe> getTribeDao(DataSource dataSource) {
-        return new TribeDaoImpl(dataSource, ModelUtil.getTable(Region.class));
+        return new TribeDaoImpl(dataSource, ModelUtil.getTable(Tribe.class));
     }
 
     @Bean
@@ -156,12 +155,12 @@ public class MvcConfiguration {
         return new DataBaseDao(dataSource);
     }
 
-	@Bean
-	public DataSource getTestingDataSource() {
-		return new EmbeddedDatabaseBuilder()
-			.setType(EmbeddedDatabaseType.H2)
-			.addScript("sql/h2/schema.sql")
-			.build();
-	}
+//	@Bean
+//	public DataSource getTestingDataSource() {
+//		return new EmbeddedDatabaseBuilder()
+//			.setType(EmbeddedDatabaseType.H2)
+//			.addScript("sql/h2/schema.sql")
+//			.build();
+//	}
 
 }

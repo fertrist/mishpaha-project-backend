@@ -6,6 +6,8 @@ import org.springframework.dao.DataAccessException;
 import javax.sql.DataSource;
 import java.util.List;
 
+import static java.lang.String.format;
+
 /**
  * Model class which represents phone No.
  */
@@ -18,8 +20,8 @@ public class PhoneDaoImpl extends DaoImplementation<Phone>{
     @Override
     public int save(Phone entity) {
         try {
-            return jdbcOperations.update(String.format(INSERT, table, "personId, phone",
-                String.format("%d, '%s'", entity.getPersonId(), entity.getPhone())));
+            return operations.update(format(INSERT, table, "personId, phone",
+                format("%d, '%s'", entity.getPersonId(), entity.getPhone())));
         } catch (DataAccessException e) {
             e.printStackTrace();
             return 0;
@@ -32,7 +34,7 @@ public class PhoneDaoImpl extends DaoImplementation<Phone>{
      */
     @Override
     public List<Phone> list() {
-        return jdbcOperations.query(String.format(SELECT_ALL, table), (rs, numRow) -> {
+        return operations.query(format(SELECT_ALL, table), (rs, numRow) -> {
             return new Phone(rs.getInt("personId"), rs.getString("phone"));
         });
     }
@@ -43,7 +45,7 @@ public class PhoneDaoImpl extends DaoImplementation<Phone>{
      * @return list of Phones
      */
     public List<String> list(int personId) {
-        return jdbcOperations.query(String.format("SELECT * FROM %s WHERE personId=%d", table, personId),
+        return operations.query(format("SELECT * FROM %s WHERE personId=%d", table, personId),
             (rs, numRow) -> {
                 return rs.getString("phone");
             });
@@ -53,8 +55,8 @@ public class PhoneDaoImpl extends DaoImplementation<Phone>{
      * Remove given phone number.
      */
     public int delete(Phone phone) {
-        return jdbcOperations.update(String
-            .format("DELETE FROM %s WHERE personId=%d AND phone='%s'", table, phone.getPersonId(), phone.getPhone()));
+        return operations.update(format("DELETE FROM %s WHERE personId=%d AND phone='%s'",
+            table, phone.getPersonId(), phone.getPhone()));
     }
 
     /**
@@ -74,11 +76,11 @@ public class PhoneDaoImpl extends DaoImplementation<Phone>{
     }
 
     /**
-     * Doesn't support removal of all person's emails.
+     * Removal of all person's phones.
      */
     @Override
     public int delete(int personId) {
-        throw new UnsupportedOperationException("Calling unsupported action.");
+        return operations.update(format("DELETE FROM %s WHERE personId=%d", table, personId));
     }
 
 }

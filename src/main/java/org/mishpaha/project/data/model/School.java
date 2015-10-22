@@ -13,11 +13,19 @@ public class School {
     private Date graduation;
     private String teacher;
 
-    public enum Level {FIRST, SECOND, THIRD};
+    public enum Level {FIRST, SECOND, THIRD}
 
     public School(int id, Level schoolLevel, Date start, Date graduation, String teacher) {
         this.id = id;
         this.schoolLevel = schoolLevel;
+        this.start = start;
+        this.graduation = graduation;
+        this.teacher = teacher;
+    }
+
+    public School(int id, String schoolLevel, Date start, Date graduation, String teacher) {
+        this.id = id;
+        this.schoolLevel = Level.valueOf(schoolLevel);
         this.start = start;
         this.graduation = graduation;
         this.teacher = teacher;

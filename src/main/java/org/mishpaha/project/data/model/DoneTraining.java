@@ -6,11 +6,11 @@ package org.mishpaha.project.data.model;
 public class DoneTraining {
 
     private int personId;
-    private int trainingid;
+    private int trainingId;
 
-    public DoneTraining(int personId, int trainingid) {
+    public DoneTraining(int personId, int trainingId) {
         this.personId = personId;
-        this.trainingid = trainingid;
+        this.trainingId = trainingId;
     }
 
     public int getPersonId() {
@@ -21,11 +21,11 @@ public class DoneTraining {
         this.personId = personId;
     }
 
-    public int getTrainingid() {
-        return trainingid;
+    public int getTrainingId() {
+        return trainingId;
     }
 
-    public void setTrainingid(int trainingid) {
-        this.trainingid = trainingid;
+    public void setTrainingId(int trainingId) {
+        this.trainingId = trainingId;
     }
 }

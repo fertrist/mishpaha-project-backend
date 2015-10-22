@@ -122,32 +122,32 @@ public class SimpleDaoTest extends BaseDaoTestClass{
 
         //add new email record
         int personId = 3;
-        Email newEmail = new Email(personId, "fedorov.fedor@gmail.com");
+        Email newEmail = new Email(personId, "fedorov.fedor@i.ua");
         Assert.assertEquals(shouldSucceedMessage, 1, emailDao.save(newEmail));
         List<String> personsEmails = ((EmailDaoImpl) emailDao).list(personId);
         personsEmails.forEach(System.out::println);
-        Assert.assertEquals("Email count doesn't not match.", 1, personsEmails.size());
+        Assert.assertEquals("Email count doesn't not match.", 3, personsEmails.size());
         //add two more emails
-        newEmail.setEmail("0977894563");
+        newEmail.setEmail("fedorov.fedor@ukr.net");
         Assert.assertEquals(shouldSucceedMessage, 1, emailDao.save(newEmail));
-        newEmail.setEmail("0980004562");
+        newEmail.setEmail("fedorov.fedor@yandex.ru");
         Assert.assertEquals(shouldSucceedMessage, 1, emailDao.save(newEmail));
         personsEmails = ((EmailDaoImpl) emailDao).list(personId);
         personsEmails.forEach(System.out::println);
-        Assert.assertEquals("Email count doesn't not match.", 3, personsEmails.size());
+        Assert.assertEquals("Email count doesn't not match.", 5, personsEmails.size());
 
         //delete email
         Assert.assertEquals(shouldSucceedMessage, 1, ((EmailDaoImpl) emailDao).delete(newEmail));
         personsEmails = ((EmailDaoImpl) emailDao).list(personId);
         personsEmails.forEach(System.out::println);
-        Assert.assertEquals("Email count doesn't not match.", 2, personsEmails.size());
-        //delete another two by one request
-        Assert.assertEquals(shouldSucceedMessage, 2, emailDao.delete(personId));
+        Assert.assertEquals("Email count doesn't not match.", 4, personsEmails.size());
+        //delete other by one request
+        Assert.assertEquals(shouldSucceedMessage, 4, emailDao.delete(personId));
         personsEmails = ((EmailDaoImpl) emailDao).list(personId);
         Assert.assertEquals("List should be empty.", 0, personsEmails.size());
 
         //email is absent
         initialList = emailDao.list();
-        Assert.assertEquals("Email count doesn't not match.", 6, initialList.size());
+        Assert.assertEquals("Email count doesn't not match.", 4, initialList.size());
     }
 }

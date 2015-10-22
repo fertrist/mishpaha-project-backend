@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mishpaha.project.util.TestUtil.getDateAsString;
 import static org.springframework.util.StringUtils.isEmpty;
 
 
@@ -62,10 +63,10 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         }
         if (entity.getBirthDay() != null) {
             fields.add("birthday");
-            values.add(String.format(template, entity.getBirthdayAsString()));
+            values.add(String.format(template, getDateAsString(entity.getBirthDay())));
         }
         sql = String.format(sql, String.join(", ", fields), String.join(", ", values));
-        return jdbcOperations.update(sql);
+        return operations.update(sql);
     }
 
     @Override
@@ -99,16 +100,16 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
             params.add("districtId=" + entity.getDistrictId());
         }
         if (entity.getBirthDay() != null) {
-            params.add("birthday=" + String.format(template, entity.getBirthdayAsString()));
+            params.add("birthday=" + String.format(template, getDateAsString(entity.getBirthDay())));
         }
         String sql = String.format(UPDATE, table, String.join(", ", params));
-        return jdbcOperations.update(sql, entity.getId());
+        return operations.update(sql, entity.getId());
     }
 
     @Override
     public Person get(int id) {
         String sql = String.format(SELECT, table, id);
-        return jdbcOperations.query(sql, rs -> {
+        return operations.query(sql, rs -> {
             if (rs.next()) {
                 return new Person(
                     rs.getInt("id"),
@@ -130,7 +131,7 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
     @Override
     public List<Person> list() {
         String sql = String.format(SELECT_ALL, table);
-        return jdbcOperations.query(sql, (rs, numRow) -> {
+        return operations.query(sql, (rs, numRow) -> {
             return new Person(
                 rs.getInt("id"),
                 rs.getString("firstName"),

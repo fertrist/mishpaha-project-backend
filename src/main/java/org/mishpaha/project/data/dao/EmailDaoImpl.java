@@ -6,6 +6,8 @@ import org.springframework.dao.DataAccessException;
 import javax.sql.DataSource;
 import java.util.List;
 
+import static java.lang.String.format;
+
 /**
  * Created by fertrist on 09.10.15.
  */
@@ -18,8 +20,8 @@ public class EmailDaoImpl extends DaoImplementation<Email>{
     @Override
     public int save(Email entity) {
         try {
-            return jdbcOperations.update(String.format(INSERT, table, "personId, email",
-                String.format("%d, '%s'", entity.getPersonId(), entity.getEmail())));
+            return operations.update(format(INSERT, table, "personId, email",
+                format("%d, '%s'", entity.getPersonId(), entity.getEmail())));
         } catch (DataAccessException e) {
             e.printStackTrace();
             return 0;
@@ -31,7 +33,7 @@ public class EmailDaoImpl extends DaoImplementation<Email>{
      */
     @Override
     public List<Email> list() {
-        return jdbcOperations.query(String.format(SELECT_ALL, table), (rs, numRow) -> {
+        return operations.query(format(SELECT_ALL, table), (rs, numRow) -> {
             return new Email(rs.getInt("personId"), rs.getString("email"));
         });
     }
@@ -40,7 +42,7 @@ public class EmailDaoImpl extends DaoImplementation<Email>{
      * Lists all emails fot given person.
      */
     public List<String> list(int personId) {
-        return jdbcOperations.query(String.format("SELECT * FROM %s WHERE personId=%d", table, personId),
+        return operations.query(format("SELECT * FROM %s WHERE personId=%d", table, personId),
             (rs, numRow) -> {
                 return rs.getString("email");
             });
@@ -50,8 +52,8 @@ public class EmailDaoImpl extends DaoImplementation<Email>{
      * Removes specific email of given person.
      */
     public int delete(Email email) {
-        return jdbcOperations.update(String
-            .format("DELETE FROM %s WHERE personId=%d AND email='%s'", table, email.getPersonId(), email.getEmail()));
+        return operations.update(
+            format("DELETE FROM %s WHERE personId=%d AND email='%s'", table, email.getPersonId(), email.getEmail()));
     }
 
     /**
@@ -72,7 +74,7 @@ public class EmailDaoImpl extends DaoImplementation<Email>{
      */
     @Override
     public int delete(int personId) {
-        throw new UnsupportedOperationException("Calling unsupported action.");
+        return operations.update(format("DELETE FROM %s WHERE personId=%d", table, personId));
     }
 
 }

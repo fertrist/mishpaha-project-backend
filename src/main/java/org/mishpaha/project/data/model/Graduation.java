@@ -8,7 +8,7 @@ public class Graduation {
     private int schoolId;
     private int personId;
 
-    public Graduation(int schoolId, int personId) {
+    public Graduation(int personId, int schoolId) {
         this.schoolId = schoolId;
         this.personId = personId;
     }

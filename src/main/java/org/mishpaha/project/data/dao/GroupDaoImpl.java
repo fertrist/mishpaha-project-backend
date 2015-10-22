@@ -16,7 +16,8 @@ public class GroupDaoImpl extends DaoImplementation<Group>{
 
     @Override
     public int save(Group entity) {
-        return 0;
+        return operations.update(String.format("INSERT INTO %s (leaderId, regionId) values (%d, %d)",
+            table, entity.getLeaderId(), entity.getRegionId()));
     }
 
     @Override
@@ -31,6 +32,13 @@ public class GroupDaoImpl extends DaoImplementation<Group>{
 
     @Override
     public List<Group> list() {
-        return null;
+        return operations.query(String.format(SELECT_ALL, table), (rs, rowNum) -> {
+            return new Group(rs.getInt("leaderId"), rs.getInt("regionId"));
+        });
+    }
+
+    public int delete(Group group) {
+        return operations.update(String.format("DELETE FROM %s WHERE leaderId=%d AND tribeId=%d",
+            table, group.getLeaderId(), group.getRegionId()));
     }
 }

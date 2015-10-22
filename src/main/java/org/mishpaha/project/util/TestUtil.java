@@ -1,4 +1,4 @@
-package org.mishpaha.project.test;
+package org.mishpaha.project.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,5 +29,20 @@ public class TestUtil {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static String getDateAsString(Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return simpleDateFormat.format(date);
+    }
+
+    public static String getDateAsQuotedString(Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = simpleDateFormat.format(date);
+        return String.format("'%s'", strDate);
+    }
+
+    public static String getQuotedString(String str) {
+        return String.format("'%s'", str);
     }
 }

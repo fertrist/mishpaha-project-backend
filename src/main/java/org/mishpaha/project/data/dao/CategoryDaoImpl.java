@@ -18,10 +18,10 @@ public class CategoryDaoImpl extends DaoImplementation<Category> {
     public int save(Category entity) {
         if (entity.getId() > 0) {
             String sql = String.format("UPDATE %s SET name=? WHERE id=?", table);
-            return jdbcOperations.update(sql, entity.getName(), entity.getId());
+            return operations.update(sql, entity.getName(), entity.getId());
         } else {
             String sql = String.format("INSERT INTO %s (name) values (?)", table);
-            return jdbcOperations.update(sql, entity.getName());
+            return operations.update(sql, entity.getName());
         }
     }
 
@@ -33,7 +33,7 @@ public class CategoryDaoImpl extends DaoImplementation<Category> {
     @Override
     public Category get(int id) {
         String sql = String.format(SELECT, table, id);
-        return jdbcOperations.query(sql, rs -> {
+        return operations.query(sql, rs -> {
             if (rs.next()) {
                 return new Category(rs.getInt("id"), rs.getString("name"));
             }
@@ -43,7 +43,7 @@ public class CategoryDaoImpl extends DaoImplementation<Category> {
 
     @Override
     public List<Category> list() {
-        return jdbcOperations.query(String.format(SELECT_ALL, table), (rs, rowNum) -> {
+        return operations.query(String.format(SELECT_ALL, table), (rs, rowNum) -> {
             return new Category(rs.getInt("id"), rs.getString("name"));
         });
     }

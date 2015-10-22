@@ -14,7 +14,7 @@ import org.mishpaha.project.data.model.Graduation;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.GroupMember;
 import org.mishpaha.project.data.model.Ministry;
-import org.mishpaha.project.data.model.ModelUtil;
+import org.mishpaha.project.util.ModelUtil;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Phone;
 import org.mishpaha.project.data.model.Region;
@@ -24,7 +24,7 @@ import org.mishpaha.project.data.model.Tribe;
 import org.mishpaha.project.data.model.Volunteer;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.mishpaha.project.test.TestUtil.getDate;
+import static org.mishpaha.project.util.TestUtil.getDate;
 
 /**
  * Created by fertrist on 09.10.15.
@@ -32,6 +32,7 @@ import static org.mishpaha.project.test.TestUtil.getDate;
 public class BaseDaoTestClass {
     final String shouldSucceedMessage = "Request should succeed.";
     final String shouldFailMessage = "Request should fail.";
+    private static boolean DB_CREATED = false;
 
     @Autowired
     GenericDao<District> districtDao;
@@ -104,7 +105,7 @@ public class BaseDaoTestClass {
         new Email(3, "fedorov.fedor@gmail.com"), new Email(3, "fedorov.fedor@rambler.ru"),
         new Email(4, "evgeniev.evgeniy@gmail.com")
     };
-    private String[] tribes = new String[] {"Иванова", "Петрова", "Сидорова"};
+    private String[] tribes = new String[] {"Иванова", "Петрова", "Сидорова", "Комарова"};
     private String[] ministries = new String[]{"Административное", "Группа порядка", "Попечитель"};
 
     private Region[] regions = new Region[] {
@@ -152,125 +153,126 @@ public class BaseDaoTestClass {
     };
 
     @Before
-    public void fillTables() {
-        prepareScenario();
+    public void setUp() {
+        Assert.assertEquals("Tables are not created", 1, dataBaseDao.createTables());
+        fillTables();
     }
 
     @After
     public void cleanTables() {
-        dataBaseDao.cleanTables(ModelUtil.getTableNames());
+        dataBaseDao.dropTables(ModelUtil.getTableNames());
     }
 
-    public void prepareScenario() {
-        createDistricts();
-        createPersons();
-        createEmails();
-        createPhones();
-        createTrainings();
-        createDoneTrainings();
-        createMinistries();
-        createVolunteers();
-        createCategories();
-        createTribes();
-        createRegions();
-        createGroups();
-        createGroupMembers();
-        createChangeRecords();
-        createSchools();
-        createGraduations();
+    private void fillTables() {
+        fillDistricts();
+        fillPersons();
+        fillEmails();
+        fillPhones();
+        fillTrainings();
+        fillDoneTrainings();
+        fillMinistries();
+        fillVolunteers();
+        fillCategories();
+        fillTribes();
+        fillRegions();
+        fillGroups();
+        fillGroupMembers();
+        fillChangeRecords();
+        fillSchools();
+        fillGraduations();
     }
 
-    void createDistricts() {
+    void fillDistricts() {
         for (String district : districts) {
             Assert.assertEquals(1, districtDao.save(new District(district)));
         }
     }
 
-    void createPersons() {
+    void fillPersons() {
         for (Person person : persons) {
             Assert.assertEquals(1, personDao.save(person));
         }
     }
 
-    void createEmails() {
+    void fillEmails() {
         for(Email email : emails) {
             Assert.assertEquals(1, emailDao.save(email));
         }
     }
 
-    void createPhones() {
+    void fillPhones() {
         for (Phone phone : phones) {
             Assert.assertEquals(1, phoneDao.save(phone));
         }
     }
 
-    void createCategories() {
+    void fillCategories() {
         for (String category : categories) {
             Assert.assertEquals(1, categoryDao.save(new Category(category)));
         }
     }
 
-    void createChangeRecords() {
+    void fillChangeRecords() {
         for (ChangeRecord changeRecord : changeRecords) {
             Assert.assertEquals(1, changeRecordDao.save(changeRecord));
         }
     }
 
-    void createDoneTrainings() {
+    void fillDoneTrainings() {
         for (DoneTraining doneTraining : doneTrainings) {
             Assert.assertEquals(1, doneTrainingDao.save(doneTraining));
         }
     }
 
-    void createGraduations() {
+    void fillGraduations() {
         for (Graduation graduation : graduations) {
             Assert.assertEquals(1, graduationDao.save(graduation));
         }
     }
 
-    void createGroups() {
+    void fillGroups() {
         for (Group group : groups) {
             Assert.assertEquals(1, groupDao.save(group));
         }
     }
 
-    void createGroupMembers() {
+    void fillGroupMembers() {
         for (GroupMember groupMember : groupMembers) {
             Assert.assertEquals(1, groupMemberDao.save(groupMember));
         }
     }
 
-    void createMinistries() {
+    void fillMinistries() {
         for (String ministry : ministries) {
             Assert.assertEquals(1, ministryDao.save(new Ministry(ministry)));
         }
     }
 
-    void createRegions() {
+    void fillRegions() {
         for (Region region : regions) {
             Assert.assertEquals(1, regionDao.save(region));
         }
     }
 
-    void createSchools() {
+    void fillSchools() {
         for (School school : schools) {
             Assert.assertEquals(1, schoolDao.save(school));
         }
     }
 
-    void createTrainings() {
+    void fillTrainings() {
         for (Training training : trainings) {
             Assert.assertEquals(1, trainingDao.save(training));
         }
     }
 
-    void createTribes() {
+    void fillTribes() {
         for (String tribe : tribes) {
             Assert.assertEquals(1, tribeDao.save(new Tribe(tribe)));
         }
     }
 
-    void createVolunteers() {
+    void fillVolunteers() {
         for (Volunteer volunteer : volunteers) {
             Assert.assertEquals(1, volunteerDao.save(volunteer));
         }

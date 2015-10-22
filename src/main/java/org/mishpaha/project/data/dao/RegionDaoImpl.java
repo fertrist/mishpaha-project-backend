@@ -15,7 +15,8 @@ public class RegionDaoImpl extends DaoImplementation<Region>{
 
     @Override
     public int save(Region entity) {
-        return 0;
+        return operations.update(String.format("INSERT INTO %s (leaderId, tribeId) values (%d, %d)",
+            table, entity.getLeaderId(), entity.getTribeId()));
     }
 
     @Override
@@ -30,6 +31,13 @@ public class RegionDaoImpl extends DaoImplementation<Region>{
 
     @Override
     public List<Region> list() {
-        return null;
+        return operations.query(String.format(SELECT_ALL, table), (rs, rowNum) -> {
+            return new Region(rs.getInt("leaderId"), rs.getInt("tribeId"));
+        });
+    }
+
+    public int delete(Region region) {
+        return operations.update(String.format("DELETE FROM %s WHERE leaderId=%d AND tribeId=%d",
+            table, region.getLeaderId(), region.getTribeId()));
     }
 }

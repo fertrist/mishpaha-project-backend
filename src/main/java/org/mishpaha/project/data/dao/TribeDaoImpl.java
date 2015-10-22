@@ -1,6 +1,7 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.Tribe;
+import org.mishpaha.project.util.TestUtil;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -16,21 +17,30 @@ public class TribeDaoImpl extends DaoImplementation<Tribe> {
 
     @Override
     public int save(Tribe entity) {
-        return 0;
+        return operations.update(String.format("INSERT INTO %s (name) values (%s)", table,
+            TestUtil.getQuotedString(entity.getName())));
     }
 
     @Override
     public int update(Tribe entity) {
-        return 0;
+        return operations.update(String.format("UPDATE %s SET name=%s WHERE id=%d",
+            table,  TestUtil.getQuotedString(entity.getName()), entity.getId()));
     }
 
     @Override
     public Tribe get(int id) {
-        return null;
+        return operations.query(String.format(SELECT, table, id) ,rs -> {
+            if (rs.next()) {
+                return new Tribe(rs.getInt("id"), rs.getString("name"));
+            }
+            return null;
+        });
     }
 
     @Override
     public List<Tribe> list() {
-        return null;
+        return operations.query(String.format(SELECT_ALL, table) ,(rs, rowNum) -> {
+            return new Tribe(rs.getInt("id"), rs.getString("name"));
+        });
     }
 }

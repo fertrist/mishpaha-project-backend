@@ -1,8 +1,9 @@
 package org.mishpaha.project.data.model;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static org.mishpaha.project.util.TestUtil.getDateAsString;
 
 /**
  * Created by fertrist on 24.09.15.
@@ -139,8 +140,8 @@ public class Person {
             return false;
         if (getLastName() != null ? !getLastName().equals(person.getLastName()) : person.getLastName() != null)
             return false;
-        if (getBirthDay() != null ? !getBirthdayAsString().equals(person.getBirthdayAsString())
-            : person.getBirthdayAsString() != null)
+        if (getBirthDay() != null ? !getDateAsString(getBirthDay()).equals(getDateAsString(person.getBirthDay()))
+            : person.getBirthDay() != null)
             return false;
         return !(getAddress() != null ? !getAddress().equals(person.getAddress()) : person.getAddress() != null);
 
@@ -169,17 +170,12 @@ public class Person {
             ", midName='" + midName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", sex=" + (sex ? "M" : "W") +
-            ", birthDay=" + getBirthdayAsString() +
+            ", birthDay=" + getDateAsString(getBirthDay()) +
             ", districtId=" + districtId +
             ", address='" + address + '\'' +
             ", isJew=" + isJew +
             ", givesTithe=" + givesTithe +
             '}';
-    }
-
-    public String getBirthdayAsString() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return simpleDateFormat.format(getBirthDay());
     }
 
 }

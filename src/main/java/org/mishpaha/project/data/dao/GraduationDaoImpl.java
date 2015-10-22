@@ -16,7 +16,8 @@ public class GraduationDaoImpl extends DaoImplementation<Graduation>{
 
     @Override
     public int save(Graduation entity) {
-        return 0;
+        return operations.update(String.format("INSERT INTO %s (personId, schoolId) values (%d, %d)",
+            table, entity.getPersonId(), entity.getSchoolId()));
     }
 
     @Override
@@ -31,6 +32,14 @@ public class GraduationDaoImpl extends DaoImplementation<Graduation>{
 
     @Override
     public List<Graduation> list() {
-        return null;
+        return operations.query(String.format(SELECT_ALL, table), (rs, rowNum) -> {
+            return new Graduation(rs.getInt("personId"), rs.getInt("schoolId"));
+        });
     }
+
+    public int delete(Graduation graduation) {
+        return operations.update(String.format("DELETE FROM %s WHERE personId=%d AND schoolId=%d",
+            table, graduation.getPersonId(), graduation.getSchoolId()));
+    }
+
 }

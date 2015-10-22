@@ -1,9 +1,27 @@
-package org.mishpaha.project.data.model;
+package org.mishpaha.project.util;
+
+import org.mishpaha.project.data.model.Category;
+import org.mishpaha.project.data.model.ChangeRecord;
+import org.mishpaha.project.data.model.District;
+import org.mishpaha.project.data.model.DoneTraining;
+import org.mishpaha.project.data.model.Email;
+import org.mishpaha.project.data.model.Graduation;
+import org.mishpaha.project.data.model.Group;
+import org.mishpaha.project.data.model.GroupMember;
+import org.mishpaha.project.data.model.Ministry;
+import org.mishpaha.project.data.model.Person;
+import org.mishpaha.project.data.model.Phone;
+import org.mishpaha.project.data.model.Region;
+import org.mishpaha.project.data.model.School;
+import org.mishpaha.project.data.model.Training;
+import org.mishpaha.project.data.model.Tribe;
+import org.mishpaha.project.data.model.Volunteer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by fertrist on 09.10.15.
@@ -13,10 +31,10 @@ public abstract class ModelUtil {
     private static Map<String, String> TABLE_NAMES;
 
     static {
-        TABLE_NAMES = new HashMap<>();
-        TABLE_NAMES.put(Category.class.getSimpleName(), "categories");
-        TABLE_NAMES.put(Group.class.getSimpleName(), "groups");
+        TABLE_NAMES = new LinkedHashMap<>();
         TABLE_NAMES.put(GroupMember.class.getSimpleName(), "groupMembers");
+        TABLE_NAMES.put(Group.class.getSimpleName(), "groups");
+        TABLE_NAMES.put(Category.class.getSimpleName(), "categories");
         TABLE_NAMES.put(ChangeRecord.class.getSimpleName(), "changeRecords");
         TABLE_NAMES.put(DoneTraining.class.getSimpleName(), "doneTrainings");
         TABLE_NAMES.put(Training.class.getSimpleName(), "trainings");
@@ -38,9 +56,7 @@ public abstract class ModelUtil {
 
     public static String[] getTableNames() {
         List<String> tableNames = new ArrayList<>();
-        for (String key : TABLE_NAMES.keySet()) {
-            tableNames.add(TABLE_NAMES.get(key));
-        }
+        tableNames.addAll(TABLE_NAMES.keySet().stream().map(TABLE_NAMES::get).collect(Collectors.toList()));
         String[] names = new String[TABLE_NAMES.size()];
         return tableNames.toArray(names);
     }

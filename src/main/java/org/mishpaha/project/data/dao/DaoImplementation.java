@@ -16,16 +16,16 @@ abstract public class DaoImplementation<T> implements GenericDao<T> {
     public static final String UPDATE = "UPDATE %s SET %s WHERE id=?";
 
     protected String table = null;
-    protected JdbcOperations jdbcOperations;
+    protected JdbcOperations operations;
 
     public DaoImplementation(DataSource dataSource, String table) {
         this.table = table;
-        jdbcOperations = new JdbcTemplate(dataSource);
+        operations = new JdbcTemplate(dataSource);
     }
 
     @Override
     public int delete(int id) {
-        return table == null ? 0 : jdbcOperations.update(String.format(DELETE_BY_ID, table, id));
+        return table == null ? 0 : operations.update(String.format(DELETE_BY_ID, table, id));
     }
 
 }

@@ -16,7 +16,8 @@ public class DoneTrainingDaoImpl extends DaoImplementation<DoneTraining> {
 
     @Override
     public int save(DoneTraining entity) {
-        return 0;
+        return operations.update(String.format(INSERT, table, "personId, trainingId",
+                new StringBuilder("").append(entity.getPersonId()).append(",").append(entity.getTrainingId())));
     }
 
     @Override
@@ -31,6 +32,13 @@ public class DoneTrainingDaoImpl extends DaoImplementation<DoneTraining> {
 
     @Override
     public List<DoneTraining> list() {
-        return null;
+        return operations.query(String.format(SELECT_ALL, table), (rs, numRow) -> {
+            return new DoneTraining(rs.getInt("personId"), rs.getInt("trainingId"));
+        });
+    }
+
+    public int delete(DoneTraining training) {
+        return operations.update(String.format("DELETE from %s WHERE personId=%d AND trainingId=%d",
+            table, training.getPersonId(), training.getTrainingId()));
     }
 }
