@@ -1,10 +1,10 @@
 package org.mishpaha.project.config;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.mishpaha.project.data.dao.AddressDaoImpl;
 import org.mishpaha.project.data.dao.CategoryDaoImpl;
 import org.mishpaha.project.data.dao.ChangeRecordDaoImpl;
 import org.mishpaha.project.data.dao.DataBaseDao;
-import org.mishpaha.project.data.dao.DistrictDaoImpl;
 import org.mishpaha.project.data.dao.DoneTrainingDaoImpl;
 import org.mishpaha.project.data.dao.EmailDaoImpl;
 import org.mishpaha.project.data.dao.GenericDao;
@@ -19,16 +19,15 @@ import org.mishpaha.project.data.dao.SchoolDaoImpl;
 import org.mishpaha.project.data.dao.TrainingDaoImpl;
 import org.mishpaha.project.data.dao.TribeDaoImpl;
 import org.mishpaha.project.data.dao.VolunteerDaoImpl;
+import org.mishpaha.project.data.model.Address;
 import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.ChangeRecord;
-import org.mishpaha.project.data.model.District;
 import org.mishpaha.project.data.model.DoneTraining;
 import org.mishpaha.project.data.model.Email;
 import org.mishpaha.project.data.model.Graduation;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.GroupMember;
 import org.mishpaha.project.data.model.Ministry;
-import org.mishpaha.project.util.ModelUtil;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Phone;
 import org.mishpaha.project.data.model.Region;
@@ -36,6 +35,7 @@ import org.mishpaha.project.data.model.School;
 import org.mishpaha.project.data.model.Training;
 import org.mishpaha.project.data.model.Tribe;
 import org.mishpaha.project.data.model.Volunteer;
+import org.mishpaha.project.util.ModelUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -46,34 +46,10 @@ import javax.sql.DataSource;
 @ComponentScan(basePackages="org.mishpaha.project")
 public class MvcConfiguration {
 
-//	@Profile("prod")
-//	@Bean
-//	public DataSource getProductionDataSource() {
-//		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-//		dataSource.setDriverClass(org.postgresql.Driver.class);
-//		dataSource.setUrl("jdbc:postgresql://localhost:5432/mishpaha");
-//		dataSource.setUsername("fertrist");
-//		dataSource.setPassword("password");
-//		return dataSource;
-//	}
-//
-	//@Profile("dev")
-	@Bean
-	public DataSource getDevelopmentDataSource() {
-		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName("org.h2.Driver");
-		dataSource.setUrl("jdbc:h2:mem:testDb");
-		dataSource.setUsername("sa");
-		dataSource.setPassword("");
-		dataSource.setInitialSize(5);
-		dataSource.setMaxActive(10);
-		return dataSource;
-	}
-
-	@Bean
-	public GenericDao<District> getDistrictDAO(DataSource dataSource) {
-		return new DistrictDaoImpl(dataSource, ModelUtil.getTable(District.class));
-	}
+    @Bean
+    public GenericDao<Address> getAddressDAO(DataSource dataSource) {
+        return new AddressDaoImpl(dataSource, ModelUtil.getTable(Address.class));
+    }
 
 	@Bean
 	public GenericDao<Category> getCategoryDAO(DataSource dataSource) {
@@ -154,6 +130,31 @@ public class MvcConfiguration {
     public DataBaseDao getDataBaseDao(DataSource dataSource) {
         return new DataBaseDao(dataSource);
     }
+
+    //@Profile("dev")
+    @Bean
+    public DataSource getDevelopmentDataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("org.h2.Driver");
+        dataSource.setUrl("jdbc:h2:mem:testDb");
+        dataSource.setUsername("sa");
+        dataSource.setPassword("");
+        dataSource.setInitialSize(5);
+        dataSource.setMaxActive(10);
+        return dataSource;
+    }
+
+    //	@Profile("prod")
+//	@Bean
+//	public DataSource getProductionDataSource() {
+//		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+//		dataSource.setDriverClass(org.postgresql.Driver.class);
+//		dataSource.setUrl("jdbc:postgresql://localhost:5432/mishpaha");
+//		dataSource.setUsername("fertrist");
+//		dataSource.setPassword("password");
+//		return dataSource;
+//	}
+//
 
 //	@Bean
 //	public DataSource getTestingDataSource() {

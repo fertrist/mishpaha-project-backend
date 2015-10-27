@@ -17,31 +17,32 @@ public class Person {
     //true means men
     private Boolean sex;
     private Date birthDay;
-    private int districtId;
-    private String address;
     private Boolean isJew;
     private Boolean givesTithe;
+    private String comment;
     private List<String> emails;
     private List<String> phones;
 
 
-    public Person(int id, String firstName, String midName, String lastName, boolean sex, Date birthDay, int districtId,
-                  String address, boolean isJew, boolean givesTithe) {
+    public Person(int id, String firstName, String midName, String lastName, boolean sex, Date birthDay,
+                  boolean isJew, boolean givesTithe, String comment) {
+        this(firstName, midName, lastName, sex, birthDay, isJew, givesTithe, comment);
         this.id = id;
+    }
+
+    public Person(String firstName, String midName, String lastName, boolean sex, Date birthDay,
+                  boolean isJew, boolean givesTithe, String comment) {
         this.firstName = firstName;
         this.midName = midName;
         this.lastName = lastName;
         this.sex = sex;
         setBirthDay(birthDay);
-        this.districtId = districtId;
-        this.address = address;
         this.isJew = isJew;
         this.givesTithe = givesTithe;
+        this.comment = comment;
     }
 
-    public Person() {
-
-    }
+    public Person() {}
 
     public int getId() {
         return id;
@@ -91,22 +92,6 @@ public class Person {
         this.birthDay = birthDay;
     }
 
-    public int getDistrictId() {
-        return districtId;
-    }
-
-    public void setDistrictId(int districtId) {
-        this.districtId = districtId;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public Boolean isJew() {
         return isJew;
     }
@@ -123,6 +108,14 @@ public class Person {
         this.givesTithe = givesTithe;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -132,7 +125,6 @@ public class Person {
 
         if (getId() != person.getId()) return false;
         if (getSex() != person.getSex()) return false;
-        if (getDistrictId() != person.getDistrictId()) return false;
         if (isJew() != person.isJew()) return false;
         if (givesTithe() != person.givesTithe()) return false;
         if (!getFirstName().equals(person.getFirstName())) return false;
@@ -143,8 +135,7 @@ public class Person {
         if (getBirthDay() != null ? !getDateAsString(getBirthDay()).equals(getDateAsString(person.getBirthDay()))
             : person.getBirthDay() != null)
             return false;
-        return !(getAddress() != null ? !getAddress().equals(person.getAddress()) : person.getAddress() != null);
-
+        return true;
     }
 
     @Override
@@ -155,8 +146,6 @@ public class Person {
         result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
         result = 31 * result + (getSex() ? 1 : 0);
         result = 31 * result + (getBirthDay() != null ? getBirthDay().hashCode() : 0);
-        result = 31 * result + getDistrictId();
-        result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
         result = 31 * result + (isJew() ? 1 : 0);
         result = 31 * result + (givesTithe() ? 1 : 0);
         return result;
@@ -171,8 +160,6 @@ public class Person {
             ", lastName='" + lastName + '\'' +
             ", sex=" + (sex ? "M" : "W") +
             ", birthDay=" + getDateAsString(getBirthDay()) +
-            ", districtId=" + districtId +
-            ", address='" + address + '\'' +
             ", isJew=" + isJew +
             ", givesTithe=" + givesTithe +
             '}';

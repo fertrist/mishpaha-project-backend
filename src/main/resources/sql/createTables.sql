@@ -1,11 +1,4 @@
 ----------------------------------------------------TABLE
-CREATE TABLE districts(
-	id int AUTO_INCREMENT,
-	name varchar(60),
-	PRIMARY KEY(id),
-	UNIQUE(name)
-);
-----------------------------------------------------TABLE
 CREATE TABLE phones(
 	personId int NOT NULL,
 	phone varchar(60),
@@ -18,6 +11,18 @@ CREATE TABLE emails(
     PRIMARY KEY(personId, email)
 );
 ----------------------------------------------------TABLE
+CREATE TABLE addresses(
+	personId int NOT NULL,
+	country varchar(30),
+	region varchar(30),
+	city varchar(30),
+	district varchar(30),
+	street varchar(30),
+	building varchar(10),
+	flat int,
+	PRIMARY KEY (personId)
+);
+----------------------------------------------------TABLE
 CREATE TABLE persons(
 	id int AUTO_INCREMENT,
 	firstName varchar(60) NOT NULL,
@@ -25,14 +30,12 @@ CREATE TABLE persons(
 	lastName varchar(60),
 	sex boolean,
 	birthDay date,
-	districtId int,
-	address varchar(100),
 	isJew boolean,
 	givesTithe boolean DEFAULT false,
+	comment varchar(100),
 	wasAdded date DEFAULT GETDATE(),
 	CONSTRAINT ucFullName UNIQUE(firstName, midName, lastName),
-	PRIMARY KEY(id),
-	FOREIGN KEY (districtId) REFERENCES districts(id)
+	PRIMARY KEY(id)
 );
 ----------------------------------------------------TABLE
 CREATE TABLE tribes(

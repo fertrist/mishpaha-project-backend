@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mishpaha.project.util.TestUtil.getDateAsQuotedString;
 import static org.mishpaha.project.util.TestUtil.getDateAsString;
 import static org.springframework.util.StringUtils.isEmpty;
 
@@ -27,7 +28,7 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         List<String> values = new ArrayList<>();
         if (entity.getId() != 0) {
             fields.add("id");
-            values.add("" + entity.getId());
+            values.add(String.valueOf(entity.getId()));
         }
         if (!isEmpty(entity.getFirstName())) {
             fields.add("firstName");
@@ -52,14 +53,6 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         if (entity.givesTithe() != null) {
             fields.add("givesTithe");
             values.add(String.format(template, entity.givesTithe().booleanValue()));
-        }
-        if (!isEmpty(entity.getAddress())) {
-            fields.add("address");
-            values.add(String.format(template, entity.getAddress()));
-        }
-        if (entity.getDistrictId() != 0) {
-            fields.add("districtId");
-            values.add("" + entity.getDistrictId());
         }
         if (entity.getBirthDay() != null) {
             fields.add("birthday");
@@ -93,14 +86,8 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         if (entity.givesTithe() != null) {
             params.add("givesTithe=" + String.format(template, entity.givesTithe().booleanValue()));
         }
-        if (!isEmpty(entity.getAddress())) {
-            params.add("address=" + String.format(template, entity.getAddress()));
-        }
-        if (entity.getDistrictId() != 0) {
-            params.add("districtId=" + entity.getDistrictId());
-        }
         if (entity.getBirthDay() != null) {
-            params.add("birthday=" + String.format(template, getDateAsString(entity.getBirthDay())));
+            params.add("birthday=" + String.format(template, getDateAsQuotedString(entity.getBirthDay())));
         }
         String sql = String.format(UPDATE, table, String.join(", ", params));
         return operations.update(sql, entity.getId());
@@ -118,10 +105,9 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
                     rs.getString("lastName"),
                     rs.getBoolean("sex"),
                     rs.getDate("birthday"),
-                    rs.getInt("districtId"),
-                    rs.getString("address"),
                     rs.getBoolean("isJew"),
-                    rs.getBoolean("givesTithe")
+                    rs.getBoolean("givesTithe"),
+                    rs.getString("comment")
                 );
             }
             return null;
@@ -139,10 +125,9 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
                 rs.getString("lastName"),
                 rs.getBoolean("sex"),
                 rs.getDate("birthday"),
-                rs.getInt("districtId"),
-                rs.getString("address"),
                 rs.getBoolean("isJew"),
-                rs.getBoolean("givesTithe")
+                rs.getBoolean("givesTithe"),
+                rs.getString("comment")
             );
         });
     }

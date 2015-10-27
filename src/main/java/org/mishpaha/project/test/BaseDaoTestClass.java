@@ -5,9 +5,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.mishpaha.project.data.dao.DataBaseDao;
 import org.mishpaha.project.data.dao.GenericDao;
+import org.mishpaha.project.data.model.Address;
 import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.ChangeRecord;
-import org.mishpaha.project.data.model.District;
 import org.mishpaha.project.data.model.DoneTraining;
 import org.mishpaha.project.data.model.Email;
 import org.mishpaha.project.data.model.Graduation;
@@ -35,7 +35,7 @@ public class BaseDaoTestClass {
     private static boolean DB_CREATED = false;
 
     @Autowired
-    GenericDao<District> districtDao;
+    GenericDao<Address> addressDao;
     @Autowired
     GenericDao<Person> personDao;
     @Autowired
@@ -71,27 +71,39 @@ public class BaseDaoTestClass {
 
     private String[] districts = new String[]{"Оболонь", "Подол", "Дорогожичи", "Шулявка"};
     private String[] categories = new String[] {"Приход", "Зелёные", "Гости", "Еврейский список"};
+    private Address[] addresses = new Address[] {
+        new Address(1, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
+        new Address(2, "Украина", null, "Киев", "Шевченковский", "Франка", "10", 10),
+        new Address(3, "Украина", null, "Киев", "Соломенский", "Клименка", "15", 19),
+        new Address(4, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
+        new Address(5, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
+        new Address(6, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
+        new Address(7, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
+        new Address(8, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
+        new Address(9, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
+        new Address(10, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
+    };
     private Person[] persons = new Person[]{
-        new Person(0, "Коленный-1", "Сидор", "Сидорович", true,
-            getDate("1960-09-15"), 1, "дома", true, true),
-        new Person(0, "Коленный-2", "Сидор", "Сидорович", true,
-            getDate("1955-10-15"), 1, "дома", true, true),
-        new Person(0, "Коленный-3", "Сидор", "Сидорович", true,
-            getDate("1965-11-15"), 1, "дома", true, true),
-        new Person(0, "Коленный-4", "Сидор", "Сидорович", true,
-            getDate("1970-03-15"), 1, "дома", true, true),
-        new Person(0, "Имя-1", "Фамилия-1", "Отчество-1", true,
-            getDate("1986-12-03"), 1, "где-то в центре", true, true),
-        new Person(0, "Имя-2", "Фамилия-2", "Отчество-2", true,
-            getDate("1988-08-05"), 2, "Ильинская 43, 12", false, true),
-        new Person(0, "Имя-3",  "Фамилия-3", "Отчество-3", false,
-            getDate("1985-04-07"), 1, "Лайоша Гавро 67а, 83", false, false),
-        new Person(0, "Имя-4",  "Фамилия-4", "Отчество-4", false,
-            getDate("1990-03-01"), 4, "Олени Телиги 20, кв.4", true, true),
-        new Person(0, "Имя-5",  "Фамилия-5", "Отчество-5", false,
-            getDate("1990-03-01"), 4, "Олени Телиги 20, кв.4", true, false),
-        new Person(0, "Имя-6",  "Фамилия-6", "Отчество-6", true,
-            getDate("1990-03-01"), 4, "Олени Телиги 20, кв.4", true, true),
+        new Person("Коленный-1", "Сидор", "Сидорович", true,
+            getDate("1960-09-15"), true, true, null),
+        new Person("Коленный-2", "Сидор", "Сидорович", true,
+            getDate("1955-10-15"), true, true, "Коленный"),
+        new Person("Коленный-3", "Сидор", "Сидорович", true,
+            getDate("1965-11-15"), true, true, null),
+        new Person("Коленный-4", "Сидор", "Сидорович", true,
+            getDate("1970-03-15"), true, true, null),
+        new Person("Имя-1", "Фамилия-1", "Отчество-1", true,
+            getDate("1986-12-03"), true, true, "Такой себе типок"),
+        new Person("Имя-2", "Фамилия-2", "Отчество-2", true,
+            getDate("1988-08-05"), false, true, null),
+        new Person("Имя-3",  "Фамилия-3", "Отчество-3", false,
+            getDate("1985-04-07"), false, false, null),
+        new Person("Имя-4",  "Фамилия-4", "Отчество-4", false,
+            getDate("1990-03-01"), true, true, null),
+        new Person("Имя-5",  "Фамилия-5", "Отчество-5", false,
+            getDate("1990-03-01"), true, false, null),
+        new Person("Имя-6",  "Фамилия-6", "Отчество-6", true,
+            getDate("1990-03-01"), true, true, null),
     };
     private Phone[] phones = new Phone[]{
         new Phone(1, "0634561237"), new Phone(1, "0446589631"),
@@ -164,8 +176,8 @@ public class BaseDaoTestClass {
     }
 
     private void fillTables() {
-        fillDistricts();
         fillPersons();
+        fillAddresses();
         fillEmails();
         fillPhones();
         fillTrainings();
@@ -182,9 +194,9 @@ public class BaseDaoTestClass {
         fillGraduations();
     }
 
-    void fillDistricts() {
-        for (String district : districts) {
-            Assert.assertEquals(1, districtDao.save(new District(district)));
+    void fillAddresses() {
+        for(Address address : addresses) {
+            Assert.assertEquals(1, addressDao.save(address));
         }
     }
 

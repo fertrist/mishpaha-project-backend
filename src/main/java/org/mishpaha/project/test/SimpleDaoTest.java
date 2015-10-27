@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.mishpaha.project.config.MvcConfiguration;
 import org.mishpaha.project.data.dao.EmailDaoImpl;
 import org.mishpaha.project.data.dao.PhoneDaoImpl;
-import org.mishpaha.project.data.model.District;
 import org.mishpaha.project.data.model.Email;
 import org.mishpaha.project.data.model.Phone;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,42 +19,6 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcConfiguration.class)
 public class SimpleDaoTest extends BaseDaoTestClass{
-
-    @Test
-    public void testListInsertDeleteDistrict() {
-        List<District> initialList = districtDao.list();
-        initialList.forEach(System.out::println);
-        int id = 100;
-        District newDistrict = new District(id, "Дарницкий");
-        Assert.assertEquals(shouldSucceedMessage, districtDao.save(newDistrict), 1);
-        List<District> resultList = districtDao.list();
-        resultList.forEach(System.out::println);
-        Assert.assertEquals("New district should be added.", 1, resultList.size() - initialList.size());
-
-        //delete district
-        Assert.assertEquals(shouldSucceedMessage, 1, districtDao.delete(id));
-        List<District> finalList = districtDao.list();
-        finalList.forEach(System.out::println);
-
-        //district is absent
-        Assert.assertEquals("District should be removed.", districtDao.get(id), null);
-        Assert.assertEquals("District should be removed.", resultList.size() - finalList.size(), 1);
-    }
-
-    @Test
-    public void testUpdateDistrict() {
-        int id = 1;
-        //check that district is present
-        District result = districtDao.get(id);
-        System.out.println(String.format("Got a district by id=%d: %s", id, result.toString()));
-        Assert.assertEquals("District name must match.", "Оболонь", result.getName());
-
-        //test update
-        District updatedDistrict = new District(id, "Абалонь");
-        Assert.assertEquals(shouldSucceedMessage, districtDao.update(updatedDistrict), 1);
-        result = districtDao.get(id);
-        Assert.assertEquals("District name must match.", "Абалонь", result.getName());
-    }
 
     @Test
     public void testListInsertDeletePhone() {
