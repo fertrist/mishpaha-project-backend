@@ -18,8 +18,10 @@ import java.sql.SQLException;
  */
 public class DataBaseDao {
 
-    private static final String INIT_SCRIPT =
-        "/home/fertrist/Downloads/ST/mishpaha-project-backend/src/main/resources/sql/createTables.sql";
+    private static final String OS = System.getProperty("os.name");
+    private static final String SEPARATOR = OS.contains("Windows") ? "\\" : "/";
+    private static final String INIT_SCRIPT = String.format("main%sresources%ssql%screateTables.sql",
+            SEPARATOR, SEPARATOR, SEPARATOR);
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
