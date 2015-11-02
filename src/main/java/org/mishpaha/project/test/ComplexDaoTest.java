@@ -31,7 +31,7 @@ public class ComplexDaoTest extends BaseDaoTestClass {
         initialList.forEach(System.out::println);
         int id = 100;
         Person newPerson = new Person(id, "Иван", "Иванов", "Иванович", true, TestUtil.getDate(1987, 9, 3),
-            true, false, null);
+            true, false, 1, null);
         Assert.assertEquals(shouldSucceedMessage, personDao.save(newPerson), 1);
         List<Person> resultList = personDao.list();
         resultList.forEach(System.out::println);

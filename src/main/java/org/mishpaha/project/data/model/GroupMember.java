@@ -7,12 +7,10 @@ public class GroupMember {
 
     private int personId;
     private int groupId;
-    private int categoryId;
 
-    public GroupMember(int personId, int groupId, int categoryId) {
+    public GroupMember(int personId, int groupId) {
         this.personId = personId;
         this.groupId = groupId;
-        this.categoryId = categoryId;
     }
 
     public int getPersonId() {
@@ -31,11 +29,4 @@ public class GroupMember {
         this.groupId = groupId;
     }
 
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
 }

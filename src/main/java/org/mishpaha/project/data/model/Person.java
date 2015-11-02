@@ -1,5 +1,8 @@
 package org.mishpaha.project.data.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import org.mishpaha.project.controller.View;
+
 import java.util.Date;
 import java.util.List;
 
@@ -11,27 +14,34 @@ import static org.mishpaha.project.util.TestUtil.getDateAsString;
 public class Person {
 
     private int id;
+    @JsonView(View.StructureList.class)
     private String firstName;
+    @JsonView(View.StructureList.class)
     private String midName;
+    @JsonView(View.StructureList.class)
     private String lastName;
     //true means men
     private Boolean sex;
     private Date birthDay;
+    @JsonView(View.StructureList.class)
     private Boolean isJew;
     private Boolean givesTithe;
+    private int categoryId;
     private String comment;
+    @JsonView(View.InfoList.class)
     private List<String> emails;
+    @JsonView(View.InfoList.class)
     private List<String> phones;
-
+    private String region;
 
     public Person(int id, String firstName, String midName, String lastName, boolean sex, Date birthDay,
-                  boolean isJew, boolean givesTithe, String comment) {
-        this(firstName, midName, lastName, sex, birthDay, isJew, givesTithe, comment);
+                  boolean isJew, boolean givesTithe, int categoryId, String comment) {
+        this(firstName, midName, lastName, sex, birthDay, isJew, givesTithe, categoryId, comment);
         this.id = id;
     }
 
     public Person(String firstName, String midName, String lastName, boolean sex, Date birthDay,
-                  boolean isJew, boolean givesTithe, String comment) {
+                  boolean isJew, boolean givesTithe, int categoryId, String comment) {
         this.firstName = firstName;
         this.midName = midName;
         this.lastName = lastName;
@@ -39,6 +49,7 @@ public class Person {
         setBirthDay(birthDay);
         this.isJew = isJew;
         this.givesTithe = givesTithe;
+        this.categoryId = categoryId;
         this.comment = comment;
     }
 
@@ -114,6 +125,14 @@ public class Person {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     @Override

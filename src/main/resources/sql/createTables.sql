@@ -23,6 +23,13 @@ CREATE TABLE addresses(
 	PRIMARY KEY (personId)
 );
 ----------------------------------------------------TABLE
+CREATE TABLE categories(
+	id int AUTO_INCREMENT,
+	name varchar(60) NOT NULL,
+	PRIMARY KEY (id),
+	UNIQUE(name)
+);
+----------------------------------------------------TABLE
 CREATE TABLE persons(
 	id int AUTO_INCREMENT,
 	firstName varchar(60) NOT NULL,
@@ -32,9 +39,11 @@ CREATE TABLE persons(
 	birthDay date,
 	isJew boolean,
 	givesTithe boolean DEFAULT false,
+	categoryId int,
 	comment varchar(100),
 	wasAdded date DEFAULT GETDATE(),
 	CONSTRAINT ucFullName UNIQUE(firstName, midName, lastName),
+	FOREIGN KEY(categoryId) REFERENCES categories(id),
 	PRIMARY KEY(id)
 );
 ----------------------------------------------------TABLE
@@ -43,13 +52,6 @@ CREATE TABLE tribes(
 	name varchar(60),
 	PRIMARY KEY (id),
 	UNIQUE (name)
-);
-----------------------------------------------------TABLE
-CREATE TABLE categories(
-	id int AUTO_INCREMENT,
-	name varchar(60) NOT NULL,
-	PRIMARY KEY (id),
-	UNIQUE(name)
 );
 ----------------------------------------------------TABLE
 CREATE TABLE regions(
@@ -75,10 +77,8 @@ CREATE TABLE groups(
 CREATE TABLE groupMembers(
 	personId int NOT NULL,
 	groupId int NOT NULL,
-	categoryId int NOT NULL,
 	FOREIGN KEY (groupId) REFERENCES groups(id),
 	FOREIGN KEY (personId) REFERENCES persons(id),
-	FOREIGN KEY (categoryId) REFERENCES categories(id),
 	UNIQUE(groupId, personId)
 );
 ----------------------------------------------------TABLE

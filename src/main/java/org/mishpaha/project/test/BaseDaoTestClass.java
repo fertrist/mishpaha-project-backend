@@ -70,7 +70,7 @@ public class BaseDaoTestClass {
     DataBaseDao dataBaseDao;
 
     private String[] districts = new String[]{"Оболонь", "Подол", "Дорогожичи", "Шулявка"};
-    private String[] categories = new String[] {"Приход", "Зелёные", "Гости", "Еврейский список"};
+    private String[] categories = new String[] {"Белый", "Зелёный", "Гости", "Еврейский список"};
     private Address[] addresses = new Address[] {
         new Address(1, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
         new Address(2, "Украина", null, "Киев", "Шевченковский", "Франка", "10", 10),
@@ -85,25 +85,25 @@ public class BaseDaoTestClass {
     };
     private Person[] persons = new Person[]{
         new Person("Коленный-1", "Сидор", "Сидорович", true,
-            getDate("1960-09-15"), true, true, null),
+            getDate("1960-09-15"), true, true, 1, null),
         new Person("Коленный-2", "Сидор", "Сидорович", true,
-            getDate("1955-10-15"), true, true, "Коленный"),
+            getDate("1955-10-15"), true, true, 1,  "Коленный"),
         new Person("Коленный-3", "Сидор", "Сидорович", true,
-            getDate("1965-11-15"), true, true, null),
+            getDate("1965-11-15"), true, true, 1, null),
         new Person("Коленный-4", "Сидор", "Сидорович", true,
-            getDate("1970-03-15"), true, true, null),
+            getDate("1970-03-15"), true, true, 1, null),
         new Person("Имя-1", "Фамилия-1", "Отчество-1", true,
-            getDate("1986-12-03"), true, true, "Такой себе типок"),
+            getDate("1986-12-03"), true, true, 2, "Такой себе типок"),
         new Person("Имя-2", "Фамилия-2", "Отчество-2", true,
-            getDate("1988-08-05"), false, true, null),
+            getDate("1988-08-05"), false, true, 3, null),
         new Person("Имя-3",  "Фамилия-3", "Отчество-3", false,
-            getDate("1985-04-07"), false, false, null),
+            getDate("1985-04-07"), false, false, 4, null),
         new Person("Имя-4",  "Фамилия-4", "Отчество-4", false,
-            getDate("1990-03-01"), true, true, null),
+            getDate("1990-03-01"), true, true, 2, null),
         new Person("Имя-5",  "Фамилия-5", "Отчество-5", false,
-            getDate("1990-03-01"), true, false, null),
+            getDate("1990-03-01"), true, false, 3, null),
         new Person("Имя-6",  "Фамилия-6", "Отчество-6", true,
-            getDate("1990-03-01"), true, true, null),
+            getDate("1990-03-01"), true, true, 4, null),
     };
     private Phone[] phones = new Phone[]{
         new Phone(1, "0634561237"), new Phone(1, "0446589631"),
@@ -131,12 +131,12 @@ public class BaseDaoTestClass {
         new Volunteer(8, 2), new Volunteer(9, 2), new Volunteer(10, 3), new Volunteer(10, 2)
     };
     private GroupMember[] groupMembers = new GroupMember[] {
-        new GroupMember(5, 1, 1),
-        new GroupMember(6, 1, 2),
-        new GroupMember(7, 2, 1),
-        new GroupMember(8, 2, 3),
-        new GroupMember(9, 3, 1),
-        new GroupMember(10, 3, 1)
+        new GroupMember(5, 1),
+        new GroupMember(6, 1),
+        new GroupMember(7, 2),
+        new GroupMember(8, 2),
+        new GroupMember(9, 3),
+        new GroupMember(10, 3)
     };
     private School[] schools = new School[] {
         new School(0, School.Level.SECOND, getDate("2015-02-01"), getDate("2015-07-01"), "Русняк"),
@@ -176,6 +176,7 @@ public class BaseDaoTestClass {
     }
 
     private void fillTables() {
+        fillCategories();
         fillPersons();
         fillAddresses();
         fillEmails();
@@ -184,7 +185,6 @@ public class BaseDaoTestClass {
         fillDoneTrainings();
         fillMinistries();
         fillVolunteers();
-        fillCategories();
         fillTribes();
         fillRegions();
         fillGroups();

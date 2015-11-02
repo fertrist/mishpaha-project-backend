@@ -54,6 +54,10 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
             fields.add("givesTithe");
             values.add(String.format(template, entity.givesTithe().booleanValue()));
         }
+        if (entity.getCategoryId() != 0) {
+            fields.add("categoryId");
+            values.add(String.valueOf(entity.getCategoryId()));
+        }
         if (entity.getBirthDay() != null) {
             fields.add("birthday");
             values.add(String.format(template, getDateAsString(entity.getBirthDay())));
@@ -86,6 +90,9 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         if (entity.givesTithe() != null) {
             params.add("givesTithe=" + String.format(template, entity.givesTithe().booleanValue()));
         }
+        if (entity.givesTithe() != null) {
+            params.add("categoryId=" + entity.getCategoryId());
+        }
         if (entity.getBirthDay() != null) {
             params.add("birthday=" + String.format(template, getDateAsQuotedString(entity.getBirthDay())));
         }
@@ -107,6 +114,7 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
                     rs.getDate("birthday"),
                     rs.getBoolean("isJew"),
                     rs.getBoolean("givesTithe"),
+                    rs.getInt("categoryId"),
                     rs.getString("comment")
                 );
             }
@@ -127,8 +135,46 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
                 rs.getDate("birthday"),
                 rs.getBoolean("isJew"),
                 rs.getBoolean("givesTithe"),
+                rs.getInt("categoryId"),
                 rs.getString("comment")
             );
         });
     }
+
+    public List<Person> listHomeGroup(int groupId) {
+        String sql = String.format("");
+        return operations.query(sql, (rs, numRow) -> {
+            return new Person(
+                rs.getInt("id"),
+                rs.getString("firstName"),
+                rs.getString("midName"),
+                rs.getString("lastName"),
+                rs.getBoolean("sex"),
+                rs.getDate("birthday"),
+                rs.getBoolean("isJew"),
+                rs.getBoolean("givesTithe"),
+                rs.getInt("categoryId"),
+                rs.getString("comment")
+            );
+        });
+    }
+
+    public List<Person> listHomeGroupInfo(int groupId) {
+        String sql = String.format("");
+        return operations.query(sql, (rs, numRow) -> {
+            return new Person(
+                rs.getInt("id"),
+                rs.getString("firstName"),
+                rs.getString("midName"),
+                rs.getString("lastName"),
+                rs.getBoolean("sex"),
+                rs.getDate("birthday"),
+                rs.getBoolean("isJew"),
+                rs.getBoolean("givesTithe"),
+                rs.getInt("categoryId"),
+                rs.getString("comment")
+            );
+        });
+    }
+
 }
