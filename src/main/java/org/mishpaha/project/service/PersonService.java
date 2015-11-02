@@ -21,7 +21,15 @@ public class PersonService {
         return ((PersonDaoImpl) personDao).listHomeGroup(groupId);
     }
 
-    public List<Person> getHomeGroupInfoList(int groupId) {
-        return ((PersonDaoImpl) personDao).listHomeGroupInfo(groupId);
+    public List<Person> getRegionGroupList(int regionId) {
+        return ((PersonDaoImpl) personDao).list();
+    }
+
+    public List<Person> getTribeList(int tribeId) {
+        return ((PersonDaoImpl) personDao).list();
+    }
+
+    public Person getPerson(int id) {
+        return personDao.get(id);
     }
 }

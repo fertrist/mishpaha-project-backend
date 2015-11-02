@@ -14,25 +14,31 @@ import static org.mishpaha.project.util.TestUtil.getDateAsString;
 public class Person {
 
     private int id;
-    @JsonView(View.StructureList.class)
+    @JsonView(View.Summary.class)
     private String firstName;
-    @JsonView(View.StructureList.class)
+    @JsonView(View.Summary.class)
     private String midName;
-    @JsonView(View.StructureList.class)
+    @JsonView(View.Summary.class)
     private String lastName;
-    //true means men
-    private Boolean sex;
-    private Date birthDay;
-    @JsonView(View.StructureList.class)
-    private Boolean isJew;
-    private Boolean givesTithe;
+    @JsonView(View.Summary.class)
     private int categoryId;
+    //true means men
+    @JsonView(View.ExtendedSummary.class)
+    private Boolean sex;
+    @JsonView(View.ExtendedSummary.class)
+    private Date birthDay;
+    @JsonView(View.ExtendedSummary.class)
+    private Boolean isJew;
+    @JsonView(View.ExtendedSummary.class)
+    private Boolean givesTithe;
+    @JsonView(View.ExtendedSummary.class)
     private String comment;
-    @JsonView(View.InfoList.class)
+    @JsonView(View.FullInfo.class)
     private List<String> emails;
-    @JsonView(View.InfoList.class)
+    @JsonView(View.FullInfo.class)
     private List<String> phones;
-    private String region;
+    @JsonView(View.FullInfo.class)
+    private Address address;
 
     public Person(int id, String firstName, String midName, String lastName, boolean sex, Date birthDay,
                   boolean isJew, boolean givesTithe, int categoryId, String comment) {

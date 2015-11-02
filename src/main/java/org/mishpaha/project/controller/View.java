@@ -4,13 +4,19 @@ package org.mishpaha.project.controller;
  * Created by fertrist on 29.10.15.
  */
 public class View {
+
+    /**
+     * Basic info home group and name
+     */
+    public interface Summary{}
+
     /**
      * For stuff like tribe, region, group list.
      */
-    public interface StructureList{}
+    public interface ExtendedSummary extends Summary{}
 
     /**
      * For stuff like tribe, region, group info list.
      */
-    public interface InfoList extends StructureList{}
+    public interface FullInfo extends ExtendedSummary {}
 }

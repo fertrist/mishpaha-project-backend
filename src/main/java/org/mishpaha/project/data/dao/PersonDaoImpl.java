@@ -1,6 +1,8 @@
 package org.mishpaha.project.data.dao;
 
+import org.mishpaha.project.data.model.GroupMember;
 import org.mishpaha.project.data.model.Person;
+import org.mishpaha.project.util.ModelUtil;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -142,25 +144,10 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
     }
 
     public List<Person> listHomeGroup(int groupId) {
-        String sql = String.format("");
-        return operations.query(sql, (rs, numRow) -> {
-            return new Person(
-                rs.getInt("id"),
-                rs.getString("firstName"),
-                rs.getString("midName"),
-                rs.getString("lastName"),
-                rs.getBoolean("sex"),
-                rs.getDate("birthday"),
-                rs.getBoolean("isJew"),
-                rs.getBoolean("givesTithe"),
-                rs.getInt("categoryId"),
-                rs.getString("comment")
-            );
-        });
-    }
-
-    public List<Person> listHomeGroupInfo(int groupId) {
-        String sql = String.format("");
+        String joinTable = ModelUtil.getTable(GroupMember.class);
+        String sql = String.format("SELECT * FROM %1$s JOIN %2$s WHERE %3$s.id=%4$s.personId AND %5$s.groupId=%6$d",
+                table, joinTable, table, joinTable, joinTable, groupId);
+        //new StringBuilder("SELECT * FROM " + table).append("JOIN " + joinTable).append(" WHERE")
         return operations.query(sql, (rs, numRow) -> {
             return new Person(
                 rs.getInt("id"),
