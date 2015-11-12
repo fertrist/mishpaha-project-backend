@@ -10,6 +10,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
     SimpleDaoTest.class,
     ComplexDaoTest.class,
+    TestServices.class,
     TestPersonController.class,
 })
 public class TestSuite {
