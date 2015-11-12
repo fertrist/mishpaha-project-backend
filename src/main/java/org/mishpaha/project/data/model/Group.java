@@ -5,8 +5,14 @@ package org.mishpaha.project.data.model;
  */
 public class Group {
 
+    private int id;
     private int leaderId;
     private int regionId;
+
+    public Group(int id, int leaderId, int regionId) {
+        this(leaderId, regionId);
+        this.id = id;
+    }
 
     public Group(int leaderId, int regionId) {
         this.leaderId = leaderId;
@@ -25,6 +31,14 @@ public class Group {
     public int getLeaderId() {
 
         return leaderId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setLeaderId(int leaderId) {

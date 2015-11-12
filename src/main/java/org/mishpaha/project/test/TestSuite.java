@@ -9,7 +9,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
     SimpleDaoTest.class,
-    ComplexDaoTest.class
+    ComplexDaoTest.class,
+    TestPersonController.class,
 })
 public class TestSuite {
 
