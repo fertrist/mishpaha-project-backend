@@ -147,7 +147,6 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         String groupMembers = ModelUtil.getTable(GroupMember.class);
         String sql = String.format("SELECT * FROM %1$s JOIN %2$s WHERE %3$s.id=%4$s.personId AND %5$s.groupId=%6$d",
                 table, groupMembers, table, groupMembers, groupMembers, groupId);
-        //new StringBuilder("SELECT * FROM " + table).append("JOIN " + groupMembers).append(" WHERE")
         return operations.query(sql, (rs, numRow) -> {
             return new Person(
                 rs.getInt("id"),

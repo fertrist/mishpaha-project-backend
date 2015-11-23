@@ -11,7 +11,7 @@ import org.junit.runners.Suite;
     SimpleDaoTest.class,
     ComplexDaoTest.class,
     TestServices.class,
-    TestPersonController.class,
+    //PersonControllerTest.class,
 })
 public class TestSuite {
 

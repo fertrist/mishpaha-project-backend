@@ -69,6 +69,34 @@
             <version>1.10.19</version>
         </dependency>
 
+        <!--dependencies from http://www.petrikainulainen.net/programming/spring-framework/unit-testing-of-spring-mvc-controllers-rest-api/ -->
+
+        <!--to resolve javax.validation.ValidationException: HV000183: Unable to load 'javax.el.ExpressionFactory' issue-->
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+
+        <!--to solve java.lang.ClassNotFoundException: javax.servlet.ServletContext-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!--<dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.servlet</artifactId>
+            <version>3.0</version>
+            <scope>test</scope>
+        </dependency>-->
     </dependencies>
 
     <build>
