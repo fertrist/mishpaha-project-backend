@@ -26,6 +26,8 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
+            <!--http://stackoverflow.com/questions/30374316/spring-boot-java-lang-noclassdeffounderror-javax-servlet-filter-->
+            <!--the above topic helped me to solve ClassNotFoundException: javax.servlet.ServletContext ClassLoader.loadClass()-->
             <!--<scope>provided</scope>-->
         </dependency>
 
