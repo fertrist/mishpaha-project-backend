@@ -124,22 +124,22 @@ public class BaseDaoTestClass {
     String[] ministries = new String[]{"Административное", "Группа порядка", "Попечитель"};
 
     Region[] regions = new Region[]{
-        new Region(1, 1), new Region(2, 2), new Region(3, 3), new Region(4, 4)
+        new Region(0, 1, 1), new Region(1, 2, 2), new Region(2, 3, 3), new Region(3, 4, 4)
     };
     Group[] groups = new Group[]{
-        new Group(1, 5, 1), new Group(2, 7, 1), new Group(3, 10, 4)
+        new Group(0, 5, 1), new Group(1, 7, 1), new Group(2, 10, 3)
     };
     Volunteer[] volunteers = new Volunteer[]{
         new Volunteer(5, 3), new Volunteer(5, 1), new Volunteer(6, 1), new Volunteer(7, 3),
         new Volunteer(8, 2), new Volunteer(9, 2), new Volunteer(10, 3), new Volunteer(10, 2)
     };
     GroupMember[] groupMembers = new GroupMember[]{
-        new GroupMember(5, 1),
-        new GroupMember(6, 1),
-        new GroupMember(7, 2),
-        new GroupMember(8, 2),
-        new GroupMember(9, 3),
-        new GroupMember(10, 3)
+        new GroupMember(5, 0),
+        new GroupMember(6, 0),
+        new GroupMember(7, 1),
+        new GroupMember(8, 1),
+        new GroupMember(9, 2),
+        new GroupMember(10, 2)
     };
     School[] schools = new School[]{
         new School(0, School.Level.SECOND, getDate("2015-02-01"), getDate("2015-07-01"), "Русняк"),

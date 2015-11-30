@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mishpaha.project.config.MvcConfiguration;
-import org.mishpaha.project.controller.PersonController;
+import org.mishpaha.project.controller.ListPeopleController;
 import org.mishpaha.project.data.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -28,13 +28,13 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = MvcConfiguration.class)
 @WebAppConfiguration
-public class PersonControllerTest extends BaseDaoTestClass {
+public class ListControllerTest extends BaseDaoTestClass {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
     private MockMvc mockMvc;
     @Autowired
-    private PersonController personController;
+    private ListPeopleController personController;
 
     @Before
     public void setup() throws Exception {
@@ -44,24 +44,30 @@ public class PersonControllerTest extends BaseDaoTestClass {
     @Test
     public void listGroupRegionTribe() throws Exception {
         //get summary group info
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/summary/group/1"))
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/group/1/summary"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$", hasSize(2)));
+                .andExpect(jsonPath("$.persons", hasSize(2)));
 
         List<Person> personList = getPersonsByGroup(1);
 
         for (int i = 0; i < personList.size(); i++) {
             //check that summary contains only few fields
-            resultActions.andExpect(jsonPath(format("$[%d].*", i), hasSize(4)))
-                .andExpect(jsonPath(format("$[%d].firstName", i), is(personList.get(i).getFirstName())))
-                .andExpect(jsonPath(format("$[%d].lastName", i), is(personList.get(i).getLastName())))
-                .andExpect(jsonPath(format("$[%d].midName", i), is(personList.get(i).getMidName())))
-                .andExpect(jsonPath(format("$[%d].categoryId", i), is(personList.get(i).getCategoryId())));
+            resultActions.andExpect(jsonPath(format("$.persons.[%d].*", i), hasSize(8)))
+                .andExpect(jsonPath(format("$.persons.[%d].id", i), is(personList.get(i).getId())))
+                .andExpect(jsonPath(format("$.persons.[%d].firstName", i), is(personList.get(i).getFirstName())))
+                .andExpect(jsonPath(format("$.persons.[%d].lastName", i), is(personList.get(i).getLastName())))
+                .andExpect(jsonPath(format("$.persons.[%d].midName", i), is(personList.get(i).getMidName())))
+                .andExpect(jsonPath(format("$.persons.[%d].categoryId", i), is(personList.get(i).getCategoryId())))
+                .andExpect(jsonPath(format("$.persons.[%d].isJew", i), is(personList.get(i).isJew())))
+                .andExpect(jsonPath(format("$.persons.[%d].givesTithe", i), is(personList.get(i).givesTithe())))
+                .andExpect(jsonPath(format("$.persons.[%d].comment", i), is(personList.get(i).getComment())));
         }
 
-
-
+        resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/info/group/1"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType("application/json;charset=UTF-8"))
+            .andExpect(jsonPath("$", hasSize(2)));
         //get region all info
 
         //get region summary info

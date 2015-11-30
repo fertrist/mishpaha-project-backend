@@ -6,17 +6,12 @@ package org.mishpaha.project.controller;
 public class View {
 
     /**
-     * Basic info home group and name
+     * Basic info like name, mid name, last name, category, nationality, charity.
      */
     public interface Summary{}
 
     /**
-     * For stuff like tribe, region, group list.
+     * For stuff like tribe, region, group full info list.
      */
-    public interface ExtendedSummary extends Summary{}
-
-    /**
-     * For stuff like tribe, region, group info list.
-     */
-    public interface FullInfo extends ExtendedSummary {}
+    public interface Info extends Summary {}
 }

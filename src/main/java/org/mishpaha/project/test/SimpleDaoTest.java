@@ -2,22 +2,16 @@ package org.mishpaha.project.test;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mishpaha.project.config.MvcConfiguration;
 import org.mishpaha.project.data.dao.EmailDaoImpl;
 import org.mishpaha.project.data.dao.PhoneDaoImpl;
 import org.mishpaha.project.data.model.Email;
 import org.mishpaha.project.data.model.Phone;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
 /**
  * Tests for basic jdbc operations.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = MvcConfiguration.class)
 public class SimpleDaoTest extends BaseDaoTestClass{
 
     @Test

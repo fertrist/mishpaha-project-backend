@@ -64,6 +64,10 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
             fields.add("birthday");
             values.add(String.format(template, getDateAsString(entity.getBirthDay())));
         }
+        if (entity.getComment() != null) {
+            fields.add("comment");
+            values.add(String.format(template, entity.getComment()));
+        }
         sql = String.format(sql, String.join(", ", fields), String.join(", ", values));
         return operations.update(sql);
     }
@@ -143,10 +147,50 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         });
     }
 
-    public List<Person> listHomeGroup(int groupId) {
+    public List<Person> listGroup(int groupId) {
         String groupMembers = ModelUtil.getTable(GroupMember.class);
         String sql = String.format("SELECT * FROM %1$s JOIN %2$s WHERE %3$s.id=%4$s.personId AND %5$s.groupId=%6$d",
                 table, groupMembers, table, groupMembers, groupMembers, groupId);
+        return operations.query(sql, (rs, numRow) -> {
+            return new Person(
+                rs.getInt("id"),
+                rs.getString("firstName"),
+                rs.getString("midName"),
+                rs.getString("lastName"),
+                rs.getBoolean("sex"),
+                rs.getDate("birthday"),
+                rs.getBoolean("isJew"),
+                rs.getBoolean("givesTithe"),
+                rs.getInt("categoryId"),
+                rs.getString("comment")
+            );
+        });
+    }
+
+    public List<Person> listRegion(int id) {
+        String groupMembers = ModelUtil.getTable(GroupMember.class);
+        String sql = String.format("SELECT * FROM %1$s JOIN %2$s WHERE %3$s.id=%4$s.personId AND %5$s.groupId=%6$d",
+            table, groupMembers, table, groupMembers, groupMembers, id);
+        return operations.query(sql, (rs, numRow) -> {
+            return new Person(
+                rs.getInt("id"),
+                rs.getString("firstName"),
+                rs.getString("midName"),
+                rs.getString("lastName"),
+                rs.getBoolean("sex"),
+                rs.getDate("birthday"),
+                rs.getBoolean("isJew"),
+                rs.getBoolean("givesTithe"),
+                rs.getInt("categoryId"),
+                rs.getString("comment")
+            );
+        });
+    }
+
+    public List<Person> listTribe(int id) {
+        String groupMembers = ModelUtil.getTable(GroupMember.class);
+        String sql = String.format("SELECT * FROM %1$s JOIN %2$s WHERE %3$s.id=%4$s.personId AND %5$s.groupId=%6$d",
+            table, groupMembers, table, groupMembers, groupMembers, id);
         return operations.query(sql, (rs, numRow) -> {
             return new Person(
                 rs.getInt("id"),
