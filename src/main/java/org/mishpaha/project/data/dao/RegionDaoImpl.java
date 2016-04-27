@@ -7,9 +7,6 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-/**
- * Created by fertrist on 24.09.15.
- */
 public class RegionDaoImpl extends DaoImplementation<Region>{
     public RegionDaoImpl(DataSource dataSource, String table) {
         super(dataSource, table);

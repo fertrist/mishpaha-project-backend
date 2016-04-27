@@ -20,49 +20,49 @@ public class ListPeopleController {
     @Autowired
     private ListPeopleService listPeopleService;
 
-    @RequestMapping(value = "/group/{id}/summary", method = RequestMethod.GET)
+    @RequestMapping(value = "/summary/group/{id}", method = RequestMethod.GET)
     @JsonView(View.Summary.class)
     public Group getGroup(@PathVariable int id) {
         return listPeopleService.getGroup(id);
     }
 
-    @RequestMapping(value = "/group/{id}/info")
+    @RequestMapping(value = "/info/group/{id}")
     @JsonView(View.Info.class)
     public Group getGroupInfo(@PathVariable int id) {
         return listPeopleService.getGroup(id);
     }
 
-    @RequestMapping(value = "/person/{id}/info")
+    @RequestMapping(value = "/info/person/{id}")
     @JsonView(View.Summary.class)
     public Person getPerson(int id) {
         return listPeopleService.getPerson(id);
     }
 
-    @RequestMapping(value = "/person/{id}/summary")
+    @RequestMapping(value = "/summary/person/{id}")
     @JsonView(View.Summary.class)
     public Person getPersonInfo(int id) {
         return listPeopleService.getPerson(id);
     }
 
-    @RequestMapping(value = "/region/{id}/summary", method = RequestMethod.GET)
+    @RequestMapping(value = "/summary/region/{id}", method = RequestMethod.GET)
     @JsonView(View.Summary.class)
     public Region getRegion(@PathVariable int id) {
         return listPeopleService.getRegion(id);
     }
 
-    @RequestMapping(value = "/region/{id}/info")
+    @RequestMapping(value = "/info/region/{id}")
     @JsonView(View.Info.class)
     public Region getRegionInfo(@PathVariable int id) {
         return listPeopleService.getRegion(id);
     }
 
-    @RequestMapping(value = "/tribe/{id}/summary", method = RequestMethod.GET)
+    @RequestMapping(value = "/summary/tribe/{id}", method = RequestMethod.GET)
     @JsonView(View.Summary.class)
     public Group getTribe(@PathVariable int id) {
         return listPeopleService.getGroup(id);
     }
 
-    @RequestMapping(value = "/tribe/{id}/info")
+    @RequestMapping(value = "/info/tribe/{id}")
     @JsonView(View.Info.class)
     public Group getTribeInfo(@PathVariable int id) {
         return listPeopleService.getGroup(id);

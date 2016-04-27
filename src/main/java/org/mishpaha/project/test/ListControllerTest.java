@@ -44,7 +44,7 @@ public class ListControllerTest extends BaseDaoTestClass {
     @Test
     public void listGroupRegionTribe() throws Exception {
         //get summary group info
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/group/1/summary"))
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/summary/group/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.persons", hasSize(2)));
@@ -67,7 +67,8 @@ public class ListControllerTest extends BaseDaoTestClass {
         resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/info/group/1"))
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json;charset=UTF-8"))
-            .andExpect(jsonPath("$", hasSize(2)));
+            .andExpect(jsonPath("$.persons", hasSize(2)));
+
         //get region all info
 
         //get region summary info

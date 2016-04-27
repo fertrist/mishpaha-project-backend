@@ -14,9 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by fertrist on 23.10.15.
- */
 @Service
 public class ListPeopleService {
 
