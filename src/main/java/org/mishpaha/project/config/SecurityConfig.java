@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
@@ -14,7 +13,7 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 import javax.sql.DataSource;
 
-@EnableWebSecurity
+@Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -25,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Override to configure user store.
      */
-    /*@Override
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.
                 jdbcAuthentication()
@@ -34,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery("select username, role from " + usersTable + " where username=?");
         //passwords should be written to database with the same encoding. Now they are loaded by init script
         //.passwordEncoder(new StandardPasswordEncoder("53cr3t"));
-    }*/
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -45,8 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/index.html", "/home.html", "/login.html", "/").permitAll()
                 .anyRequest().authenticated().and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
-                .csrf().disable();
-        //.csrf().csrfTokenRepository(csrfTokenRepository());
+                .csrf().csrfTokenRepository(csrfTokenRepository());
     }
 
     private CsrfTokenRepository csrfTokenRepository() {

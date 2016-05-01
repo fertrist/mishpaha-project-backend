@@ -1,8 +1,5 @@
 package org.mishpaha.project.controller;
 
-/**
- * Created by fertrist on 29.10.15.
- */
 public class View {
 
     /**

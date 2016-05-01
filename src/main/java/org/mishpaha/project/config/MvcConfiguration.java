@@ -38,6 +38,7 @@ import org.mishpaha.project.data.model.Volunteer;
 import org.mishpaha.project.util.ModelUtil;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -47,9 +48,8 @@ import org.springframework.context.annotation.Profile;
 import javax.sql.DataSource;
 
 @SpringBootApplication
-//@Configuration
 @ComponentScan(basePackages="org.mishpaha.project")
-//@EnableAutoConfiguration
+@EnableAutoConfiguration
 public class MvcConfiguration {
 
     static final String PROFILE_TEST = "test";
@@ -63,23 +63,7 @@ public class MvcConfiguration {
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(MvcConfiguration.class);
         springApplication.setAdditionalProfiles(PROFILE_DEV);
-        ConfigurableApplicationContext context = springApplication.run(args);
-
-        //to use it in static context
-        DataBaseDao dataBaseDao = (DataBaseDao) context.getBean("getDataBaseDao");
-//        try {
-//            dataBaseDao.createTables();
-//            for (String category : categories) {
-//                System.out.println(categoryDao.save(new Category(category)) == 1);
-//            }
-//            for (Person person : persons) {
-//                System.out.println(personDao.save(person) == 1);
-//            }
-//        }catch (Exception e) {
-//            e.printStackTrace();
-//            dataBaseDao.dropTables(EntityUtil.getTableNames());
-//        } finally {
-//        }
+        springApplication.run(args);
     }
 
     @Bean
