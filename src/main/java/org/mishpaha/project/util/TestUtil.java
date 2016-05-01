@@ -45,4 +45,16 @@ public class TestUtil {
     public static String getQuotedString(String str) {
         return String.format("'%s'", str);
     }
+
+
+    /**
+     * Transforms boolean to string according to mySql rules.
+     */
+    public static String getBool(boolean value) {
+        String DB = "mysql";
+        if (DB.equals("mysql")) {
+            return String.valueOf(value ? 1 : 0);
+        }
+        return String.valueOf(value);
+    }
 }

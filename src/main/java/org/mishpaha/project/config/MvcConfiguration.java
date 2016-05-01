@@ -39,8 +39,10 @@ import org.mishpaha.project.util.ModelUtil;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Profile;
 
 import javax.sql.DataSource;
 
@@ -50,12 +52,34 @@ import javax.sql.DataSource;
 //@EnableAutoConfiguration
 public class MvcConfiguration {
 
+    static final String PROFILE_TEST = "test";
+    static final String PROFILE_DEV = "dev";
+    static final String PROFILE_PROD = "prod";
+
     @Bean CommandLineRunner init() {
         return (evt) -> {};
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(MvcConfiguration.class, args);
+        SpringApplication springApplication = new SpringApplication(MvcConfiguration.class);
+        springApplication.setAdditionalProfiles(PROFILE_DEV);
+        ConfigurableApplicationContext context = springApplication.run(args);
+
+        //to use it in static context
+        DataBaseDao dataBaseDao = (DataBaseDao) context.getBean("getDataBaseDao");
+//        try {
+//            dataBaseDao.createTables();
+//            for (String category : categories) {
+//                System.out.println(categoryDao.save(new Category(category)) == 1);
+//            }
+//            for (Person person : persons) {
+//                System.out.println(personDao.save(person) == 1);
+//            }
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//            dataBaseDao.dropTables(EntityUtil.getTableNames());
+//        } finally {
+//        }
     }
 
     @Bean
@@ -143,7 +167,7 @@ public class MvcConfiguration {
         return new DataBaseDao(dataSource);
     }
 
-    //@Profile("dev")
+    @Profile(PROFILE_DEV)
     @Bean
     public DataSource getDevelopmentDataSource() {
         BasicDataSource dataSource = new BasicDataSource();
@@ -154,6 +178,12 @@ public class MvcConfiguration {
         dataSource.setInitialSize(5);
         dataSource.setMaxActive(10);
         return dataSource;
+
+//        return new EmbeddedDatabaseBuilder()
+//                .setType(EmbeddedDatabaseType.H2)
+//                .addScript("resources\\sql\\h2\\schema.sql")
+//                .addScript("resources\\sql\\h2\\insert-values.sql").setScriptEncoding("UTF-8")
+//                .build();
     }
 
     //	@Profile("prod")
