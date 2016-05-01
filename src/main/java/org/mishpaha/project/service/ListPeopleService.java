@@ -30,24 +30,47 @@ public class ListPeopleService {
         return personDao.get(id);
     }
 
+    /**
+     * P1
+     * @param person
+     * @return
+     */
     public int savePerson(Person person) {
         return personDao.save(person);
     }
 
+    /**
+     * P2
+     * @param person
+     * @param groupId
+     */
     public void movePersonToGroup(Person person, int groupId) {
 
     }
 
+    /**
+     * P1
+     */
     public void movePersonFromGroup() {
 
     }
 
+    /**
+     * P1
+     * @param groupId
+     * @return
+     */
     public Group getGroup(int groupId) {
         Group group = groupDao.get(groupId);
         group.setPersons(((PersonDaoImpl) personDao).listGroup(groupId));
         return group;
     }
 
+    /**
+     * P1
+     * @param regionId
+     * @return
+     */
     public Region getRegion(int regionId) {
         Region region = regionDao.get(regionId);
         List<Integer> groupIds = ((GroupDaoImpl) groupDao).getGroupsForRegion(regionId);
@@ -59,6 +82,11 @@ public class ListPeopleService {
         return region;
     }
 
+    /**
+     * P1
+     * @param tribeId
+     * @return
+     */
     public Tribe getTribe(int tribeId) {
         Tribe tribe = tribeDao.get(tribeId);
         List<Integer> regionIds = ((RegionDaoImpl) regionDao).getRegionsForTribe(tribeId);

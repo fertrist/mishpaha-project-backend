@@ -20,6 +20,7 @@ import java.util.List;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mishpaha.project.test.TestUtil.assertSuccess;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,12 +43,12 @@ public class ListControllerTest extends BaseDaoTestClass {
     }
 
     @Test
-    public void listGroupRegionTribe() throws Exception {
+    public void listGroupRegionTribeInfo() throws Exception {
         //get summary group info
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/summary/group/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.persons", hasSize(2)));
+            .andExpect(jsonPath("$.persons", hasSize(2)));
+
+        assertSuccess(resultActions);
 
         List<Person> personList = getPersonsByGroup(1);
 

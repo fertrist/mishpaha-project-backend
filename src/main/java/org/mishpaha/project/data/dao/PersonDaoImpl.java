@@ -167,27 +167,9 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         });
     }
 
-    public List<Person> listRegion(int id) {
-        String groupMembers = ModelUtil.getTable(GroupMember.class);
-        String sql = String.format("SELECT * FROM %1$s JOIN %2$s WHERE %3$s.id=%4$s.personId AND %5$s.groupId=%6$d",
-            table, groupMembers, table, groupMembers, groupMembers, id);
-        return operations.query(sql, (rs, numRow) -> {
-            return new Person(
-                rs.getInt("id"),
-                rs.getString("firstName"),
-                rs.getString("midName"),
-                rs.getString("lastName"),
-                rs.getBoolean("sex"),
-                rs.getDate("birthday"),
-                rs.getBoolean("isJew"),
-                rs.getBoolean("givesTithe"),
-                rs.getInt("categoryId"),
-                rs.getString("comment")
-            );
-        });
-    }
+    //commented out as we use the same get Group method to  retrieve all groups
 
-    public List<Person> listTribe(int id) {
+    /*public List<Person> listRegion(int id) {
         String groupMembers = ModelUtil.getTable(GroupMember.class);
         String sql = String.format("SELECT * FROM %1$s JOIN %2$s WHERE %3$s.id=%4$s.personId AND %5$s.groupId=%6$d",
             table, groupMembers, table, groupMembers, groupMembers, id);
@@ -205,6 +187,26 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
                 rs.getString("comment")
             );
         });
-    }
+    }*/
+
+    /*public List<Person> listTribe(int id) {
+        String groupMembers = ModelUtil.getTable(GroupMember.class);
+        String sql = String.format("SELECT * FROM %1$s JOIN %2$s WHERE %3$s.id=%4$s.personId AND %5$s.groupId=%6$d",
+            table, groupMembers, table, groupMembers, groupMembers, id);
+        return operations.query(sql, (rs, numRow) -> {
+            return new Person(
+                rs.getInt("id"),
+                rs.getString("firstName"),
+                rs.getString("midName"),
+                rs.getString("lastName"),
+                rs.getBoolean("sex"),
+                rs.getDate("birthday"),
+                rs.getBoolean("isJew"),
+                rs.getBoolean("givesTithe"),
+                rs.getInt("categoryId"),
+                rs.getString("comment")
+            );
+        });
+    }*/
 
 }

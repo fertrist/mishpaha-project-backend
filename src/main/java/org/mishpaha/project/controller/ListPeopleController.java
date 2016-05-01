@@ -11,14 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Created by fertrist on 29.10.15.
- */
 @RestController
 public class ListPeopleController {
 
     @Autowired
     private ListPeopleService listPeopleService;
+
 
     @RequestMapping(value = "/summary/group/{id}", method = RequestMethod.GET)
     @JsonView(View.Summary.class)
@@ -32,6 +30,7 @@ public class ListPeopleController {
         return listPeopleService.getGroup(id);
     }
 
+
     @RequestMapping(value = "/info/person/{id}")
     @JsonView(View.Summary.class)
     public Person getPerson(int id) {
@@ -44,6 +43,7 @@ public class ListPeopleController {
         return listPeopleService.getPerson(id);
     }
 
+
     @RequestMapping(value = "/summary/region/{id}", method = RequestMethod.GET)
     @JsonView(View.Summary.class)
     public Region getRegion(@PathVariable int id) {
@@ -55,6 +55,7 @@ public class ListPeopleController {
     public Region getRegionInfo(@PathVariable int id) {
         return listPeopleService.getRegion(id);
     }
+
 
     @RequestMapping(value = "/summary/tribe/{id}", method = RequestMethod.GET)
     @JsonView(View.Summary.class)
