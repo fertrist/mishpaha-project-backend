@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Override to configure user store.
      */
-    @Override
+    /*@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.
                 jdbcAuthentication()
@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery("select username, role from " + usersTable + " where username=?");
         //passwords should be written to database with the same encoding. Now they are loaded by init script
         //.passwordEncoder(new StandardPasswordEncoder("53cr3t"));
-    }
+    }*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
