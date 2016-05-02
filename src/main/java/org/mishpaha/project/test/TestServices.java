@@ -12,6 +12,7 @@ import org.mishpaha.project.service.ListPeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcConfiguration.class)
+@WebAppConfiguration
 public class TestServices extends BaseDaoTestClass {
 
     @Autowired

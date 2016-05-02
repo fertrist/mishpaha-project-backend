@@ -10,6 +10,7 @@ import org.mishpaha.project.data.model.Email;
 import org.mishpaha.project.data.model.Phone;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcConfiguration.class)
+@WebAppConfiguration
 public class SimpleDaoTest extends BaseDaoTestClass{
 
     @Test
