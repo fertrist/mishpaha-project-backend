@@ -14,13 +14,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
 
-/**
- * Created by fertrist on 29.09.15.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcConfiguration.class)
 @WebAppConfiguration
-public class ComplexDaoTest extends BaseDaoTestClass {
+public class PersonDaoTest extends BaseDaoTestClass {
 
     @Autowired
     private GenericDao<Person> personDao;
@@ -33,7 +30,7 @@ public class ComplexDaoTest extends BaseDaoTestClass {
         initialList.forEach(System.out::println);
         int id = 100;
         Person newPerson = new Person(id, "Иван", "Иванов", "Иванович", true, TestUtil.getDate(1987, 9, 3),
-            true, false, 1, null);
+            true, false, 1, null, null);
         Assert.assertEquals(shouldSucceedMessage, personDao.save(newPerson), 1);
         List<Person> resultList = personDao.list();
         resultList.forEach(System.out::println);
@@ -57,7 +54,7 @@ public class ComplexDaoTest extends BaseDaoTestClass {
         //check that person is present
         Person person = personDao.get(id);
         System.out.println(String.format("Got a person by id=%d: %s", id, person.toString()));
-        Assert.assertEquals("Person name must match.", "Имя-1", person.getFirstName());
+        Assert.assertEquals("Person name must match.", getPersons().get(id-1).getFirstName(), person.getFirstName());
 
         //test update
         Person updatedPerson = new Person();

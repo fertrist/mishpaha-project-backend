@@ -1,7 +1,6 @@
 package org.mishpaha.project.data.dao;
 
-import org.mishpaha.project.data.model.GroupMember;
-import org.mishpaha.project.data.model.Person;
+import org.mishpaha.project.data.model.*;
 import org.mishpaha.project.util.ModelUtil;
 
 import javax.sql.DataSource;
@@ -121,6 +120,7 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
                     rs.getBoolean("isJew"),
                     rs.getBoolean("givesTithe"),
                     rs.getInt("categoryId"),
+                    rs.getString("address"),
                     rs.getString("comment")
                 );
             }
@@ -142,6 +142,7 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
                 rs.getBoolean("isJew"),
                 rs.getBoolean("givesTithe"),
                 rs.getInt("categoryId"),
+                rs.getString("address"),
                 rs.getString("comment")
             );
         });
@@ -162,6 +163,7 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
                 rs.getBoolean("isJew"),
                 rs.getBoolean("givesTithe"),
                 rs.getInt("categoryId"),
+                rs.getString("address"),
                 rs.getString("comment")
             );
         });

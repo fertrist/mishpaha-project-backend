@@ -42,11 +42,4 @@ public class TestUtil {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(json, Group.class);
     }
-
-    static String jsonString = "[{\"id\":1,\"question\":\"Question-1\",\"active\":true,\"type\":1," +
-            "\"options\":[{\"id\":1," +
-            "\"qId\":1,\"option\":\"option-1-1\",\"checked\":false},{\"id\":2,\"qId\":1,\"option\":\"option-1-2\"," +
-            "\"checked\":false},{\"id\":3,\"qId\":1,\"option\":\"option-1-3\",\"checked\":true}]" +
-            "}]";
-
 }

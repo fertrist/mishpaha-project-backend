@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mishpaha.project.config.MvcConfiguration;
 import org.mishpaha.project.controller.ListPeopleController;
+import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -43,10 +44,27 @@ public class ListControllerTest extends BaseDaoTestClass {
     }
 
     @Test
+    public void listGroupTest() throws Exception {
+        //get summary group info
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/summary/group/1"))
+                .andExpect(jsonPath("$.persons", hasSize(personsPerGroup)));
+    }
+
+    @Test
+    public void listGroupInfoTest() throws Exception {
+        //get summary group info
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/info/group/1"));
+                //.andExpect(jsonPath("$.persons", hasSize(personsPerGroup)));
+        assertSuccess(resultActions);
+        Group group = TestUtil.convertJsonToGroup(resultActions.andReturn().getResponse().getContentAsString());
+    }
+
+
+    @Test
     public void listGroupRegionTribeInfo() throws Exception {
         //get summary group info
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/summary/group/1"))
-            .andExpect(jsonPath("$.persons", hasSize(2)));
+            .andExpect(jsonPath("$.persons", hasSize(personsPerGroup)));
 
         assertSuccess(resultActions);
 
@@ -68,7 +86,7 @@ public class ListControllerTest extends BaseDaoTestClass {
         resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/info/group/1"))
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json;charset=UTF-8"))
-            .andExpect(jsonPath("$.persons", hasSize(2)));
+            .andExpect(jsonPath("$.persons", hasSize(personsPerGroup)));
 
         //get region all info
 

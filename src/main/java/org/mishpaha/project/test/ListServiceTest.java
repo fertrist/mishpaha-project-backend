@@ -8,7 +8,7 @@ import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Region;
 import org.mishpaha.project.data.model.Tribe;
-import org.mishpaha.project.service.ListPeopleService;
+import org.mishpaha.project.service.ListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -22,18 +22,18 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcConfiguration.class)
 @WebAppConfiguration
-public class TestServices extends BaseDaoTestClass {
+public class ListServiceTest extends BaseDaoTestClass {
 
     @Autowired
-    private ListPeopleService personService;
+    private ListService personService;
 
     @Test
     public void testPersonServiceGroup() {
         //get list of group with all info
         List<Person> actualGroupList;
         List<Person> expectedGroupList;
-        for (Group group : groups) {
-            actualGroupList = personService.getGroup(group.getId()).getPersons();
+        for (Group group : getGroups()) {
+            actualGroupList = personService.getGroupSummary(group.getId()).getPersons();
             expectedGroupList = getPersonsByGroup(group.getId());
             Assert.assertTrue(actualGroupList.equals(expectedGroupList));
         }

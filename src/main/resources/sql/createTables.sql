@@ -11,18 +11,6 @@ CREATE TABLE emails(
     PRIMARY KEY(personId, email)
 );
 ----------------------------------------------------TABLE
-CREATE TABLE addresses(
-	personId int NOT NULL,
-	country varchar(30),
-	region varchar(30),
-	city varchar(30),
-	district varchar(30),
-	street varchar(30),
-	building varchar(10),
-	flat int,
-	PRIMARY KEY (personId)
-);
-----------------------------------------------------TABLE
 CREATE TABLE categories(
 	id int AUTO_INCREMENT,
 	name varchar(60) NOT NULL,
@@ -40,6 +28,7 @@ CREATE TABLE persons(
 	isJew boolean,
 	givesTithe boolean DEFAULT false,
 	categoryId int,
+	address varchar(100),
 	comment varchar(100),
 	wasAdded date DEFAULT GETDATE(),
 	CONSTRAINT ucFullName UNIQUE(firstName, midName, lastName),

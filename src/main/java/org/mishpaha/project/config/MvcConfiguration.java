@@ -1,7 +1,6 @@
 package org.mishpaha.project.config;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import org.mishpaha.project.data.dao.AddressDaoImpl;
 import org.mishpaha.project.data.dao.CategoryDaoImpl;
 import org.mishpaha.project.data.dao.ChangeRecordDaoImpl;
 import org.mishpaha.project.data.dao.DataBaseDao;
@@ -19,7 +18,6 @@ import org.mishpaha.project.data.dao.SchoolDaoImpl;
 import org.mishpaha.project.data.dao.TrainingDaoImpl;
 import org.mishpaha.project.data.dao.TribeDaoImpl;
 import org.mishpaha.project.data.dao.VolunteerDaoImpl;
-import org.mishpaha.project.data.model.Address;
 import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.ChangeRecord;
 import org.mishpaha.project.data.model.DoneTraining;
@@ -40,7 +38,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Profile;
@@ -64,11 +61,6 @@ public class MvcConfiguration {
         SpringApplication springApplication = new SpringApplication(MvcConfiguration.class);
         springApplication.setAdditionalProfiles(PROFILE_DEV);
         springApplication.run(args);
-    }
-
-    @Bean
-    public GenericDao<Address> getAddressDAO(DataSource dataSource) {
-        return new AddressDaoImpl(dataSource, ModelUtil.getTable(Address.class));
     }
 
 	@Bean

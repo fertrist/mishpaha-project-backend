@@ -1,6 +1,5 @@
 package org.mishpaha.project.util;
 
-import org.mishpaha.project.data.model.Address;
 import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.ChangeRecord;
 import org.mishpaha.project.data.model.DoneTraining;
@@ -23,9 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Created by fertrist on 09.10.15.
- */
 public abstract class ModelUtil {
 
     private static Map<String, String> TABLE_NAMES;
@@ -47,7 +43,6 @@ public abstract class ModelUtil {
         TABLE_NAMES.put(Phone.class.getSimpleName(), "phones");
         TABLE_NAMES.put(Email.class.getSimpleName(), "emails");
         TABLE_NAMES.put(Person.class.getSimpleName(), "persons");
-        TABLE_NAMES.put(Address.class.getSimpleName(), "addresses");
     }
 
     public static String getTable(Class clazz) {

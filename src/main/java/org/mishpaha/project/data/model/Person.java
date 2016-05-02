@@ -8,9 +8,6 @@ import java.util.List;
 
 import static org.mishpaha.project.util.TestUtil.getDateAsString;
 
-/**
- * Created by fertrist on 24.09.15.
- */
 public class Person {
 
     @JsonView(View.Summary.class)
@@ -39,16 +36,16 @@ public class Person {
     @JsonView(View.Info.class)
     private List<String> phones;
     @JsonView(View.Info.class)
-    private Address address;
+    private String address;
 
     public Person(int id, String firstName, String midName, String lastName, boolean sex, Date birthDay,
-                  boolean isJew, boolean givesTithe, int categoryId, String comment) {
-        this(firstName, midName, lastName, sex, birthDay, isJew, givesTithe, categoryId, comment);
+                  boolean isJew, boolean givesTithe, int categoryId, String address, String comment) {
+        this(firstName, midName, lastName, sex, birthDay, isJew, givesTithe, categoryId, address, comment);
         this.id = id;
     }
 
     public Person(String firstName, String midName, String lastName, boolean sex, Date birthDay,
-                  boolean isJew, boolean givesTithe, int categoryId, String comment) {
+                  boolean isJew, boolean givesTithe, int categoryId, String address, String comment) {
         this.firstName = firstName;
         this.midName = midName;
         this.lastName = lastName;
@@ -58,6 +55,7 @@ public class Person {
         this.givesTithe = givesTithe;
         this.categoryId = categoryId;
         this.comment = comment;
+        this.address = address;
     }
 
     public Person() {}
@@ -140,6 +138,30 @@ public class Person {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public List<String> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<String> phones) {
+        this.phones = phones;
+    }
+
+    public List<String> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(List<String> emails) {
+        this.emails = emails;
     }
 
     @Override

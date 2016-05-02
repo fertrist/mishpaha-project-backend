@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ListPeopleService {
+public class ListService {
 
     @Autowired
     private GenericDao<Person> personDao;
@@ -25,42 +25,13 @@ public class ListPeopleService {
     private GenericDao<Region> regionDao;
     @Autowired
     private GenericDao<Tribe> tribeDao;
-
-    public Person getPerson(int id) {
-        return personDao.get(id);
-    }
+    @Autowired
+    private PersonService personService;
 
     /**
-     * P1
-     * @param person
-     * @return
+     * P0
      */
-    public int savePerson(Person person) {
-        return personDao.save(person);
-    }
-
-    /**
-     * P2
-     * @param person
-     * @param groupId
-     */
-    public void movePersonToGroup(Person person, int groupId) {
-
-    }
-
-    /**
-     * P1
-     */
-    public void movePersonFromGroup() {
-
-    }
-
-    /**
-     * P1
-     * @param groupId
-     * @return
-     */
-    public Group getGroup(int groupId) {
+    public Group getGroupSummary(int groupId) {
         Group group = groupDao.get(groupId);
         group.setPersons(((PersonDaoImpl) personDao).listGroup(groupId));
         return group;
@@ -68,24 +39,34 @@ public class ListPeopleService {
 
     /**
      * P1
-     * @param regionId
-     * @return
+     */
+    public Group getGroupInfo(int groupId) {
+        Group group = groupDao.get(groupId);
+        List<Person> persons = ((PersonDaoImpl) personDao).listGroup(groupId);
+        for(Person person : persons){
+            person.setEmails(personService.getPersonEmails(person.getId()));
+            person.setPhones(personService.getPersonPhones(person.getId()));
+        }
+        group.setPersons(persons);
+        return group;
+    }
+
+    /**
+     * P2
      */
     public Region getRegion(int regionId) {
         Region region = regionDao.get(regionId);
         List<Integer> groupIds = ((GroupDaoImpl) groupDao).getGroupsForRegion(regionId);
         List<Group> groups = new ArrayList<>();
         for (int groupId : groupIds) {
-            groups.add(getGroup(groupId));
+            groups.add(getGroupSummary(groupId));
         }
         region.setGroups(groups);
         return region;
     }
 
     /**
-     * P1
-     * @param tribeId
-     * @return
+     * P2
      */
     public Tribe getTribe(int tribeId) {
         Tribe tribe = tribeDao.get(tribeId);

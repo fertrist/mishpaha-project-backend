@@ -9,9 +9,6 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-/**
- * Created by fertrist on 24.09.15.
- */
 public class GroupDaoImpl extends DaoImplementation<Group>{
 
     public GroupDaoImpl(DataSource dataSource, String table) {

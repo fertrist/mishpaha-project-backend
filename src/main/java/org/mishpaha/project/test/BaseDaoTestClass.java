@@ -5,22 +5,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.mishpaha.project.data.dao.DataBaseDao;
 import org.mishpaha.project.data.dao.GenericDao;
-import org.mishpaha.project.data.model.Address;
 import org.mishpaha.project.data.model.Category;
-import org.mishpaha.project.data.model.ChangeRecord;
-import org.mishpaha.project.data.model.DoneTraining;
 import org.mishpaha.project.data.model.Email;
-import org.mishpaha.project.data.model.Graduation;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.GroupMember;
-import org.mishpaha.project.data.model.Ministry;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Phone;
 import org.mishpaha.project.data.model.Region;
-import org.mishpaha.project.data.model.School;
-import org.mishpaha.project.data.model.Training;
 import org.mishpaha.project.data.model.Tribe;
-import org.mishpaha.project.data.model.Volunteer;
 import org.mishpaha.project.util.ModelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,16 +21,8 @@ import java.util.List;
 
 import static org.mishpaha.project.util.TestUtil.getDate;
 
-/**
- * Created by fertrist on 09.10.15.
- */
-public class BaseDaoTestClass {
-    final String shouldSucceedMessage = "Request should succeed.";
-    final String shouldFailMessage = "Request should fail.";
-    private static boolean DB_CREATED = false;
+class BaseDaoTestClass {
 
-    @Autowired
-    GenericDao<Address> addressDao;
     @Autowired
     GenericDao<Person> personDao;
     @Autowired
@@ -48,99 +32,253 @@ public class BaseDaoTestClass {
     @Autowired
     GenericDao<Category> categoryDao;
     @Autowired
+    GenericDao<Group> groupDao;
+    @Autowired
+    GenericDao<GroupMember> groupMemberDao;
+    @Autowired
+    GenericDao<Region> regionDao;
+    @Autowired
+    GenericDao<Tribe> tribeDao;
+    @Autowired
+    DataBaseDao dataBaseDao;
+
+    final String shouldSucceedMessage = "Request should succeed.";
+    final String shouldFailMessage = "Request should fail.";
+
+    //each 5th is group leader, each 11th is region leader, each 23d is tribe leader
+    protected static final int personsPerGroup = 5;
+    private static final int groupsPerRegion = 2;
+    private static final int regionsPerTribe = 2;
+    private static final int tribeCount = 1;
+    private static final int personsCount = personsPerGroup * groupsPerRegion * regionsPerTribe * tribeCount +
+        tribeCount + regionsPerTribe * tribeCount; //extra points for region and tribe leaders
+
+    private String[] categories = new String[]{"Белый", "Синий", "Зеленый", "Еврейский"};
+    private List<Tribe> tribes = new ArrayList<>();
+    private List<Region> regions = new ArrayList<>();
+    private List<Group> groups = new ArrayList<>();
+    private List<Person> persons = new ArrayList<>();
+    private List<Phone> phones = new ArrayList<>();
+    private List<Email> emails = new ArrayList<>();
+    private List<GroupMember> groupMembers = new ArrayList<>();
+
+
+    @Before
+    public void setUp() {
+        Assert.assertEquals("Tables are not created", 1, dataBaseDao.createTables());
+        fillTables();
+    }
+
+    @After
+    public void cleanTables() {
+        dataBaseDao.dropTables(ModelUtil.getTableNames());
+    }
+
+    private void fillTables() {
+        fillCategories();
+        provideTestData();
+        fillTestData();
+        fillEmails();
+        fillPhones();
+    }
+
+    private void fillCategories() {
+        for (String category : categories) {
+            Assert.assertEquals(1, categoryDao.save(new Category(category)));
+        }
+    }
+
+    private void provideTestData() {
+        tribes = new ArrayList<>();
+        int reg = 1, gr = 1, per = 1;
+        for (int tr = 1; tr <= tribeCount; tr++, per++) {
+            Tribe tribe = new Tribe(tr, "Колено-" + tr);
+            List<Region> tribeRegions = new ArrayList<>();
+            for (int i = 1; i <= regionsPerTribe; i++, reg++, per++) {
+                Region region = new Region(reg, reg*(personsPerGroup*groupsPerRegion+1), tr);
+                List<Group> regionGroups = new ArrayList<>();
+                for (int j = 1; j <= groupsPerRegion ; j++, gr++) {
+                    Group group = new Group(gr, gr*personsPerGroup, reg);
+                    List<Person> groupPersons = new ArrayList<>();
+                    for (int k = 1; k <= personsPerGroup; k++, per++) {
+                        groupPersons.add(new Person(per, "Имя_"+per, "Фамилия_"+per, "Отчество_"+per, true,
+                            getDate("1990-09-01"), per%2==0, per%2==1, per % categories.length, "Киев_"+per, "None"));
+                        groupMembers.add(new GroupMember(per, gr));
+                    }
+                    group.setPersons(groupPersons);
+                    persons.addAll(groupPersons);
+                    regionGroups.add(group);
+                }
+                region.setGroups(regionGroups);
+                groups.addAll(regionGroups);
+                tribeRegions.add(region);
+                //regional leader
+                persons.add(new Person(per, "Региональный_"+per, "Фамилия_"+per, "Отчество_"+per, true,
+                    getDate("1990-09-01"), per%2==0, true, 1, "Киев_"+per, "None"));
+            }
+            //tribe leader
+            persons.add(new Person(per, "Коленный_"+per, "Фамилия_"+per, "Отчество_"+per, true,
+                getDate("1990-09-01"), per%2==0, true, 1, "Киев_"+per, "None"));
+            tribe.setRegions(tribeRegions);
+            regions.addAll(tribeRegions);
+            tribes.add(tribe);
+        }
+    }
+
+    private void fillTestData() {
+        for (Person person : persons) {
+            Assert.assertEquals(1, personDao.save(person));
+        }
+        for (Tribe tribe : tribes) {
+            Assert.assertEquals(1, tribeDao.save(new Tribe(tribe.getName())));
+        }
+        for (Region region : regions) {
+            Assert.assertEquals(1, regionDao.save(region));
+        }
+        for (Group group : groups) {
+            Assert.assertEquals(1, groupDao.save(group));
+        }
+        for (GroupMember groupMember : groupMembers) {
+            Assert.assertEquals(1, groupMemberDao.save(groupMember));
+        }
+    }
+
+    private void fillEmails() {
+        for (int i = 1; i <= persons.size(); i++) {
+            emails.add(new Email(i, persons.get(i-1).getFirstName() + ".a@gmail.com"));
+            emails.add(new Email(i, persons.get(i-1).getFirstName() + ".b@gmail.com"));
+        }
+        for (Email email : emails) {
+            Assert.assertEquals(1, emailDao.save(email));
+        }
+    }
+
+    private void fillPhones() {
+        for (Person person : persons) {
+            phones.add(new Phone(person.getId(), "06300000" + person.getId()));
+            phones.add(new Phone(person.getId(), "06700000" + person.getId()));
+        }
+        for (Phone phone : phones) {
+            Assert.assertEquals(1, phoneDao.save(phone));
+        }
+    }
+
+    List<Person> getPersonsByGroup(int groupId) {
+        for (Group group : groups) {
+            if(group.getId() == groupId) {
+                return group.getPersons();
+            }
+        }
+        return null;
+    }
+
+    public List<Phone> getPhones(int personId) {
+        List<Phone> phoneList = new ArrayList<>();
+        for(Phone phone : phones) {
+            if (phone.getPersonId() == personId) {
+                phoneList.add(phone);
+            }
+        }
+        return phoneList;
+    }
+
+    public List<Email> getEmails(int personId) {
+        List<Email> emailList = new ArrayList<>();
+        for(Email email : emails) {
+            if (email.getPersonId() == personId) {
+                emailList.add(email);
+            }
+        }
+        return emailList;
+    }
+
+    public Person getPersonById(int id) {
+        for (Person person : persons) {
+            if (person.getId() == id) {
+                return person;
+            }
+        }
+        return null;
+    }
+
+    public List<Tribe> getTribes() {
+        return tribes;
+    }
+
+    public List<Region> getRegions() {
+        return regions;
+    }
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    /*void fillPersons() {
+        for (int i = 1; i <= persons.length; i++) {
+            persons[i-1] = new Person("Имя_"+i, "Фамилия_"+i, "Отчество_"+i, true, getDate
+                ("1990-09-01"), i%2==0, i%2==1, i % categories.length, "Киев_"+i, "None");
+        }
+        for (Person person : persons) {
+            Assert.assertEquals(1, personDao.save(person));
+        }
+    }
+
+    void fillTribes() {
+        for (Tribe tribe : tribes) {
+            Assert.assertEquals(1, tribeDao.save(tribe));
+        }
+    }
+
+    void fillRegions() {
+        for (Region region : regions) {
+            Assert.assertEquals(1, regionDao.save(region));
+        }
+    }
+
+    void fillGroups() {
+        int groupsPerRegion = regions.length / groups.length;
+        for (int reg = 1; reg <= regions.length; reg++) {
+            for (int i = 1; i < groups.length; i++) {
+                //groups[i-1] = new Group(i, i*5, ); //each 5th person is group leader
+            }
+        }
+        for (Group group : groups) {
+            Assert.assertEquals(1, groupDao.save(group));
+        }
+    }
+
+    void fillGroupMembers() {
+        for (GroupMember groupMember : groupMembers) {
+            Assert.assertEquals(1, groupMemberDao.save(groupMember));
+        }
+    }
+
+    @Autowired
     GenericDao<ChangeRecord> changeRecordDao;
     @Autowired
     GenericDao<DoneTraining> doneTrainingDao;
     @Autowired
     GenericDao<Graduation> graduationDao;
     @Autowired
-    GenericDao<Group> groupDao;
-    @Autowired
-    GenericDao<GroupMember> groupMemberDao;
-    @Autowired
     GenericDao<Ministry> ministryDao;
-    @Autowired
-    GenericDao<Region> regionDao;
     @Autowired
     GenericDao<School> schoolDao;
     @Autowired
     GenericDao<Training> trainingDao;
     @Autowired
-    GenericDao<Tribe> tribeDao;
-    @Autowired
     GenericDao<Volunteer> volunteerDao;
-    @Autowired
-    DataBaseDao dataBaseDao;
 
-    String[] categories = new String[]{"Белый", "Зелёный", "Гости", "Еврейский список"};
-    Address[] addresses = new Address[]{
-        new Address(1, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
-        new Address(2, "Украина", null, "Киев", "Шевченковский", "Франка", "10", 10),
-        new Address(3, "Украина", null, "Киев", "Соломенский", "Клименка", "15", 19),
-        new Address(4, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
-        new Address(5, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
-        new Address(6, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
-        new Address(7, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
-        new Address(8, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
-        new Address(9, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
-        new Address(10, "Украина", null, "Киев", "Днепровский", "Ватутина", "43/5", 15),
-    };
-    Person[] persons = new Person[]{
-        new Person(1, "Коленный-1", "Сидор", "Сидорович", true,
-            getDate("1960-09-15"), true, true, 1, null),
-        new Person(2, "Коленный-2", "Сидор", "Сидорович", true,
-            getDate("1955-10-15"), true, true, 1, "Коленный"),
-        new Person(3, "Коленный-3", "Сидор", "Сидорович", true,
-            getDate("1965-11-15"), true, true, 1, null),
-        new Person(4, "Коленный-4", "Сидор", "Сидорович", true,
-            getDate("1970-03-15"), true, true, 1, null),
-        new Person(5, "Имя-1", "Фамилия-1", "Отчество-1", true,
-            getDate("1986-12-03"), true, true, 2, "Такой себе типок"),
-        new Person(6, "Имя-2", "Фамилия-2", "Отчество-2", true,
-            getDate("1988-08-05"), false, true, 3, null),
-        new Person(7, "Имя-3", "Фамилия-3", "Отчество-3", false,
-            getDate("1985-04-07"), false, false, 4, null),
-        new Person(8, "Имя-4", "Фамилия-4", "Отчество-4", false,
-            getDate("1990-03-01"), true, true, 2, null),
-        new Person(9, "Имя-5", "Фамилия-5", "Отчество-5", false,
-            getDate("1990-03-01"), true, false, 3, null),
-        new Person(10, "Имя-6", "Фамилия-6", "Отчество-6", true,
-            getDate("1990-03-01"), true, true, 4, null),
-    };
-
-    Phone[] phones = new Phone[]{
-        new Phone(1, "0634561237"), new Phone(1, "0446589631"),
-        new Phone(2, "0677894561"),
-        new Phone(3, "0984561239"), new Phone(3, "0443652356"),
-        new Phone(4, "0731236548")
-    };
-    Email[] emails = new Email[]{
-        new Email(1, "ivanov.ivan@gmail.com"),
-        new Email(2, "petrov.petr@gmail.com"), new Email(2, "petrov.petr@rambler.ru"),
-        new Email(3, "fedorov.fedor@gmail.com"), new Email(3, "fedorov.fedor@rambler.ru"),
-        new Email(4, "evgeniev.evgeniy@gmail.com")
-    };
-    String[] tribes = new String[]{"Иванова", "Петрова", "Сидорова", "Комарова"};
     String[] ministries = new String[]{"Административное", "Группа порядка", "Попечитель"};
 
-    Region[] regions = new Region[]{
-        new Region(0, 1, 1), new Region(1, 2, 2), new Region(2, 3, 3), new Region(3, 4, 4)
-    };
-    Group[] groups = new Group[]{
-        new Group(0, 5, 1), new Group(1, 7, 1), new Group(2, 10, 3)
-    };
     Volunteer[] volunteers = new Volunteer[]{
         new Volunteer(5, 3), new Volunteer(5, 1), new Volunteer(6, 1), new Volunteer(7, 3),
         new Volunteer(8, 2), new Volunteer(9, 2), new Volunteer(10, 3), new Volunteer(10, 2)
     };
-    GroupMember[] groupMembers = new GroupMember[]{
-        new GroupMember(5, 0),
-        new GroupMember(6, 0),
-        new GroupMember(7, 1),
-        new GroupMember(8, 1),
-        new GroupMember(9, 2),
-        new GroupMember(10, 2)
-    };
+
     School[] schools = new School[]{
         new School(0, School.Level.SECOND, getDate("2015-02-01"), getDate("2015-07-01"), "Русняк"),
         new School(0, School.Level.FIRST, getDate("2015-09-21"), getDate("2015-12-01"), "Фурса")
@@ -167,66 +305,6 @@ public class BaseDaoTestClass {
         new ChangeRecord(10, 3, true)
     };
 
-    @Before
-    public void setUp() {
-        Assert.assertEquals("Tables are not created", 1, dataBaseDao.createTables());
-        fillTables();
-    }
-
-    @After
-    public void cleanTables() {
-        dataBaseDao.dropTables(ModelUtil.getTableNames());
-    }
-
-    private void fillTables() {
-        fillCategories();
-        fillPersons();
-        fillAddresses();
-        fillEmails();
-        fillPhones();
-        fillTrainings();
-        fillDoneTrainings();
-        fillMinistries();
-        fillVolunteers();
-        fillTribes();
-        fillRegions();
-        fillGroups();
-        fillGroupMembers();
-        fillChangeRecords();
-        fillSchools();
-        fillGraduations();
-    }
-
-    void fillAddresses() {
-        for (Address address : addresses) {
-            Assert.assertEquals(1, addressDao.save(address));
-        }
-    }
-
-    void fillPersons() {
-        for (Person person : persons) {
-            Assert.assertEquals(1, personDao.save(person));
-        }
-    }
-
-    void fillEmails() {
-        for (Email email : emails) {
-            Assert.assertEquals(1, emailDao.save(email));
-        }
-    }
-
-    void fillPhones() {
-        for (Phone phone : phones) {
-            Assert.assertEquals(1, phoneDao.save(phone));
-        }
-    }
-
-    void fillCategories() {
-        for (String category : categories) {
-            Assert.assertEquals(1, categoryDao.save(new Category(category)));
-        }
-    }
-
     void fillChangeRecords() {
         for (ChangeRecord changeRecord : changeRecords) {
             Assert.assertEquals(1, changeRecordDao.save(changeRecord));
@@ -245,27 +323,9 @@ public class BaseDaoTestClass {
         }
     }
 
-    void fillGroups() {
-        for (Group group : groups) {
-            Assert.assertEquals(1, groupDao.save(group));
-        }
-    }
-
-    void fillGroupMembers() {
-        for (GroupMember groupMember : groupMembers) {
-            Assert.assertEquals(1, groupMemberDao.save(groupMember));
-        }
-    }
-
     void fillMinistries() {
         for (String ministry : ministries) {
             Assert.assertEquals(1, ministryDao.save(new Ministry(ministry)));
-        }
-    }
-
-    void fillRegions() {
-        for (Region region : regions) {
-            Assert.assertEquals(1, regionDao.save(region));
         }
     }
 
@@ -281,34 +341,9 @@ public class BaseDaoTestClass {
         }
     }
 
-    void fillTribes() {
-        for (String tribe : tribes) {
-            Assert.assertEquals(1, tribeDao.save(new Tribe(tribe)));
-        }
-    }
-
     void fillVolunteers() {
         for (Volunteer volunteer : volunteers) {
             Assert.assertEquals(1, volunteerDao.save(volunteer));
         }
-    }
-
-    public List<Person> getPersonsByGroup(int groupId) {
-        List<Person> group = new ArrayList<>();
-        for (GroupMember groupMember : groupMembers) {
-            if (groupMember.getGroupId() == groupId) {
-                group.add(getPersonById(groupMember.getPersonId()));
-            }
-        }
-        return group;
-    }
-
-    public Person getPersonById(int id) {
-        for (Person person : persons) {
-            if (person.getId() == id) {
-                return person;
-            }
-        }
-        return null;
-    }
+    }*/
 }
