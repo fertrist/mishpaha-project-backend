@@ -171,31 +171,37 @@ public class Person {
 
         Person person = (Person) o;
 
-        if (getId() != person.getId()) return false;
-        if (getSex() != person.getSex()) return false;
-        if (isJew() != person.isJew()) return false;
-        if (givesTithe() != person.givesTithe()) return false;
-        if (!getFirstName().equals(person.getFirstName())) return false;
-        if (getMidName() != null ? !getMidName().equals(person.getMidName()) : person.getMidName() != null)
-            return false;
-        if (getLastName() != null ? !getLastName().equals(person.getLastName()) : person.getLastName() != null)
-            return false;
-        if (getBirthDay() != null ? !getDateAsString(getBirthDay()).equals(getDateAsString(person.getBirthDay()))
-            : person.getBirthDay() != null)
-            return false;
-        return true;
+        if (id != person.id) return false;
+        if (categoryId != person.categoryId) return false;
+        if (firstName != null ? !firstName.equals(person.firstName) : person.firstName != null) return false;
+        if (midName != null ? !midName.equals(person.midName) : person.midName != null) return false;
+        if (lastName != null ? !lastName.equals(person.lastName) : person.lastName != null) return false;
+        if (isJew != null ? !isJew.equals(person.isJew) : person.isJew != null) return false;
+        if (givesTithe != null ? !givesTithe.equals(person.givesTithe) : person.givesTithe != null) return false;
+        if (comment != null ? !comment.equals(person.comment) : person.comment != null) return false;
+        if (sex != null ? !sex.equals(person.sex) : person.sex != null) return false;
+        if (birthDay != null ? !birthDay.equals(person.birthDay) : person.birthDay != null) return false;
+        if (emails != null ? !emails.equals(person.emails) : person.emails != null) return false;
+        if (phones != null ? !phones.equals(person.phones) : person.phones != null) return false;
+        return address != null ? address.equals(person.address) : person.address == null;
+
     }
 
     @Override
     public int hashCode() {
-        int result = getId();
-        result = 31 * result + getFirstName().hashCode();
-        result = 31 * result + (getMidName() != null ? getMidName().hashCode() : 0);
-        result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
-        result = 31 * result + (getSex() ? 1 : 0);
-        result = 31 * result + (getBirthDay() != null ? getBirthDay().hashCode() : 0);
-        result = 31 * result + (isJew() ? 1 : 0);
-        result = 31 * result + (givesTithe() ? 1 : 0);
+        int result = id;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (midName != null ? midName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + categoryId;
+        result = 31 * result + (isJew != null ? isJew.hashCode() : 0);
+        result = 31 * result + (givesTithe != null ? givesTithe.hashCode() : 0);
+        result = 31 * result + (comment != null ? comment.hashCode() : 0);
+        result = 31 * result + (sex != null ? sex.hashCode() : 0);
+        result = 31 * result + (birthDay != null ? birthDay.hashCode() : 0);
+        result = 31 * result + (emails != null ? emails.hashCode() : 0);
+        result = 31 * result + (phones != null ? phones.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
         return result;
     }
 

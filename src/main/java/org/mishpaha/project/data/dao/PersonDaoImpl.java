@@ -2,8 +2,11 @@ package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.*;
 import org.mishpaha.project.util.ModelUtil;
+import org.mishpaha.project.util.TestUtil;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
     public PersonDaoImpl(DataSource dataSource, String table) {
         super(dataSource, table);
     }
-    String template = "'%s'";
+    private String template = "'%s'";
 
     @Override
     public int save(Person entity) {
@@ -45,15 +48,15 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         }
         if (entity.getSex() != null) {
             fields.add("sex");
-            values.add(String.format(template, entity.getSex().booleanValue()));
+            values.add(String.format(template, entity.getSex()));
         }
         if (entity.isJew() != null) {
             fields.add("isJew");
-            values.add(String.format(template, entity.isJew().booleanValue()));
+            values.add(String.format(template, entity.isJew()));
         }
         if (entity.givesTithe() != null) {
             fields.add("givesTithe");
-            values.add(String.format(template, entity.givesTithe().booleanValue()));
+            values.add(String.format(template, entity.givesTithe()));
         }
         if (entity.getCategoryId() != 0) {
             fields.add("categoryId");
@@ -62,6 +65,10 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         if (entity.getBirthDay() != null) {
             fields.add("birthday");
             values.add(String.format(template, getDateAsString(entity.getBirthDay())));
+        }
+        if (entity.getComment() != null) {
+            fields.add("address");
+            values.add(String.format(template, entity.getAddress()));
         }
         if (entity.getComment() != null) {
             fields.add("comment");
@@ -87,13 +94,13 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
             params.add("lastName=" + String.format(template, entity.getLastName()));
         }
         if (entity.getSex() != null) {
-            params.add("sex=" + String.format(template, entity.getSex().booleanValue()));
+            params.add("sex=" + String.format(template, entity.getSex()));
         }
         if (entity.getSex() != null) {
-            params.add("isJew=" + String.format(template, entity.isJew().booleanValue()));
+            params.add("isJew=" + String.format(template, entity.isJew()));
         }
         if (entity.givesTithe() != null) {
-            params.add("givesTithe=" + String.format(template, entity.givesTithe().booleanValue()));
+            params.add("givesTithe=" + String.format(template, entity.givesTithe()));
         }
         if (entity.givesTithe() != null) {
             params.add("categoryId=" + entity.getCategoryId());
@@ -105,24 +112,28 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         return operations.update(sql, entity.getId());
     }
 
+    private static Person getPerson(ResultSet rs) throws SQLException {
+        return new Person(
+            rs.getInt("id"),
+            rs.getString("firstName"),
+            rs.getString("midName"),
+            rs.getString("lastName"),
+            rs.getBoolean("sex"),
+            TestUtil.getDate(rs.getDate("birthday").toString()),
+            rs.getBoolean("isJew"),
+            rs.getBoolean("givesTithe"),
+            rs.getInt("categoryId"),
+            rs.getString("address"),
+            rs.getString("comment")
+        );
+    }
+
     @Override
     public Person get(int id) {
         String sql = String.format(SELECT, table, id);
         return operations.query(sql, rs -> {
             if (rs.next()) {
-                return new Person(
-                    rs.getInt("id"),
-                    rs.getString("firstName"),
-                    rs.getString("midName"),
-                    rs.getString("lastName"),
-                    rs.getBoolean("sex"),
-                    rs.getDate("birthday"),
-                    rs.getBoolean("isJew"),
-                    rs.getBoolean("givesTithe"),
-                    rs.getInt("categoryId"),
-                    rs.getString("address"),
-                    rs.getString("comment")
-                );
+                return getPerson(rs);
             }
             return null;
         });
@@ -132,19 +143,7 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
     public List<Person> list() {
         String sql = String.format(SELECT_ALL, table);
         return operations.query(sql, (rs, numRow) -> {
-            return new Person(
-                rs.getInt("id"),
-                rs.getString("firstName"),
-                rs.getString("midName"),
-                rs.getString("lastName"),
-                rs.getBoolean("sex"),
-                rs.getDate("birthday"),
-                rs.getBoolean("isJew"),
-                rs.getBoolean("givesTithe"),
-                rs.getInt("categoryId"),
-                rs.getString("address"),
-                rs.getString("comment")
-            );
+            return getPerson(rs);
         });
     }
 
@@ -153,19 +152,7 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         String sql = String.format("SELECT * FROM %1$s JOIN %2$s WHERE %3$s.id=%4$s.personId AND %5$s.groupId=%6$d",
                 table, groupMembers, table, groupMembers, groupMembers, groupId);
         return operations.query(sql, (rs, numRow) -> {
-            return new Person(
-                rs.getInt("id"),
-                rs.getString("firstName"),
-                rs.getString("midName"),
-                rs.getString("lastName"),
-                rs.getBoolean("sex"),
-                rs.getDate("birthday"),
-                rs.getBoolean("isJew"),
-                rs.getBoolean("givesTithe"),
-                rs.getInt("categoryId"),
-                rs.getString("address"),
-                rs.getString("comment")
-            );
+            return getPerson(rs);
         });
     }
 

@@ -144,9 +144,14 @@ class BaseDaoTestClass {
     }
 
     private void fillEmails() {
-        for (int i = 1; i <= persons.size(); i++) {
-            emails.add(new Email(i, persons.get(i-1).getFirstName() + ".a@gmail.com"));
-            emails.add(new Email(i, persons.get(i-1).getFirstName() + ".b@gmail.com"));
+        for (Person person : persons) {
+            Email email1 = new Email(person.getId(), person.getFirstName() + ".a@gmail.com");
+            Email email2 = new Email(person.getId(), person.getFirstName() + ".b@gmail.com");
+            emails.add(email1);
+            emails.add(email2);
+            person.setEmails(new ArrayList<>());
+            person.getEmails().add(email1.getEmail());
+            person.getEmails().add(email2.getEmail());
         }
         for (Email email : emails) {
             Assert.assertEquals(1, emailDao.save(email));
@@ -155,8 +160,13 @@ class BaseDaoTestClass {
 
     private void fillPhones() {
         for (Person person : persons) {
-            phones.add(new Phone(person.getId(), "06300000" + person.getId()));
-            phones.add(new Phone(person.getId(), "06700000" + person.getId()));
+            Phone phone1 = new Phone(person.getId(), "06300000" + person.getId());
+            Phone phone2 = new Phone(person.getId(), "06700000" + person.getId());
+            phones.add(phone1);
+            phones.add(phone2);
+            person.setPhones(new ArrayList<>());
+            person.getPhones().add(phone1.getPhone());
+            person.getPhones().add(phone2.getPhone());
         }
         for (Phone phone : phones) {
             Assert.assertEquals(1, phoneDao.save(phone));

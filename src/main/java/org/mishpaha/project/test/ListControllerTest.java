@@ -7,6 +7,7 @@ import org.mishpaha.project.config.MvcConfiguration;
 import org.mishpaha.project.controller.ListPeopleController;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
+import org.mishpaha.project.util.TestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -16,12 +17,14 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.IOException;
 import java.util.List;
 
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mishpaha.project.test.TestUtil.assertSuccess;
+import static org.mishpaha.project.util.TestUtil.assertGroupsEqual;
+import static org.mishpaha.project.util.TestUtil.assertSuccess;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,19 +47,25 @@ public class ListControllerTest extends BaseDaoTestClass {
     }
 
     @Test
-    public void listGroupTest() throws Exception {
-        //get summary group info
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/summary/group/1"))
-                .andExpect(jsonPath("$.persons", hasSize(personsPerGroup)));
+    public void listGroupSummaryTest() throws Exception {
+        ResultActions resultActions;
+        for (Group group : getGroups()) {
+            resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/summary/group/" + group.getId()));
+            assertSuccess(resultActions);
+            Group result = getGroupFromResponse(resultActions);
+            assertGroupsEqual(result, group, TestUtil.View.SUMMARY);
+        }
     }
 
     @Test
     public void listGroupInfoTest() throws Exception {
-        //get summary group info
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/info/group/1"));
-                //.andExpect(jsonPath("$.persons", hasSize(personsPerGroup)));
-        assertSuccess(resultActions);
-        Group group = TestUtil.convertJsonToGroup(resultActions.andReturn().getResponse().getContentAsString());
+        ResultActions resultActions;
+        for (Group group : getGroups()) {
+            resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/info/group/" + group.getId()));
+            assertSuccess(resultActions);
+            Group result = getGroupFromResponse(resultActions);
+            assertGroupsEqual(result, group, TestUtil.View.INFO);
+        }
     }
 
 
@@ -96,5 +105,10 @@ public class ListControllerTest extends BaseDaoTestClass {
 
         //get tribe summary info
     }
+
+    private Group getGroupFromResponse(ResultActions resultActions) throws IOException {
+        return TestUtil.convertJsonToGroup(resultActions.andReturn().getResponse().getContentAsString());
+    }
+
 
 }
