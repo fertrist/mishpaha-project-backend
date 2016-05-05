@@ -4,6 +4,8 @@ import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.ChangeRecord;
 import org.mishpaha.project.data.model.DoneTraining;
 import org.mishpaha.project.data.model.Email;
+import org.mishpaha.project.data.model.Event;
+import org.mishpaha.project.data.model.EventType;
 import org.mishpaha.project.data.model.Graduation;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.GroupMember;
@@ -43,6 +45,8 @@ public abstract class ModelUtil {
         TABLE_NAMES.put(Phone.class.getSimpleName(), "phones");
         TABLE_NAMES.put(Email.class.getSimpleName(), "emails");
         TABLE_NAMES.put(Person.class.getSimpleName(), "persons");
+        TABLE_NAMES.put(Event.class.getSimpleName(), "events");
+        TABLE_NAMES.put(EventType.class.getSimpleName(), "eventTypes");
     }
 
     public static String getTable(Class clazz) {

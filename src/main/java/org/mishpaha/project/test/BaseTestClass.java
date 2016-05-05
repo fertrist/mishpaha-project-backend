@@ -4,9 +4,12 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.mishpaha.project.data.dao.DataBaseDao;
+import org.mishpaha.project.data.dao.EventDaoImpl;
 import org.mishpaha.project.data.dao.GenericDao;
 import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.Email;
+import org.mishpaha.project.data.model.Event;
+import org.mishpaha.project.data.model.EventType;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.GroupMember;
 import org.mishpaha.project.data.model.Person;
@@ -17,11 +20,21 @@ import org.mishpaha.project.util.ModelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
+import static java.util.Calendar.FRIDAY;
+import static java.util.Calendar.MONDAY;
+import static java.util.Calendar.SATURDAY;
+import static java.util.Calendar.SUNDAY;
+import static java.util.Calendar.THURSDAY;
+import static java.util.Calendar.TUESDAY;
+import static java.util.Calendar.WEDNESDAY;
 import static org.mishpaha.project.util.TestUtil.getDate;
 
-class BaseDaoTestClass {
+class BaseTestClass {
 
     @Autowired
     GenericDao<Person> personDao;
@@ -41,6 +54,8 @@ class BaseDaoTestClass {
     GenericDao<Tribe> tribeDao;
     @Autowired
     DataBaseDao dataBaseDao;
+    @Autowired
+    GenericDao<Event> eventDao;
 
     final String shouldSucceedMessage = "Request should succeed.";
     final String shouldFailMessage = "Request should fail.";
@@ -52,8 +67,9 @@ class BaseDaoTestClass {
     private static final int tribeCount = 1;
     private static final int personsCount = personsPerGroup * groupsPerRegion * regionsPerTribe * tribeCount +
         tribeCount + regionsPerTribe * tribeCount; //extra points for region and tribe leaders
-
-    private String[] categories = new String[]{"Белый", "Синий", "Зеленый", "Еврейский"};
+    private List<EventType> eventTypes = new ArrayList<>();
+    private List<Event> events = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
     private List<Tribe> tribes = new ArrayList<>();
     private List<Region> regions = new ArrayList<>();
     private List<Group> groups = new ArrayList<>();
@@ -80,12 +96,88 @@ class BaseDaoTestClass {
         fillTestData();
         fillEmails();
         fillPhones();
+        fillEvents();
     }
 
     private void fillCategories() {
-        for (String category : categories) {
+        int i = 1;
+        for (String category : new String[]{"Белый", "Синий", "Зеленый", "Еврейский"}) {
             Assert.assertEquals(1, categoryDao.save(new Category(category)));
+            categories.add(new Category(i++, category));
         }
+    }
+
+    private void fillEvents() {
+        //fill in event types
+        int i = 1;
+        for (String type : new String[]{"Встреча", "Посещение", "Звонок", "Группа", "Клуб", "Шабат"}) {
+            Assert.assertEquals(1, ((EventDaoImpl)eventDao).saveEventType(type));
+            eventTypes.add(new EventType(i++, type));
+        }
+        //prepare time range
+        GregorianCalendar end = (GregorianCalendar) GregorianCalendar.getInstance();
+        GregorianCalendar calendar = getFirstDayInPast(MONDAY, 6);
+        /* Fill in past events.*/
+        for (; calendar.before(end); calendar.add(Calendar.DAY_OF_YEAR, 1)) {
+            Event event = new Event();
+            event.setHappened(calendar.getTime());
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+            if (day == SUNDAY) {
+                continue;
+            }
+            event.setTypeId(day-1);
+            populateGroupsEvents(event, day);
+        }
+    }
+
+    private void populateGroupsEvents(Event event, int dayOfWeek) {
+        for (Group group : groups) {
+            event.setGroupId(group.getId());
+            switch (dayOfWeek) {
+                case MONDAY: // meet all who are 1st
+                    saveEventWithPersonId(event, group.getPersons().get(0).getId());
+                    break;
+                case TUESDAY: // meet all who are 2nd
+                    saveEventWithPersonId(event, group.getPersons().get(1).getId());
+                    break;
+                case WEDNESDAY: // call everyone
+                    for (int i = 0; i < group.getPersons().size()-1; i++) {
+                        saveEventWithPersonId(event, group.getPersons().get(i).getId());
+                    }
+                    break;
+                case THURSDAY:
+                    for (int i = 2; i < group.getPersons().size(); i++) {
+                        saveEventWithPersonId(event, group.getPersons().get(i).getId());
+                    }
+                    break;
+                case FRIDAY:
+                    saveEventWithPersonId(event, group.getPersons().get(0).getId());
+                    saveEventWithPersonId(event, group.getPersons().get(1).getId());
+                    break;
+                case SATURDAY:
+                    for (int i = 0; i < group.getPersons().size(); i++) {
+                        saveEventWithPersonId(event, group.getPersons().get(i).getId());
+                    }
+                    break;
+                case SUNDAY:
+                    break;
+            }
+        }
+    }
+
+    private void saveEventWithPersonId(Event event, int personId) {
+        event.setPersonId(personId);
+        Assert.assertEquals(1, eventDao.save(event));
+        events.add(event);
+    }
+
+    private GregorianCalendar getFirstDayInPast(int dayOfWeek, int months ) {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.add(Calendar.MONTH, -months);
+        while (calendar.get(Calendar.DAY_OF_WEEK) != dayOfWeek) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+        }
+        return calendar;
     }
 
     private void provideTestData() {
@@ -102,7 +194,7 @@ class BaseDaoTestClass {
                     List<Person> groupPersons = new ArrayList<>();
                     for (int k = 1; k <= personsPerGroup; k++, per++) {
                         groupPersons.add(new Person(per, "Имя_"+per, "Фамилия_"+per, "Отчество_"+per, true,
-                            getDate("1990-09-01"), per%2==0, per%2==1, per % categories.length, "Киев_"+per, "None"));
+                            getDate("1990-09-01"), per%2==0, per%2==1, per % categories.size(), "Киев_"+per, "None"));
                         groupMembers.add(new GroupMember(per, gr));
                     }
                     group.setPersons(groupPersons);
@@ -230,7 +322,7 @@ class BaseDaoTestClass {
     /*void fillPersons() {
         for (int i = 1; i <= persons.length; i++) {
             persons[i-1] = new Person("Имя_"+i, "Фамилия_"+i, "Отчество_"+i, true, getDate
-                ("1990-09-01"), i%2==0, i%2==1, i % categories.length, "Киев_"+i, "None");
+                ("1990-09-01"), i%2==0, i%2==1, i % rawCategories.length, "Киев_"+i, "None");
         }
         for (Person person : persons) {
             Assert.assertEquals(1, personDao.save(person));

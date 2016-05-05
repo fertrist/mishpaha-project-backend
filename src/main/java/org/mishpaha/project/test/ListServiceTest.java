@@ -22,7 +22,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcConfiguration.class)
 @WebAppConfiguration
-public class ListServiceTest extends BaseDaoTestClass {
+public class ListServiceTest extends BaseTestClass {
 
     @Autowired
     private ListService personService;
@@ -33,7 +33,7 @@ public class ListServiceTest extends BaseDaoTestClass {
         List<Person> actualGroupList;
         List<Person> expectedGroupList;
         for (Group group : getGroups()) {
-            actualGroupList = personService.getGroupSummary(group.getId()).getPersons();
+            actualGroupList = personService.getGroupInfo(group.getId()).getPersons();
             expectedGroupList = getPersonsByGroup(group.getId());
             Assert.assertTrue(actualGroupList.equals(expectedGroupList));
         }

@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = MvcConfiguration.class)
 @WebAppConfiguration
-public class ListControllerTest extends BaseDaoTestClass {
+public class ListControllerTest extends BaseTestClass {
 
     @Autowired
     private WebApplicationContext webApplicationContext;

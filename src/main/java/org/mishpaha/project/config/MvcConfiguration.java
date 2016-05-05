@@ -6,6 +6,7 @@ import org.mishpaha.project.data.dao.ChangeRecordDaoImpl;
 import org.mishpaha.project.data.dao.DataBaseDao;
 import org.mishpaha.project.data.dao.DoneTrainingDaoImpl;
 import org.mishpaha.project.data.dao.EmailDaoImpl;
+import org.mishpaha.project.data.dao.EventDaoImpl;
 import org.mishpaha.project.data.dao.GenericDao;
 import org.mishpaha.project.data.dao.GraduationDaoImpl;
 import org.mishpaha.project.data.dao.GroupDaoImpl;
@@ -22,6 +23,7 @@ import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.ChangeRecord;
 import org.mishpaha.project.data.model.DoneTraining;
 import org.mishpaha.project.data.model.Email;
+import org.mishpaha.project.data.model.Event;
 import org.mishpaha.project.data.model.Graduation;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.GroupMember;
@@ -61,6 +63,11 @@ public class MvcConfiguration {
         SpringApplication springApplication = new SpringApplication(MvcConfiguration.class);
         springApplication.setAdditionalProfiles(PROFILE_DEV);
         springApplication.run(args);
+    }
+
+    @Bean
+    public GenericDao<Event> getEventDAO(DataSource dataSource) {
+        return new EventDaoImpl(dataSource, ModelUtil.getTable(Event.class));
     }
 
 	@Bean

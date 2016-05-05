@@ -120,3 +120,31 @@ CREATE TABLE changeRecords(
 	wasAdded boolean NOT NULL,
 	comment varchar(60)
 );
+----------------------------------------------------TABLE
+CREATE TABLE eventTypes(
+    id int AUTO_INCREMENT,
+    type varchar(60) not null,
+    UNIQUE(type),
+    PRIMARY KEY(id)
+);
+----------------------------------------------------TABLE
+CREATE TABLE events(
+    id int AUTO_INCREMENT,
+    personId int NOT NULL,
+    groupId int NOT NULL,
+    typeId int NOT NULL,
+    happened DATE NOT NULL,
+    PRIMARY KEY(id),
+    UNIQUE(personId, typeId, happened),
+    FOREIGN KEY(typeId) REFERENCES eventTypes(id)
+);
+----------------------------------------------------TABLE
+--CREATE TABLE regularEvents(
+--    id int AUTO_INCREMENT,
+--    dayOfWeek tinyint,
+--    startDate Date,
+--    endDate Date,
+--    repeat int,
+--    PRIMARY KEY(id)
+--);
+----------------------------------------------------TABLE

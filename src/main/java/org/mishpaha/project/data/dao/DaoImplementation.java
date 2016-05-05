@@ -5,9 +5,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
-/**
- * Created by fertrist on 25.09.15.
- */
 abstract public class DaoImplementation<T> implements GenericDao<T> {
     public static final String SELECT = "SELECT * FROM %s WHERE id=%d";
     public static final String SELECT_ALL = "SELECT * FROM %s";

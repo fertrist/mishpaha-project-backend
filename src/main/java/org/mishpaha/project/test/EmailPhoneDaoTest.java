@@ -20,7 +20,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcConfiguration.class)
 @WebAppConfiguration
-public class EmailPhoneDaoTest extends BaseDaoTestClass{
+public class EmailPhoneDaoTest extends BaseTestClass {
 
     @Test
     public void testListInsertDeletePhone() {

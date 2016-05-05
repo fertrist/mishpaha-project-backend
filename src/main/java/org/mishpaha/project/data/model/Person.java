@@ -1,7 +1,9 @@
 package org.mishpaha.project.data.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import org.junit.Test;
 import org.mishpaha.project.controller.View;
+import org.mishpaha.project.util.TestUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -105,7 +107,7 @@ public class Person {
     }
 
     public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
+        this.birthDay = TestUtil.getDate(TestUtil.getDateAsString(birthDay));
     }
 
     public Boolean isJew() {
