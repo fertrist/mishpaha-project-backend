@@ -8,10 +8,6 @@ import org.mishpaha.project.data.model.Person;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -22,42 +18,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Class for utility methods for test purposes.
  */
-public class TestUtil {
+public class Util {
 
     public enum View{
         SUMMARY, INFO
-    }
-
-    public static Date getDate(int year, int month, int day) {
-        Calendar cal = Calendar.getInstance();
-        month--;
-        cal.set(year, month, day);
-        //trim extra data
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        return cal.getTime();
-    }
-
-    public static Date getDate(String dateStr) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            return simpleDateFormat.parse(dateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static String getDateAsString(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return simpleDateFormat.format(date);
-    }
-
-    public static String getDateAsQuotedString(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String strDate = simpleDateFormat.format(date);
-        return String.format("'%s'", strDate);
     }
 
     public static String getQuotedString(String str) {

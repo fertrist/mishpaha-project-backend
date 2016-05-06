@@ -6,7 +6,7 @@ import org.mishpaha.project.data.model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -15,7 +15,7 @@ public class EventService {
     @Autowired
     private GenericDao<Event> eventDao;
 
-    public List<Event> getGroupEvents(int groupId, Date start, Date end) {
+    public List<Event> getGroupEvents(int groupId, LocalDate start, LocalDate end) {
         return ((EventDaoImpl) eventDao).list(groupId, start, end);
     }
 

@@ -1,8 +1,8 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.*;
+import org.mishpaha.project.util.DateUtil;
 import org.mishpaha.project.util.ModelUtil;
-import org.mishpaha.project.util.TestUtil;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -10,8 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mishpaha.project.util.TestUtil.getDateAsQuotedString;
-import static org.mishpaha.project.util.TestUtil.getDateAsString;
+import static org.mishpaha.project.util.DateUtil.getDateAsQuotedString;
+import static org.mishpaha.project.util.Util.getQuotedString;
 import static org.springframework.util.StringUtils.isEmpty;
 
 
@@ -64,15 +64,15 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         }
         if (entity.getBirthDay() != null) {
             fields.add("birthday");
-            values.add(String.format(template, getDateAsString(entity.getBirthDay())));
+            values.add(getQuotedString(entity.getBirthDay().toString()));
         }
         if (entity.getComment() != null) {
             fields.add("address");
-            values.add(String.format(template, entity.getAddress()));
+            values.add(getQuotedString(entity.getAddress()));
         }
         if (entity.getComment() != null) {
             fields.add("comment");
-            values.add(String.format(template, entity.getComment()));
+            values.add(getQuotedString(entity.getComment()));
         }
         sql = String.format(sql, String.join(", ", fields), String.join(", ", values));
         return operations.update(sql);
@@ -119,7 +119,7 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
             rs.getString("midName"),
             rs.getString("lastName"),
             rs.getBoolean("sex"),
-            TestUtil.getDate(rs.getDate("birthday").toString()),
+            DateUtil.fromDate(rs.getDate("birthday")),
             rs.getBoolean("isJew"),
             rs.getBoolean("givesTithe"),
             rs.getInt("categoryId"),

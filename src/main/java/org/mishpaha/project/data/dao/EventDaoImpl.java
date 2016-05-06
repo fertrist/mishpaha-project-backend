@@ -2,16 +2,15 @@ package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.Event;
 import org.mishpaha.project.data.model.EventType;
-import org.mishpaha.project.util.TestUtil;
+import org.mishpaha.project.util.DateUtil;
 
 import javax.sql.DataSource;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import static java.lang.String.format;
 import static org.mishpaha.project.util.ModelUtil.getTable;
-import static org.mishpaha.project.util.TestUtil.getDateAsQuotedString;
-import static org.mishpaha.project.util.TestUtil.getQuotedString;
+import static org.mishpaha.project.util.Util.getQuotedString;
 
 public class EventDaoImpl extends DaoImplementation<Event>{
 
@@ -23,7 +22,7 @@ public class EventDaoImpl extends DaoImplementation<Event>{
     public int save(Event entity) {
         String sql = format(INSERT, table, "personId, groupId, typeId, happened",
             format("%d,%d,%d,%s", entity.getPersonId(), entity.getGroupId(), entity.getTypeId(),
-                getDateAsQuotedString(entity.getHappened())));
+                getQuotedString(entity.getHappened().toString())));
         return operations.update(sql);
     }
 
@@ -33,7 +32,7 @@ public class EventDaoImpl extends DaoImplementation<Event>{
     }
 
     public int deleteEventType(String eventType) {
-        return operations.update(format("DELETE FROM %s WHERE type=", getTable(EventType.class),
+        return operations.update(format("DELETE FROM %s WHERE type=%s", getTable(EventType.class),
             getQuotedString(eventType)));
     }
 
@@ -50,15 +49,16 @@ public class EventDaoImpl extends DaoImplementation<Event>{
     @Override
     public List<Event> list() { throw new UnsupportedOperationException();}
 
-    public List<Event> list(int groupId, Date start, Date end) {
+    public List<Event> list(int groupId, LocalDate start, LocalDate end) {
         String sql = format("SELECT * FROM %s WHERE groupId=%d AND happened BETWEEN %s AND %s",
-            table, groupId, getDateAsQuotedString(start), getDateAsQuotedString(end));
+            table, groupId, getQuotedString(start.toString()), getQuotedString(end.toString()));
         return operations.query(sql, (rs, numRow) -> {
             return new Event(
+                rs.getInt("id"),
                 rs.getInt("personId"),
                 rs.getInt("groupId"),
                 rs.getInt("typeId"),
-                TestUtil.getDate(rs.getDate("happened").toString())
+                DateUtil.fromDate(rs.getDate("happened"))
             );
         });
     }

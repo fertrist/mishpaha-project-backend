@@ -1,17 +1,15 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.School;
+import org.mishpaha.project.util.DateUtil;
 
 import javax.sql.DataSource;
 import java.util.List;
 
 import static java.lang.String.format;
-import static org.mishpaha.project.util.TestUtil.getDateAsQuotedString;
-import static org.mishpaha.project.util.TestUtil.getQuotedString;
+import static org.mishpaha.project.util.DateUtil.getDateAsQuotedString;
+import static org.mishpaha.project.util.Util.getQuotedString;
 
-/**
- * Created by fertrist on 24.09.15.
- */
 public class SchoolDaoImpl extends DaoImplementation<School> {
 
     public SchoolDaoImpl(DataSource dataSource, String table) {
@@ -36,8 +34,8 @@ public class SchoolDaoImpl extends DaoImplementation<School> {
     public School get(int id) {
         return operations.query(format(SELECT, table, id), rs -> {
             if (rs.next()) {
-                return new School(rs.getInt("id"), rs.getString("schoolLevel"),
-                    rs.getDate("start"), rs.getDate("graduation"), rs.getString("teacher"));
+                return new School(rs.getInt("id"), rs.getString("schoolLevel"), DateUtil.fromDate(rs.getDate("start")),
+                    DateUtil.fromDate(rs.getDate("graduation")), rs.getString("teacher"));
             }
             return null;
         });
@@ -46,8 +44,8 @@ public class SchoolDaoImpl extends DaoImplementation<School> {
     @Override
     public List<School> list() {
         return operations.query(format(SELECT_ALL, table), (rs, rowNum) -> {
-            return new School(rs.getInt("id"), rs.getString("schoolLevel"),
-                rs.getDate("start"), rs.getDate("graduation"), rs.getString("teacher"));
+            return new School(rs.getInt("id"), rs.getString("schoolLevel"), DateUtil.fromDate(rs.getDate("start")),
+                DateUtil.fromDate(rs.getDate("graduation")), rs.getString("teacher"));
         });
     }
 }

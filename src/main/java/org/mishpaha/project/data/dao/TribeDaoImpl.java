@@ -1,14 +1,11 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.Tribe;
-import org.mishpaha.project.util.TestUtil;
+import org.mishpaha.project.util.Util;
 
 import javax.sql.DataSource;
 import java.util.List;
 
-/**
- * Created by fertrist on 24.09.15.
- */
 public class TribeDaoImpl extends DaoImplementation<Tribe> {
 
     public TribeDaoImpl(DataSource dataSource, String table) {
@@ -18,13 +15,13 @@ public class TribeDaoImpl extends DaoImplementation<Tribe> {
     @Override
     public int save(Tribe entity) {
         return operations.update(String.format("INSERT INTO %s (name) values (%s)", table,
-            TestUtil.getQuotedString(entity.getName())));
+            Util.getQuotedString(entity.getName())));
     }
 
     @Override
     public int update(Tribe entity) {
         return operations.update(String.format("UPDATE %s SET name=%s WHERE id=%d",
-            table,  TestUtil.getQuotedString(entity.getName()), entity.getId()));
+            table,  Util.getQuotedString(entity.getName()), entity.getId()));
     }
 
     @Override

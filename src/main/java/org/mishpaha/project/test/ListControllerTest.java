@@ -7,7 +7,7 @@ import org.mishpaha.project.config.MvcConfiguration;
 import org.mishpaha.project.controller.ListPeopleController;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
-import org.mishpaha.project.util.TestUtil;
+import org.mishpaha.project.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,8 +23,8 @@ import java.util.List;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mishpaha.project.util.TestUtil.assertGroupsEqual;
-import static org.mishpaha.project.util.TestUtil.assertSuccess;
+import static org.mishpaha.project.util.Util.assertGroupsEqual;
+import static org.mishpaha.project.util.Util.assertSuccess;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -53,7 +53,7 @@ public class ListControllerTest extends BaseTestClass {
             resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/summary/group/" + group.getId()));
             assertSuccess(resultActions);
             Group result = getGroupFromResponse(resultActions);
-            assertGroupsEqual(result, group, TestUtil.View.SUMMARY);
+            assertGroupsEqual(result, group, Util.View.SUMMARY);
         }
     }
 
@@ -64,7 +64,7 @@ public class ListControllerTest extends BaseTestClass {
             resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/info/group/" + group.getId()));
             assertSuccess(resultActions);
             Group result = getGroupFromResponse(resultActions);
-            assertGroupsEqual(result, group, TestUtil.View.INFO);
+            assertGroupsEqual(result, group, Util.View.INFO);
         }
     }
 
@@ -107,7 +107,7 @@ public class ListControllerTest extends BaseTestClass {
     }
 
     private Group getGroupFromResponse(ResultActions resultActions) throws IOException {
-        return TestUtil.convertJsonToGroup(resultActions.andReturn().getResponse().getContentAsString());
+        return Util.convertJsonToGroup(resultActions.andReturn().getResponse().getContentAsString());
     }
 
 

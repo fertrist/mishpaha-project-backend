@@ -1,14 +1,11 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.Ministry;
-import org.mishpaha.project.util.TestUtil;
+import org.mishpaha.project.util.Util;
 
 import javax.sql.DataSource;
 import java.util.List;
 
-/**
- * Created by fertrist on 24.09.15.
- */
 public class MinistryDaoImpl extends DaoImplementation<Ministry>{
 
     public MinistryDaoImpl(DataSource dataSource, String table) {
@@ -17,7 +14,7 @@ public class MinistryDaoImpl extends DaoImplementation<Ministry>{
 
     @Override
     public int save(Ministry entity) {
-        return operations.update(String.format(INSERT, table, "name", TestUtil.getQuotedString(entity.getName())));
+        return operations.update(String.format(INSERT, table, "name", Util.getQuotedString(entity.getName())));
     }
 
     @Override

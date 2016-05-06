@@ -6,12 +6,12 @@ import org.junit.runner.RunWith;
 import org.mishpaha.project.config.MvcConfiguration;
 import org.mishpaha.project.data.dao.GenericDao;
 import org.mishpaha.project.data.model.Person;
-import org.mishpaha.project.util.TestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,7 +29,7 @@ public class PersonDaoTest extends BaseTestClass {
         List<Person> initialList = personDao.list();
         initialList.forEach(System.out::println);
         int id = 100;
-        Person newPerson = new Person(id, "Иван", "Иванов", "Иванович", true, TestUtil.getDate(1987, 9, 3),
+        Person newPerson = new Person(id, "Иван", "Иванов", "Иванович", true, LocalDate.of(1987, 9, 3),
             true, false, 1, null, null);
         Assert.assertEquals(shouldSucceedMessage, personDao.save(newPerson), 1);
         List<Person> resultList = personDao.list();

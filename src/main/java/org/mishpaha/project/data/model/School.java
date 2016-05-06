@@ -1,21 +1,18 @@
 package org.mishpaha.project.data.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-/**
- * Created by fertrist on 24.09.15.
- */
 public class School {
 
     private int id;
     Level schoolLevel;
-    private Date start;
-    private Date graduation;
+    private LocalDate start;
+    private LocalDate graduation;
     private String teacher;
 
     public enum Level {FIRST, SECOND, THIRD}
 
-    public School(int id, Level schoolLevel, Date start, Date graduation, String teacher) {
+    public School(int id, Level schoolLevel, LocalDate start, LocalDate graduation, String teacher) {
         this.id = id;
         this.schoolLevel = schoolLevel;
         this.start = start;
@@ -23,7 +20,7 @@ public class School {
         this.teacher = teacher;
     }
 
-    public School(int id, String schoolLevel, Date start, Date graduation, String teacher) {
+    public School(int id, String schoolLevel, LocalDate start, LocalDate graduation, String teacher) {
         this.id = id;
         this.schoolLevel = Level.valueOf(schoolLevel);
         this.start = start;
@@ -47,19 +44,19 @@ public class School {
         this.schoolLevel = schoolLevel;
     }
 
-    public Date getStart() {
+    public LocalDate getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(LocalDate start) {
         this.start = start;
     }
 
-    public Date getGraduation() {
+    public LocalDate getGraduation() {
         return graduation;
     }
 
-    public void setGraduation(Date graduation) {
+    public void setGraduation(LocalDate graduation) {
         this.graduation = graduation;
     }
 

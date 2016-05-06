@@ -1,14 +1,14 @@
 package org.mishpaha.project.data.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import org.junit.Test;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import org.mishpaha.project.controller.View;
-import org.mishpaha.project.util.TestUtil;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
-
-import static org.mishpaha.project.util.TestUtil.getDateAsString;
 
 public class Person {
 
@@ -32,7 +32,9 @@ public class Person {
     @JsonView(View.Info.class)
     private Boolean sex;
     @JsonView(View.Info.class)
-    private Date birthDay;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate birthDay;
     @JsonView(View.Info.class)
     private List<String> emails;
     @JsonView(View.Info.class)
@@ -40,19 +42,19 @@ public class Person {
     @JsonView(View.Info.class)
     private String address;
 
-    public Person(int id, String firstName, String midName, String lastName, boolean sex, Date birthDay,
+    public Person(int id, String firstName, String midName, String lastName, boolean sex, LocalDate birthDay,
                   boolean isJew, boolean givesTithe, int categoryId, String address, String comment) {
         this(firstName, midName, lastName, sex, birthDay, isJew, givesTithe, categoryId, address, comment);
         this.id = id;
     }
 
-    public Person(String firstName, String midName, String lastName, boolean sex, Date birthDay,
+    public Person(String firstName, String midName, String lastName, boolean sex, LocalDate birthDay,
                   boolean isJew, boolean givesTithe, int categoryId, String address, String comment) {
         this.firstName = firstName;
         this.midName = midName;
         this.lastName = lastName;
         this.sex = sex;
-        setBirthDay(birthDay);
+        this.birthDay = birthDay;
         this.isJew = isJew;
         this.givesTithe = givesTithe;
         this.categoryId = categoryId;
@@ -102,12 +104,12 @@ public class Person {
         this.sex = sex;
     }
 
-    public Date getBirthDay() {
+    public LocalDate getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(Date birthDay) {
-        this.birthDay = TestUtil.getDate(TestUtil.getDateAsString(birthDay));
+    public void setBirthDay(LocalDate birthDay) {
+        this.birthDay = birthDay;
     }
 
     public Boolean isJew() {
@@ -215,7 +217,7 @@ public class Person {
             ", midName='" + midName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", sex=" + (sex ? "M" : "W") +
-            ", birthDay=" + getDateAsString(getBirthDay()) +
+            ", birthDay=" + birthDay +
             ", isJew=" + isJew +
             ", givesTithe=" + givesTithe +
             '}';

@@ -3,14 +3,14 @@ package org.mishpaha.project.controller;
 import org.mishpaha.project.data.model.Event;
 import org.mishpaha.project.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -18,6 +18,10 @@ import java.util.List;
  */
 @RestController
 public class EventController {
+
+    public static final int monthsPast = 1;
+    public static final int weeksFuture = 2;
+
 
     @Autowired
     private EventService eventService;
@@ -29,24 +33,21 @@ public class EventController {
      * @param end of time range
      */
     @RequestMapping("/events/group/{id}")
-    public List<Event> getGroupEvents(@PathVariable int id, @RequestParam(required = false) GregorianCalendar start,
-                                      @RequestParam(required = false) GregorianCalendar end) {
+    public List<Event> getGroupEvents(@PathVariable int id,
+        @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate start,
+        @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate end) {
+        LocalDate startDate = null;
         if (start != null && end != null && !(start.compareTo(end) < 0)) {
-            start = (GregorianCalendar) GregorianCalendar.getInstance();
-            start.add(Calendar.MONTH, -1);
-            end = (GregorianCalendar) GregorianCalendar.getInstance();
-            end.add(Calendar.WEEK_OF_YEAR, 2);
+            start = LocalDate.now().minusMonths(monthsPast);
+            end = LocalDate.now().plusWeeks(weeksFuture);
         }
         if (start == null) {
-            start = (GregorianCalendar) GregorianCalendar.getInstance();
-            start.add(Calendar.MONTH, -1);
+            start = LocalDate.now().minusMonths(monthsPast);
         }
         if (end == null) {
-            end = (GregorianCalendar) GregorianCalendar.getInstance();
-            end.add(Calendar.WEEK_OF_YEAR, 2);
+            end = LocalDate.now().plusWeeks(weeksFuture);
         }
-        List<Event> events = eventService.getGroupEvents(id, start.getTime(), end.getTime());
-        return events;
+        return eventService.getGroupEvents(id, start, end);
     }
 
 }

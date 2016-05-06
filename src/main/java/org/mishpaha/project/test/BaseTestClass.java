@@ -19,20 +19,10 @@ import org.mishpaha.project.data.model.Tribe;
 import org.mishpaha.project.util.ModelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-
-import static java.util.Calendar.FRIDAY;
-import static java.util.Calendar.MONDAY;
-import static java.util.Calendar.SATURDAY;
-import static java.util.Calendar.SUNDAY;
-import static java.util.Calendar.THURSDAY;
-import static java.util.Calendar.TUESDAY;
-import static java.util.Calendar.WEDNESDAY;
-import static org.mishpaha.project.util.TestUtil.getDate;
 
 class BaseTestClass {
 
@@ -115,51 +105,51 @@ class BaseTestClass {
             eventTypes.add(new EventType(i++, type));
         }
         //prepare time range
-        GregorianCalendar end = (GregorianCalendar) GregorianCalendar.getInstance();
-        GregorianCalendar calendar = getFirstDayInPast(MONDAY, 6);
+        LocalDate date = LocalDate.now().minusMonths(6);
+        LocalDate now = LocalDate.now();
         /* Fill in past events.*/
-        for (; calendar.before(end); calendar.add(Calendar.DAY_OF_YEAR, 1)) {
+        for (; date.isBefore(now); date = date.plusDays(1)) {
             Event event = new Event();
-            event.setHappened(calendar.getTime());
-            int day = calendar.get(Calendar.DAY_OF_WEEK);
-            if (day == SUNDAY) {
+            event.setHappened(date);
+            DayOfWeek day = date.getDayOfWeek();
+            if (day == DayOfWeek.SUNDAY) {
                 continue;
             }
-            event.setTypeId(day-1);
+            event.setTypeId(day.ordinal());
             populateGroupsEvents(event, day);
         }
     }
 
-    private void populateGroupsEvents(Event event, int dayOfWeek) {
+    private void populateGroupsEvents(Event event, DayOfWeek dayOfWeek) {
         for (Group group : groups) {
             event.setGroupId(group.getId());
-            switch (dayOfWeek) {
-                case MONDAY: // meet all who are 1st
+            switch (dayOfWeek.ordinal()) {
+                case 1: // meet all who are 1st
                     saveEventWithPersonId(event, group.getPersons().get(0).getId());
                     break;
-                case TUESDAY: // meet all who are 2nd
+                case 2: // meet all who are 2nd
                     saveEventWithPersonId(event, group.getPersons().get(1).getId());
                     break;
-                case WEDNESDAY: // call everyone
+                case 3: // call everyone
                     for (int i = 0; i < group.getPersons().size()-1; i++) {
                         saveEventWithPersonId(event, group.getPersons().get(i).getId());
                     }
                     break;
-                case THURSDAY:
+                case 4:
                     for (int i = 2; i < group.getPersons().size(); i++) {
                         saveEventWithPersonId(event, group.getPersons().get(i).getId());
                     }
                     break;
-                case FRIDAY:
+                case 5:
                     saveEventWithPersonId(event, group.getPersons().get(0).getId());
                     saveEventWithPersonId(event, group.getPersons().get(1).getId());
                     break;
-                case SATURDAY:
+                case 6:
                     for (int i = 0; i < group.getPersons().size(); i++) {
                         saveEventWithPersonId(event, group.getPersons().get(i).getId());
                     }
                     break;
-                case SUNDAY:
+                case 7:
                     break;
             }
         }
@@ -171,18 +161,10 @@ class BaseTestClass {
         events.add(event);
     }
 
-    private GregorianCalendar getFirstDayInPast(int dayOfWeek, int months ) {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.add(Calendar.MONTH, -months);
-        while (calendar.get(Calendar.DAY_OF_WEEK) != dayOfWeek) {
-            calendar.add(Calendar.DAY_OF_YEAR, 1);
-        }
-        return calendar;
-    }
-
     private void provideTestData() {
         tribes = new ArrayList<>();
         int reg = 1, gr = 1, per = 1;
+        LocalDate birthday = LocalDate.of(1990, 9, 1);
         for (int tr = 1; tr <= tribeCount; tr++, per++) {
             Tribe tribe = new Tribe(tr, "Колено-" + tr);
             List<Region> tribeRegions = new ArrayList<>();
@@ -194,7 +176,7 @@ class BaseTestClass {
                     List<Person> groupPersons = new ArrayList<>();
                     for (int k = 1; k <= personsPerGroup; k++, per++) {
                         groupPersons.add(new Person(per, "Имя_"+per, "Фамилия_"+per, "Отчество_"+per, true,
-                            getDate("1990-09-01"), per%2==0, per%2==1, per % categories.size(), "Киев_"+per, "None"));
+                            birthday, per%2==0, per%2==1, per % categories.size(), "Киев_"+per, "None"));
                         groupMembers.add(new GroupMember(per, gr));
                     }
                     group.setPersons(groupPersons);
@@ -206,11 +188,11 @@ class BaseTestClass {
                 tribeRegions.add(region);
                 //regional leader
                 persons.add(new Person(per, "Региональный_"+per, "Фамилия_"+per, "Отчество_"+per, true,
-                    getDate("1990-09-01"), per%2==0, true, 1, "Киев_"+per, "None"));
+                    birthday, per%2==0, true, 1, "Киев_"+per, "None"));
             }
             //tribe leader
             persons.add(new Person(per, "Коленный_"+per, "Фамилия_"+per, "Отчество_"+per, true,
-                getDate("1990-09-01"), per%2==0, true, 1, "Киев_"+per, "None"));
+                birthday, per%2==0, true, 1, "Киев_"+per, "None"));
             tribe.setRegions(tribeRegions);
             regions.addAll(tribeRegions);
             tribes.add(tribe);

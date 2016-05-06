@@ -1,8 +1,12 @@
 package org.mishpaha.project.data.model;
 
-import java.util.Date;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
-import static org.mishpaha.project.util.TestUtil.getDateAsString;
+import java.time.LocalDate;
+
 
 public class Event {
 
@@ -10,17 +14,19 @@ public class Event {
     private int personId;
     private int groupId;
     private int typeId;
-    private Date happened;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate happened;
 
     public Event() {
     }
 
-    public Event(int id, int personId, int groupId, int typeId, Date happened) {
+    public Event(int id, int personId, int groupId, int typeId, LocalDate happened) {
         this(personId, groupId, typeId, happened);
         this.id = id;
     }
 
-    public Event(int personId, int groupId, int typeId, Date happened) {
+    public Event(int personId, int groupId, int typeId, LocalDate happened) {
         this.personId = personId;
         this.groupId = groupId;
         this.typeId = typeId;
@@ -59,11 +65,11 @@ public class Event {
         this.typeId = typeId;
     }
 
-    public Date getHappened() {
+    public LocalDate getHappened() {
         return happened;
     }
 
-    public void setHappened(Date happened) {
+    public void setHappened(LocalDate happened) {
         this.happened = happened;
     }
 
@@ -74,7 +80,7 @@ public class Event {
             ", personId=" + personId +
             ", groupId=" + groupId +
             ", typeId=" + typeId +
-            ", happened=" + getDateAsString(happened) +
+            ", happened=" + happened +
             '}';
     }
 }

@@ -1,17 +1,14 @@
 package org.mishpaha.project.data.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-/**
- * Created by fertrist on 24.09.15.
- */
 public class Training {
 
     private int id;
     private String name;
-    private Date tookPlace;
+    private LocalDate tookPlace;
 
-    public Training(int id, String name, Date tookPlace) {
+    public Training(int id, String name, LocalDate tookPlace) {
         this.id = id;
         this.name = name;
         this.tookPlace = tookPlace;
@@ -33,11 +30,11 @@ public class Training {
         this.name = name;
     }
 
-    public Date getTookPlace() {
+    public LocalDate getTookPlace() {
         return tookPlace;
     }
 
-    public void setTookPlace(Date tookPlace) {
+    public void setTookPlace(LocalDate tookPlace) {
         this.tookPlace = tookPlace;
     }
 }

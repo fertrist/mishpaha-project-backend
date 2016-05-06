@@ -5,11 +5,8 @@ import org.mishpaha.project.data.model.ChangeRecord;
 import javax.sql.DataSource;
 import java.util.List;
 
-import static org.mishpaha.project.util.TestUtil.getQuotedString;
+import static org.mishpaha.project.util.Util.getQuotedString;
 
-/**
- * Created by fertrist on 24.09.15.
- */
 public class ChangeRecordDaoImpl extends DaoImplementation<ChangeRecord> {
 
     public ChangeRecordDaoImpl(DataSource dataSource, String table) {
