@@ -83,4 +83,29 @@ public class Event {
             ", happened=" + happened +
             '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Event event = (Event) o;
+
+        if (id != event.id) return false;
+        if (personId != event.personId) return false;
+        if (groupId != event.groupId) return false;
+        if (typeId != event.typeId) return false;
+        return happened != null ? happened.equals(event.happened) : event.happened == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + personId;
+        result = 31 * result + groupId;
+        result = 31 * result + typeId;
+        result = 31 * result + (happened != null ? happened.hashCode() : 0);
+        return result;
+    }
 }

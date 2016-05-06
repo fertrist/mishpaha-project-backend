@@ -58,7 +58,9 @@ class BaseTestClass {
     private static final int personsCount = personsPerGroup * groupsPerRegion * regionsPerTribe * tribeCount +
         tribeCount + regionsPerTribe * tribeCount; //extra points for region and tribe leaders
     private List<EventType> eventTypes = new ArrayList<>();
+
     private List<Event> events = new ArrayList<>();
+
     private List<Category> categories = new ArrayList<>();
     private List<Tribe> tribes = new ArrayList<>();
     private List<Region> regions = new ArrayList<>();
@@ -67,8 +69,6 @@ class BaseTestClass {
     private List<Phone> phones = new ArrayList<>();
     private List<Email> emails = new ArrayList<>();
     private List<GroupMember> groupMembers = new ArrayList<>();
-
-
     @Before
     public void setUp() {
         Assert.assertEquals("Tables are not created", 1, dataBaseDao.createTables());
@@ -118,6 +118,10 @@ class BaseTestClass {
             event.setTypeId(day.ordinal());
             populateGroupsEvents(event, day);
         }
+    }
+
+    public List<Event> getEvents() {
+        return events;
     }
 
     private void populateGroupsEvents(Event event, DayOfWeek dayOfWeek) {

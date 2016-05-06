@@ -19,4 +19,11 @@ public class EventService {
         return ((EventDaoImpl) eventDao).list(groupId, start, end);
     }
 
+    public Event save(Event event) {
+        return eventDao.save(event) == 1 ? event : null;
+    }
+
+    public int delete(int id) {
+        return eventDao.delete(id);
+    }
 }

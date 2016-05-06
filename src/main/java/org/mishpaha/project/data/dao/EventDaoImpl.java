@@ -5,6 +5,8 @@ import org.mishpaha.project.data.model.EventType;
 import org.mishpaha.project.util.DateUtil;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -43,7 +45,22 @@ public class EventDaoImpl extends DaoImplementation<Event>{
 
     @Override
     public Event get(int id) {
-        throw new UnsupportedOperationException();
+        return operations.query(format(SELECT, table, id), rs -> {
+            if (rs.next()) {
+                return getEvent(rs);
+            }
+            return null;
+        });
+    }
+
+    private Event getEvent(ResultSet rs) throws SQLException {
+        return new Event(
+            rs.getInt("id"),
+            rs.getInt("personId"),
+            rs.getInt("groupId"),
+            rs.getInt("typeId"),
+            DateUtil.fromDate(rs.getDate("happened"))
+        );
     }
 
     @Override
@@ -53,13 +70,7 @@ public class EventDaoImpl extends DaoImplementation<Event>{
         String sql = format("SELECT * FROM %s WHERE groupId=%d AND happened BETWEEN %s AND %s",
             table, groupId, getQuotedString(start.toString()), getQuotedString(end.toString()));
         return operations.query(sql, (rs, numRow) -> {
-            return new Event(
-                rs.getInt("id"),
-                rs.getInt("personId"),
-                rs.getInt("groupId"),
-                rs.getInt("typeId"),
-                DateUtil.fromDate(rs.getDate("happened"))
-            );
+            return getEvent(rs);
         });
     }
 }
