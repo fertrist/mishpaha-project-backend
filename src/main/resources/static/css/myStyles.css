@@ -1,0 +1,15 @@
+.indexColumn {
+	width: 3%;
+}
+
+.nameColumn{
+	width: 15%;
+}
+
+.basicCell {
+	width: 3%;
+}
+
+.fixed {
+    position: fixed;
+}
