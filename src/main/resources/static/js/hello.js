@@ -175,12 +175,42 @@ angular.module('hello', [ 'ngRoute' ])
 
     $scope.setEvent = function(personId, date) {
         var parsedDate = [parseInt(date.substring(0,4)), parseInt(date.substring(5,7)), parseInt(date.substring(8,10))];
-        
         var event = {"id" : 1000, "typeId" : $scope.checkedType, happened: parsedDate};
+        //check removal case
+        if ($scope.checkedType==$scope.eventTypes.indexOf("clean")) {
+            return;
+        }
+        //check duplicate case
+        if (findItem($scope.eventsObj["p_" + personId], event) !== -1) {
+          return;
+        }
+        //check addition case
         if ($scope.eventsObj["p_" + personId] == null) {
           $scope.eventsObj["p_" + personId]=[];
         }
         $scope.eventsObj["p_" + personId].push(event);
+    }
+
+    $scope.removeEvent = function(personId, event) {
+      var index = findItem($scope.eventsObj["p_" + personId], event);
+      if (index == -1) {
+        return;
+      }
+      $scope.eventsObj["p_" + personId].splice(index, 1);
+    }
+
+    findItem = function(events, event) {
+      if (events == null) {
+        return -1;
+      }
+      for (var i = 0; i < events.length; i++) {
+        if (events[i].typeId == event.typeId
+          && events[i].happened[0] == event.happened[0]
+          && events[i].happened[1] == event.happened[1]
+          && events[i].happened[2] == event.happened[2])
+        return i;
+      }
+      return -1;
     }
 
     $scope.getEventsForDate = function(personId, date) {

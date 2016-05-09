@@ -35,7 +35,8 @@
 				<div class="tableRow" ng-repeat="p in group.persons | orderBy : 'categoryId' track by $index">
 					<div class="cell bordered" ng-repeat="i in dates" ng-click="setEvent(p.id, i)">
 						<div class="event marginLess col-md-12" ng-repeat="ev in getEventsForDate(p.id, i)"
-						style="background-color:{{eventStyles[ev.typeId]}};height:{{100/eventsForDate.length+'%'}}">
+						style="background-color:{{eventStyles[ev.typeId]}};height:{{100/eventsForDate.length+'%'}}"
+						ng-click="checkedType !== eventTypes.indexOf('clean') || removeEvent(p.id, ev)">
 						</div>
 					</div>
 				</div>
