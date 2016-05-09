@@ -2,7 +2,7 @@
 	background-color: #C7F83E;
 }
 .green{
-	background-color: #65EC3B;
+	background-color: #C5C7CA;
 }
 .marginLess{
 	padding-left:0;
@@ -44,6 +44,18 @@
 .event:hover{
 	border: 2px solid pink;
 }
-.headerMenu{
-	align-items: right;
+.menuPanel{
+	background-color: #C5C7CA;
+	border: 1px solid grey;
+}
+.buttonGroup{
+	float: right;
+}
+.typeItems{
+	width: 10%;
+}
+.container-fluid {
+	background-color: #DFDFDF;
+	height: 100%;
+	/*background: url("../pictures/main.jpg");*/
 }

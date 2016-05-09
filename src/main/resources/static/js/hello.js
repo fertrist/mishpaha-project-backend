@@ -69,37 +69,37 @@ angular.module('hello', [ 'ngRoute' ])
   })
 .controller('peopleCtrl', function($rootScope, $scope, $http, $location){
     $scope.dates = [
-      "4-10",
-      "4-11",
-      "4-12",
-      "4-13",
-      "4-14",
-      "4-15",
-      "4-16",
-      "4-17",
-      "4-18",
-      "4-19",
-      "4-20",
-      "4-21",
-      "4-22",
-      "4-23",
-      "4-24",
-      "4-25",
-      "4-26",
-      "4-27",
-      "4-28",
-      "4-29",
-      "4-30",
-      "5-1",
-      "5-2",
-      "5-3",
-      "5-4",
-      "5-5",
-      "5-6",
-      "5-7",
-      "5-8",
-      "5-9",
-      "5-10"
+      "2016-04-10",
+      "2016-04-11",
+      "2016-04-12",
+      "2016-04-13",
+      "2016-04-14",
+      "2016-04-15",
+      "2016-04-16",
+      "2016-04-17",
+      "2016-04-18",
+      "2016-04-19",
+      "2016-04-20",
+      "2016-04-21",
+      "2016-04-22",
+      "2016-04-23",
+      "2016-04-24",
+      "2016-04-25",
+      "2016-04-26",
+      "2016-04-27",
+      "2016-04-28",
+      "2016-04-29",
+      "2016-04-30",
+      "2016-05-01",
+      "2016-05-02",
+      "2016-05-03",
+      "2016-05-04",
+      "2016-05-05",
+      "2016-05-06",
+      "2016-05-07",
+      "2016-05-08",
+      "2016-05-09",
+      "2016-05-10"
     ];
     //white, blue, green, jewish
     $scope.categories = ["#FFC39F" /*leader*/, "#E5EEE0" /*white*/, "#5ED1BA" /*blue*/, "#7AEE3C" /*green*/, "#91B52D" /*jew*/];
@@ -123,64 +123,83 @@ angular.module('hello', [ 'ngRoute' ])
           }
     ];
 
-    $scope.events = [
-      {personId : 1, events : [
-        {"id":2144,"typeId":1,"happened":[2016,4,1]},
-        {"id":2145,"typeId":2,"happened":[2016,4,10]}]
-      },
-      {personId : 2, events : [
-        {"id":2146,"typeId":3,"happened":[2016,4,11]},
-        {"id":2147,"typeId":4,"happened":[2016,4,13]},
-        {"id":2155,"typeId":2,"happened":[2016,4,13]},
-        {"id":2156,"typeId":3,"happened":[2016,4,13]}]
-      },
-      {personId : 3, events : [
-        {"id":2148,"typeId":1,"happened":[2016,4,13]},
-        {"id":2149,"typeId":2,"happened":[2016,4,15]}]
-      },
-      {personId : 8, events : [
-        {"id":2150,"typeId":3,"happened":[2016,4,10]}]
-      },
-      {personId : 5, events : [
-        {"id":2151,"typeId":4,"happened":[2016,4,18]}],
-      },
-      {personId : 6, events : [
-        {"id":2152,"typeId":1,"happened":[2016,4,20]}]
-      },
-      {personId : 7, events : [
-        {"id":2153,"typeId":2,"happened":[2016,4,30]}]
-      },
-      {personId : 9, events : [
-        {"id":2154,"typeId":1,"happened":[2016,5,4]}]
-      }
-    ];
-
+    $scope.eventsObj = {
+      "p_1" :
+      [
+        {"id":2144,"typeId":1, happened : [2016,4,1]},
+        {"id":2145,"typeId":2, happened : [2016,4,10]}
+      ],
+      "p_2" : 
+      [
+        {"id":2146,"typeId":3,happened:[2016,4,11]},
+        {"id":2147,"typeId":4,happened:[2016,4,13]},
+        {"id":2155,"typeId":2,happened:[2016,4,13]},
+        {"id":2156,"typeId":3,happened:[2016,4,13]}
+      ],
+      "p_3" : 
+      [
+        {"id":2148,"typeId":1,happened:[2016,4,13]},
+        {"id":2149,"typeId":2,happened:[2016,4,15]}
+      ],
+      "p_8" : 
+      [
+        {"id":2150,"typeId":3,happened:[2016,4,10]}
+      ],
+      "p_5" : 
+      [
+        {"id":2151,"typeId":4,happened:[2016,4,18]}
+      ],
+      "p_6" : 
+      [
+        {"id":2152,"typeId":1,happened:[2016,4,20]}
+      ],
+      "p_7" : 
+      [
+        {"id":2153,"typeId":2,happened:[2016,4,30]}
+      ],
+      "p_9" : 
+      [
+        {"id":2154,"typeId":1,happened:[2016,5,4]}
+      ]
+    };
     
     //"Встреча", "Посещение", "Звонок", "Группа", "Клуб", "Шабат"
-    $scope.eventTypes = ["meet", "visit", "call", "group", "club", "shabat"];
+    $scope.eventTypes = ["meet", "visit", "call", "group", "club", "shabat", "clean"];
     $scope.eventStyles = ["#3DF36D", "#A64100", "#FFF040", "#FF6400", "#FF8373", "#3BCCEE"];
     $scope.eventsForDate;
-    $scope.getEventStyle = function(eventType) {
-      var height = 100 / $scope.eventsForDate.length + "%";
-      var bg = $scope.eventStyles[eventType-1];
-      var obj = {"background-color" : bg, "height" : height};
-      return obj;
+    $scope.checkedType = 0;
+
+    $scope.setCheckedType = function(index) {
+      $scope.checkedType = index;
     }
+
+    $scope.setEvent = function(personId, date) {
+        var parsedDate = [parseInt(date.substring(0,4)), parseInt(date.substring(5,7)), parseInt(date.substring(8,10))];
+        
+        var event = {"id" : 1000, "typeId" : $scope.checkedType, happened: parsedDate};
+        if ($scope.eventsObj["p_" + personId] == null) {
+          $scope.eventsObj["p_" + personId]=[];
+        }
+        $scope.eventsObj["p_" + personId].push(event);
+    }
+
     $scope.getEventsForDate = function(personId, date) {
-      var personEvents;
-      for (var i = 0; i < $scope.events.length; i++) {
-          if ($scope.events[i].personId == personId) {
-            personEvents = $scope.events[i].events;
-            break;
-          }
-      }
+      var personEvents = $scope.eventsObj["p_" + personId];
       if (personEvents == null) {
           return;
       }
       $scope.eventsForDate = new Array();
       var happened;
       for (var i = 0; i < personEvents.length; i++) {
-        happened = personEvents[i].happened[1]+"-"+personEvents[i].happened[2];
+        happened = personEvents[i].happened[0] + "-";
+        if("" + personEvents[i].happened[1].toString().length==1) {
+          happened += "0";
+        }
+        happened += personEvents[i].happened[1] + "-";
+        if(personEvents[i].happened[2].toString().length==1) {
+          happened += "0";
+        }
+        happened += personEvents[i].happened[2];
         if (happened == date) {
           $scope.eventsForDate.push(personEvents[i]);
         }
