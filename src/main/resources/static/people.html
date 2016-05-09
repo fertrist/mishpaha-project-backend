@@ -1,0 +1,41 @@
+<div class = "container-fluid">
+
+	<div class="row">
+		<div class="col-md-12 headerMenu">
+			header
+		</div>
+
+		<div class="green col-md-2 marginLess">
+			<div class="row marginLess bordered">
+				<div class="col-md-2 marginLess">#</div>
+	        	<div class="col-md-10 marginLess">Name</div>
+			</div>
+			
+			<div class="row col-md-12 marginLess" ng-repeat="group in groups">
+				<div class="marginLess">
+					<div class="marginLess tableRow bordered" ng-repeat="p in group.persons | orderBy : 'categoryId' track by $index" ng-style="backGround(p.categoryId)">
+						<div class="col-md-2 marginLess">{{$index+1}}</div>
+			        	<div class="col-md-10 marginLess">{{p.firstName}}</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-10 cells marginLess">
+			<div class="row col-md-12">
+				<div class="headerCell green bordered" ng-repeat="i in dates">{{i}}</div>
+			</div>
+
+			<!-- Dates -->
+			<div ng-repeat="group in groups" class="row col-md-12">
+				<div class="tableRow" ng-repeat="p in group.persons | orderBy : 'categoryId' track by $index">
+					<div class="cell bordered" ng-repeat="i in dates">
+						<div class="event marginLess col-md-12" ng-repeat="ev in getEventsForDate(p.id, i)"
+						ng-style="getEventStyle(ev.typeId)">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,15 +1,49 @@
-.indexColumn {
-	width: 3%;
+.yellow{
+	background-color: #C7F83E;
 }
-
-.nameColumn{
-	width: 15%;
+.green{
+	background-color: #65EC3B;
 }
-
-.basicCell {
-	width: 3%;
+.marginLess{
+	padding-left:0;
+	margin-left: 0;
+	margin-right: 0;
+	padding-right: 0;
 }
-
-.fixed {
-    position: fixed;
+.cells{
+	overflow-x: scroll;
+	overflow-y: hidden;
+    white-space:nowrap;
+    background-color: #F7F7F7;
+}
+.headerCell{
+	text-align: center;
+	width: 4%;
+	display: inline-block;
+}
+.bordered{
+	border-bottom: 1px solid grey;
+	border-left: 1px solid grey;
+}
+.cell{
+	height: 50px;
+	width: 4%;
+	display: inline-block;
+}
+.cell:hover{
+	background-color: #DFDFDF;
+}
+.tableRow{
+	height: 50px;
+}
+.event{
+    display: table-row;
+    width: 100%;
+    font-size: 10px;
+}
+.event:hover{
+	border: 2px solid pink;
+}
+.headerMenu{
+	align-items: right;
 }
