@@ -9,6 +9,9 @@ angular.module('hello', [ 'ngRoute' ])
     }).when('/people',{
         templateUrl : 'people.html',
         controller : 'peopleCtrl'
+    }).when('/list',{
+        templateUrl : 'list.html',
+        controller : 'listCtrl'
     }).otherwise('/');
 
     //$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
@@ -118,7 +121,10 @@ angular.module('hello', [ 'ngRoute' ])
             {id:6, firstName : "Name-6", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 4, isJew : true, givesTithe : true, comment : null},
             {id:7, firstName : "Name-7", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null},
             {id:8, firstName : "Name-8", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 2, isJew : true, givesTithe : true, comment : null},
-            {id:9, firstName : "Name-9", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null}
+            {id:9, firstName : "Name-9", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null},
+            {id:10, firstName : "Name-10", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null},
+            {id:11, firstName : "Name-11", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null},
+            {id:12, firstName : "Name-12", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null}
             ]
           }
     ];
@@ -160,11 +166,23 @@ angular.module('hello', [ 'ngRoute' ])
       "p_9" : 
       [
         {"id":2154,"typeId":1,happened:[2016,5,4]}
+      ],
+      "p_10" : 
+      [
+        {"id":2155,"typeId":1,happened:[2016,5,4]}
+      ],
+      "p_11" : 
+      [
+        {"id":2156,"typeId":1,happened:[2016,5,4]}
+      ],
+      "p_12" : 
+      [
+        {"id":2157,"typeId":1,happened:[2016,5,4]}
       ]
     };
     
     //"Встреча", "Посещение", "Звонок", "Группа", "Клуб", "Шабат"
-    $scope.eventTypes = ["meet", "visit", "call", "group", "club", "shabat", "clean"];
+    $scope.eventTypes = ["meet", "visit", "call", "group", "club", "holiday", "clean"];
     $scope.eventStyles = ["#3DF36D", "#A64100", "#FFF040", "#FF6400", "#FF8373", "#3BCCEE"];
     $scope.eventsForDate;
     $scope.checkedType = 0;
@@ -236,4 +254,65 @@ angular.module('hello', [ 'ngRoute' ])
       }  
       if ($scope.eventsForDate.length == 0) {return;} else {return $scope.eventsForDate;}
     };
+})
+.controller('listCtrl', function($rootScope, $scope, $http, $location){
+
+    $scope.groups = [
+              {id:1, regionId:1, leader:"Имя-3 Фамилия-3",
+                persons:[            
+                {id:1, firstName : "Name-1", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null},
+                {id:2, firstName : "Name-2", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 2, isJew : true, givesTithe : true, comment : null},
+                {id:3, firstName : "Name-3", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 4, isJew : true, givesTithe : true, comment : null},
+                {id:4, firstName : "Name-5", midName : "Фамилия-3", lastName : "Отчество-3", categoryId : 1, isJew : false, givesTithe : false, comment : null},
+                {id:5, firstName : "Name-4", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 5, isJew : true, givesTithe : true, comment : null},
+                {id:6, firstName : "Name-6", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 4, isJew : true, givesTithe : true, comment : null},
+                {id:7, firstName : "Name-7", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null},
+                {id:8, firstName : "Name-8", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 2, isJew : true, givesTithe : true, comment : null},
+                {id:9, firstName : "Name-9", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null},
+                {id:10, firstName : "Name-10", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null},
+                {id:11, firstName : "Name-11", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null},
+                {id:12, firstName : "Name-12", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null}
+                ]
+              }
+        ];
+
+  $scope.groups = [{  
+       "id":1,
+       "leaderId":5,
+       "regionId":1,
+       "persons":[ 
+                {id:1, firstName : "Name-1", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null, "comment":"None", "sex":true, "birthDay":[1990,9,1], "emails":["Имя_1.a@gmail.com", "Имя_1.b@gmail.com"], "phones":["063000001","067000001"], "address":"Киев_1"},
+                {id:2, firstName : "Name-2", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 2, isJew : true, givesTithe : true, comment : null, "comment":"None", "sex":true, "birthDay":[1990,9,1], "emails":["Имя_1.a@gmail.com", "Имя_1.b@gmail.com"], "phones":["063000001","067000001"], "address":"Киев_1"},
+                {id:3, firstName : "Name-3", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 4, isJew : true, givesTithe : true, comment : null, "comment":"None", "sex":true, "birthDay":[1990,9,1], "emails":["Имя_1.a@gmail.com", "Имя_1.b@gmail.com"], "phones":["063000001","067000001"], "address":"Киев_1"},
+                {id:4, firstName : "Name-5", midName : "Фамилия-3", lastName : "Отчество-3", categoryId : 1, isJew : false, givesTithe : false, comment : null, "comment":"None", "sex":true, "birthDay":[1990,9,1], "emails":["Имя_1.a@gmail.com", "Имя_1.b@gmail.com"], "phones":["063000001","067000001"], "address":"Киев_1"},
+                {id:5, firstName : "Name-4", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 5, isJew : true, givesTithe : true, comment : null, "comment":"None", "sex":true, "birthDay":[1990,9,1], "emails":["Имя_1.a@gmail.com", "Имя_1.b@gmail.com"], "phones":["063000001","067000001"], "address":"Киев_1"},
+                {id:6, firstName : "Name-6", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 4, isJew : true, givesTithe : true, comment : null, "comment":"None", "sex":true, "birthDay":[1990,9,1], "emails":["Имя_1.a@gmail.com", "Имя_1.b@gmail.com"], "phones":["063000001","067000001"], "address":"Киев_1"},
+                {id:7, firstName : "Name-7", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null, "comment":"None", "sex":true, "birthDay":[1990,9,1], "emails":["Имя_1.a@gmail.com", "Имя_1.b@gmail.com"], "phones":["063000001","067000001"], "address":"Киев_1"},
+                {id:8, firstName : "Name-8", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 2, isJew : true, givesTithe : true, comment : null, "comment":"None", "sex":true, "birthDay":[1990,9,1], "emails":["Имя_1.a@gmail.com", "Имя_1.b@gmail.com"], "phones":["063000001","067000001"], "address":"Киев_1"},
+                {id:9, firstName : "Name-9", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null, "comment":"None", "sex":true, "birthDay":[1990,9,1], "emails":["Имя_1.a@gmail.com", "Имя_1.b@gmail.com"], "phones":["063000001","067000001"], "address":"Киев_1"},
+                {id:10, firstName : "Name-10", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null, "comment":"None", "sex":true, "birthDay":[1990,9,1], "emails":["Имя_1.a@gmail.com", "Имя_1.b@gmail.com"], "phones":["063000001","067000001"], "address":"Киев_1"},
+                {id:11, firstName : "Name-11", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null, "comment":"None", "sex":true, "birthDay":[1990,9,1], "emails":["Имя_1.a@gmail.com", "Имя_1.b@gmail.com"], "phones":["063000001","067000001"], "address":"Киев_1"},
+                {id:12, firstName : "Name-12", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null, "comment":"None", "sex":true, "birthDay":[1990,9,1], "emails":["Имя_1.a@gmail.com", "Имя_1.b@gmail.com"], "phones":["063000001","067000001"], "address":"Киев_1"},
+       ]
+    }];
+
+    $scope.categories = ["#FFC39F" /*leader*/, "#E5EEE0" /*white*/, "#5ED1BA" /*blue*/,
+     "#7AEE3C" /*green*/, "#91B52D" /*specific*/];
+
+    $scope.backGround = function(category) {
+        return {"background-color" : $scope.categories[category-1]};
+    }
+
+    $scope.getCategory = function(int){
+
+    };
+
+    $scope.arrayToString = function(string){
+      return string.join(", ");
+    };
+
+    $scope.arrayToDate = function(string){
+      return string.join("-");
+    };
+
 });

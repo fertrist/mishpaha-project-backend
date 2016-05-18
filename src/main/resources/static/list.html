@@ -1,0 +1,28 @@
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Список людей</div>
+
+	<div ng-repeat="g in groups">
+	<div class="panel-heading">{{'Група-' + g.id}}</div>
+	  <table class="table" >
+	  	<thead>
+	  		<th>№</th>
+	    	<th>Им'я</th>
+	    	<th>Дата народження</th>
+	    	<th>Номер телефону</th>
+	    	<th>Ел.пошта</th>
+	    	<th>Адреса</th>
+	  	</thead>
+	    <tbody>
+	    	<tr ng-repeat="p in g.persons | orderBy : 'categoryId'" ng-style="backGround(p.categoryId)">
+	    		<td>{{$index+1}}</td>
+	    		<td>{{p.firstName + ' ' + p.midName + ' ' + p.lastName}}</td>
+	    		<td>{{arrayToDate(p.birthDay)}}</td>
+	    		<td>{{arrayToString(p.phones)}}</td>
+	    		<td>{{arrayToString(p.emails)}}</td>
+	    		<td>{{p.address}}</td>
+	    	</tr>
+	    </tbody>
+	  </table>
+  </div>
+</div>

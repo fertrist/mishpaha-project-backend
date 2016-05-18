@@ -16,10 +16,11 @@
 <body ng-app="hello" ng-cloak class="ng-cloak">
     <div ng-controller="navigation" class="container-fluid">
         <ul class="nav nav-pills" role="tablist">
-            <li class="active"><a href="#/">home</a></li>
-            <li><a href="#/login">login</a></li>
-            <li ng-show="authenticated"><a href="" ng-click="logout()">logout</a></li>
-            <li ng-show="authenticated"><a href="#/people">people</a></li>
+            <li><a href="#/">Вітання</a></li>
+            <li><a href="#/login">Вхід</a></li>
+            <li ng-show="authenticated"><a href="" ng-click="logout()">Вийти</a></li>
+            <li ng-show="authenticated"><a href="#/people">Люди</a></li>
+            <li ng-show="authenticated"><a href="#/list">Список</a></li>
         </ul>
     </div>
 
