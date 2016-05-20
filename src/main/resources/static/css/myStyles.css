@@ -36,6 +36,12 @@
 .tableRow{
 	height: 50px;
 }
+.tableRow:hover{
+	background-color: #EFFFFF;
+}
+.catOptions{
+	background-color: #EFFFFF;	
+}
 .event{
     display: table-row;
     width: 100%;

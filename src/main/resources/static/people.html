@@ -12,14 +12,14 @@
 		<div class="green col-md-2 marginLess">
 			<div class="row marginLess bordered">
 				<div class="col-md-2 marginLess">#</div>
-	        	<div class="col-md-10 marginLess">Name</div>
+				<div class="col-md-10 marginLess">Name</div>
 			</div>
 			
 			<div class="row col-md-12 marginLess" ng-repeat="group in groups">
 				<div class="marginLess">
 					<div class="marginLess tableRow bordered" ng-repeat="p in group.persons | orderBy : 'categoryId' track by $index" ng-style="backGround(p.categoryId)">
 						<div class="col-md-2 marginLess">{{$index+1}}</div>
-			        	<div class="col-md-10 marginLess">{{p.firstName}}</div>	
+						<div class="col-md-10 marginLess">{{p.firstName}}</div>	
 					</div>
 				</div>
 			</div>
@@ -37,10 +37,10 @@
 						<div class="event marginLess col-md-12" ng-repeat="ev in getEventsForDate(p.id, i)"
 						style="background-color:{{eventStyles[ev.typeId]}};height:{{100/eventsForDate.length+'%'}}"
 						ng-click="checkedType !== eventTypes.indexOf('clean') || removeEvent(p.id, ev)">
-						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 </div>
