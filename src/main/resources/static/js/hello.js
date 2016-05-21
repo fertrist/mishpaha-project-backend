@@ -6,14 +6,16 @@ angular.module('hello', [ 'ngRoute' ])
   }).when('/login', {
     templateUrl : 'login.html',
     controller : 'navigation'
-  }).when('/people',{
-    templateUrl : 'people.html',
-    controller : 'peopleCtrl'
+  }).when('/events',{
+    templateUrl : 'events.html',
+    controller : 'eventsCtrl'
   }).when('/list',{
     templateUrl : 'list.html',
     controller : 'listCtrl'
+  }).when('/report',{
+    templateUrl : 'report.html',
+    controller : 'reportCtrl'
   }).otherwise('/');
-
     //$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
   })
 .controller('home', function($scope, $http) {
@@ -70,7 +72,7 @@ angular.module('hello', [ 'ngRoute' ])
     }
 
   })
-.controller('peopleCtrl', function($rootScope, $scope, $http, $location){
+.controller('eventsCtrl', function($rootScope, $scope, $http, $location){
   $scope.dates = [
   "2016-04-10",
   "2016-04-11",
@@ -357,7 +359,7 @@ $scope.newPhone;
 $scope.newEmail;
 $scope.addPhone = function() {
   //check duplicate case
-  if (findItem($scope.copy.phones, $scope.newPhone) !== -1) {
+  if (!$scope.newPhone || findItem($scope.copy.phones, $scope.newPhone) !== -1) {
     return;
   }
   $scope.copy.phones.push($scope.newPhone);
@@ -366,7 +368,7 @@ $scope.addPhone = function() {
 
 $scope.addEmail = function() {
   //check duplicate case
-  if (findItem($scope.copy.emails, $scope.newEmail) !== -1) {
+  if (!$scope.newEmail || findItem($scope.copy.emails, $scope.newEmail) !== -1) {
     return;
   }
   $scope.copy.emails.push($scope.newEmail); 
@@ -384,4 +386,17 @@ findItem = function(array, item) {
   }
   return -1;
 }
+})
+.controller('reportCtrl', function($rootScope, $scope, $http, $location){
+  $scope.weeks = [
+    "04.04.16",
+    "11.04.16",
+    "18.04.16",
+    "25.04.16",
+    "02.05.16",
+    "09.05.16",
+    "16.05.16",
+    "23.05.16"
+  ];
+
 });

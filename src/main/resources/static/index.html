@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>Hello AngularJS</title>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/myStyles.css" rel="stylesheet">
@@ -21,11 +22,13 @@
 <body ng-app="hello" ng-cloak class="ng-cloak">
     <div ng-controller="navigation" class="container-fluid">
         <ul class="nav nav-pills" role="tablist">
-            <li><a href="#/">Вітання</a></li>
+            <li ng-show="authenticated"><a href="#/events">Таблиця подій</a></li>
+            <li ng-show="authenticated"><a href="#/list">Список</a></li>
+            <li ng-show="authenticated"><a href="#/report">Звіт</a></li>
+
             <li><a href="#/login">Вхід</a></li>
             <li ng-show="authenticated"><a href="" ng-click="logout()">Вийти</a></li>
-            <li ng-show="authenticated"><a href="#/people">Люди</a></li>
-            <li ng-show="authenticated"><a href="#/list">Список</a></li>
+            <li><a href="#/">Вітання</a></li>
         </ul>
     </div>
 
