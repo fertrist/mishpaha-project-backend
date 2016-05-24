@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Handles requests related to event tracking.
@@ -34,31 +35,45 @@ public class EventController {
      * @param start start of time range
      * @param end of time range
      */
-    @RequestMapping("/events/group/{id}")
+    @RequestMapping(value = "/events/group/{id}", method = RequestMethod.GET)
     public List<Event> getGroupEvents(@PathVariable int id,
-        @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate start,
-        @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate end) {
-        LocalDate startDate = null;
-        if (start != null && end != null && !(start.compareTo(end) < 0)) {
-            start = LocalDate.now().minusMonths(monthsPast);
-            end = LocalDate.now().plusWeeks(weeksFuture);
-        }
-        if (start == null) {
-            start = LocalDate.now().minusMonths(monthsPast);
-        }
-        if (end == null) {
-            end = LocalDate.now().plusWeeks(weeksFuture);
-        }
+            @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate start,
+            @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate end) {
+        end = setDefaultEnd(end);
+        start = setDefaultStart(start, end);
         return eventService.getGroupEvents(id, start, end);
     }
 
-    @RequestMapping(value = "/events", method = RequestMethod.POST)
+    @RequestMapping(value = "/events/event", method = RequestMethod.POST)
     public Event saveEvent(@RequestBody Event event) {
         return eventService.save(event);
     }
 
-    @RequestMapping(value = "/events/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/events/event/{id}", method = RequestMethod.DELETE)
     public void deleteEvent(@PathVariable int id) {
         eventService.delete(id);
+    }
+
+    @RequestMapping(value = "/reports/group/{groupId}", method = RequestMethod.GET)
+    public List<Map<String, Object>> getGroupEventReport(@PathVariable int groupId,
+             @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate start,
+             @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate end) {
+        end = setDefaultEnd(end);
+        start = setDefaultStart(start, end);
+        return eventService.getGroupReport(groupId, start, end);
+    }
+
+    private LocalDate setDefaultStart(LocalDate start, LocalDate end) {
+        if (start == null || start.compareTo(end) >= 0) {
+            start = end.minusMonths(monthsPast);
+        }
+        return start;
+    }
+
+    private LocalDate setDefaultEnd(LocalDate end) {
+        if (end == null) {
+            end = LocalDate.now().plusWeeks(weeksFuture);
+        }
+        return end;
     }
 }

@@ -1,14 +1,18 @@
 package org.mishpaha.project.data.dao;
 
+import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.Event;
 import org.mishpaha.project.data.model.EventType;
+import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.util.DateUtil;
+import org.mishpaha.project.util.ModelUtil;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.String.format;
 import static org.mishpaha.project.util.ModelUtil.getTable;
@@ -72,5 +76,21 @@ public class EventDaoImpl extends DaoImplementation<Event>{
         return operations.query(sql, (rs, numRow) -> {
             return getEvent(rs);
         });
+    }
+
+    public List<Map<String, Object>> getGroupReport(int groupId, LocalDate start, LocalDate end) {
+        String persons = ModelUtil.getTable(Person.class);
+        String events = table;
+
+        //select needed subtable
+        String eventsSubTable = "(SELECT e.id, p.categoryId, e.typeId, e.happened FROM "
+            + events + " e JOIN " + persons + " p "
+            + "ON e.personId=p.id WHERE e.groupId=" + groupId + " AND e.happened BETWEEN "
+            + getQuotedString(start.toString()) + " AND " + getQuotedString(end.toString()) + ")";
+
+        //aggregate data
+        String sql = "SELECT e.typeId, e.categoryId, count(e.id) as count, e.happened FROM "
+            + eventsSubTable + " e GROUP BY e.typeId, e.categoryId, e.happened";
+        return operations.queryForList(sql);
     }
 }

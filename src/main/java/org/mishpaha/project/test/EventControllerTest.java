@@ -62,7 +62,7 @@ public class EventControllerTest extends BaseTestClass{
         for (int i = 0; i < n; i++) {
             event = new Event(++lastId, group.getPersons().get(0).getId(), group.getId(), 1, LocalDate.of(2016, 5, 1));
             String body = convertObjectToJson(event);
-            resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/events")
+            resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/events/event")
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(body));
             resultActions.andExpect(status().isOk());
             fromResponse = getEventFromResponse(resultActions);
@@ -71,7 +71,7 @@ public class EventControllerTest extends BaseTestClass{
             Assert.assertEquals(event, fromDb);
 
             //remove event
-            mockMvc.perform(MockMvcRequestBuilders.delete("/events/" + lastId)).andExpect(status().isOk());
+            mockMvc.perform(MockMvcRequestBuilders.delete("/events/event/" + lastId)).andExpect(status().isOk());
             fromDb = eventDao.get(lastId);
             Assert.assertNull(fromDb);
         }
@@ -111,6 +111,17 @@ public class EventControllerTest extends BaseTestClass{
             happened = event.getHappened();
             Assert.assertTrue(happened.isAfter(start) && happened.isBefore(end));
         }
+    }
+
+    /**
+     * TODO some records contain null categoryId (for person) need to fix it
+     * @throws Exception
+     */
+    @Test
+    public void testGroupReport() throws Exception {
+        int groupId = 1;
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/reports/group/" + groupId));
+        assertSuccess(resultActions);
     }
 
     private static List<Event> getEventsFromResponse(ResultActions resultActions) throws IOException {

@@ -97,6 +97,9 @@ class BaseTestClass {
         }
     }
 
+    /**
+     * Add eventTypes. For last 6 months fill each day with each group events depending on day of a week.
+     */
     private void fillEvents() {
         //fill in event types
         int i = 1;
@@ -124,6 +127,11 @@ class BaseTestClass {
         return events;
     }
 
+    /**
+     * Save event for each group for a given day of a week.
+     * @param event events
+     * @param dayOfWeek
+     */
     private void populateGroupsEvents(Event event, DayOfWeek dayOfWeek) {
         for (Group group : groups) {
             event.setGroupId(group.getId());

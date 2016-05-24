@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EventService {
@@ -25,5 +26,13 @@ public class EventService {
 
     public int delete(int id) {
         return eventDao.delete(id);
+    }
+
+    /**
+     * TODO : process all results and group by week.
+     */
+    public List<Map<String, Object>> getGroupReport(int groupId, LocalDate start, LocalDate end) {
+        List<Map<String, Object>> events = ((EventDaoImpl)eventDao).getGroupReport(groupId, start, end);
+        return events;
     }
 }
