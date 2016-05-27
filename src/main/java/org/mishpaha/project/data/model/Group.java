@@ -2,10 +2,11 @@ package org.mishpaha.project.data.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.mishpaha.project.controller.View;
+import org.mishpaha.project.data.dao.Unit;
 
 import java.util.List;
 
-public class Group {
+public class Group implements Unit{
 
     @JsonView(View.Summary.class)
     private int id;
@@ -35,6 +36,10 @@ public class Group {
 
     public Group() {
 
+    }
+
+    public Group(int id) {
+        this.id = id;
     }
 
     public Group(int id, int leaderId, int regionId) {
@@ -94,5 +99,10 @@ public class Group {
         result = 31 * result + (leader != null ? leader.hashCode() : 0);
         result = 31 * result + (persons != null ? persons.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public Units getUnit() {
+        return Units.GROUP;
     }
 }

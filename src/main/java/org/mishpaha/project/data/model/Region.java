@@ -1,11 +1,13 @@
 package org.mishpaha.project.data.model;
 
+import org.mishpaha.project.data.dao.Unit;
+
 import java.util.List;
 
 /**
  * Created by fertrist on 24.09.15.
  */
-public class Region {
+public class Region implements Unit{
 
     private int id;
     private int leaderId;
@@ -61,5 +63,10 @@ public class Region {
 
     public void setTribeId(int tribeId) {
         this.tribeId = tribeId;
+    }
+
+    @Override
+    public Unit.Units getUnit() {
+        return Units.REGION;
     }
 }
