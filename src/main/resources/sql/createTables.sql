@@ -27,7 +27,7 @@ CREATE TABLE persons(
 	birthDay date,
 	isJew boolean,
 	givesTithe boolean DEFAULT false,
-	categoryId int,
+	categoryId int NOT NULL,
 	address varchar(100),
 	comment varchar(100),
 	wasAdded date DEFAULT GETDATE(),

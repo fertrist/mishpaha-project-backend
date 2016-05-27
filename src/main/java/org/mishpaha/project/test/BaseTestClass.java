@@ -188,7 +188,7 @@ class BaseTestClass {
                     List<Person> groupPersons = new ArrayList<>();
                     for (int k = 1; k <= personsPerGroup; k++, per++) {
                         groupPersons.add(new Person(per, "Имя_"+per, "Фамилия_"+per, "Отчество_"+per, true,
-                            birthday, per%2==0, per%2==1, per % categories.size(), "Киев_"+per, "None"));
+                            birthday, per%2==0, per%2==1, per % categories.size() + 1, "Киев_"+per, "None"));
                         groupMembers.add(new GroupMember(per, gr));
                     }
                     group.setPersons(groupPersons);
