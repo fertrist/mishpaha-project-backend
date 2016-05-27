@@ -2,6 +2,7 @@ package org.mishpaha.project.controller;
 
 import org.mishpaha.project.data.model.Event;
 import org.mishpaha.project.service.EventService;
+import org.mishpaha.project.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -67,12 +68,14 @@ public class EventController {
         if (start == null || start.compareTo(end) >= 0) {
             start = end.minusMonths(monthsPast);
         }
+        start = DateUtil.getNearestWeekBeginning(start);
         return start;
     }
 
     private LocalDate setDefaultEnd(LocalDate end) {
         if (end == null) {
             end = LocalDate.now().plusWeeks(weeksFuture);
+            end = DateUtil.getNearestWeekEnding(end).minusDays(1);
         }
         return end;
     }

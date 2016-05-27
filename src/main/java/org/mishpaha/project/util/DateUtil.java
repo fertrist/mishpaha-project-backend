@@ -2,12 +2,15 @@ package org.mishpaha.project.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtil {
 
+    private static final DayOfWeek FIRST_DAY_OF_WEEK = DayOfWeek.MONDAY;
+    private static final DayOfWeek LAST_DAY_OF_WEEK = DayOfWeek.SUNDAY;
 
     public static Date getDate(int year, int month, int day) {
         Calendar cal = Calendar.getInstance();
@@ -43,5 +46,19 @@ public class DateUtil {
 
     public static LocalDate fromDate(Date date) {
         return new java.sql.Date(date.getTime()).toLocalDate();
+    }
+
+    public static LocalDate getNearestWeekBeginning(LocalDate current) {
+        while (current.getDayOfWeek() != FIRST_DAY_OF_WEEK) {
+            current = current.plusDays(1);
+        }
+        return current;
+    }
+
+    public static LocalDate getNearestWeekEnding(LocalDate current) {
+        while (current.getDayOfWeek() != LAST_DAY_OF_WEEK) {
+            current = current.minusDays(1);
+        }
+        return current;
     }
 }
