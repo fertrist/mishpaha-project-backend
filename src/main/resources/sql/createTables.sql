@@ -134,6 +134,7 @@ CREATE TABLE events(
     groupId int NOT NULL,
     typeId int NOT NULL,
     happened DATE NOT NULL,
+    comment VARCHAR(255),
     PRIMARY KEY(id),
     UNIQUE(personId, typeId, happened),
     FOREIGN KEY(typeId) REFERENCES eventTypes(id)

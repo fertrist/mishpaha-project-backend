@@ -60,7 +60,8 @@ public class EventControllerTest extends BaseTestClass{
         long startTime = System.currentTimeMillis();
         Group group = getGroups().get(0);
         for (int i = 0; i < n; i++) {
-            event = new Event(++lastId, group.getPersons().get(0).getId(), group.getId(), 1, LocalDate.of(2016, 5, 1));
+            event = new Event(++lastId, group.getPersons().get(0).getId(),
+                group.getId(), 1, LocalDate.of(2016, 5, 1), null);
             String body = convertObjectToJson(event);
             resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/events/event")
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(body));
