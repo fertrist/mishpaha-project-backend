@@ -10,6 +10,10 @@ import java.util.List;
  */
 public class CategoryDaoImpl extends DaoImplementation<Category> {
 
+    public enum Categories{
+        white, blue, green, brown, guest
+    }
+
     public CategoryDaoImpl(DataSource dataSource, String table) {
         super(dataSource, table);
     }

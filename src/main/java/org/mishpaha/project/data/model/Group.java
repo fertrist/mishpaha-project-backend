@@ -1,7 +1,7 @@
 package org.mishpaha.project.data.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import org.mishpaha.project.controller.View;
+import org.mishpaha.project.util.View;
 import org.mishpaha.project.data.dao.Unit;
 
 import java.util.List;

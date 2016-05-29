@@ -128,7 +128,7 @@ CREATE TABLE eventTypes(
     PRIMARY KEY(id)
 );
 ----------------------------------------------------TABLE
-CREATE TABLE events(
+CREATE TABLE eventsTbl(
     id int AUTO_INCREMENT,
     personId int NOT NULL,
     groupId int NOT NULL,

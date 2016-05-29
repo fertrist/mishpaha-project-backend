@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mishpaha.project.config.MvcConfiguration;
-import org.mishpaha.project.controller.ListPeopleController;
+import org.mishpaha.project.controller.PeopleController;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.util.Util;
@@ -33,13 +33,13 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = MvcConfiguration.class)
 @WebAppConfiguration
-public class ListControllerTest extends BaseTestClass {
+public class PeopleControllerTest extends BaseTestClass {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
     private MockMvc mockMvc;
     @Autowired
-    private ListPeopleController personController;
+    private PeopleController personController;
 
     @Before
     public void setup() throws Exception {
@@ -50,7 +50,7 @@ public class ListControllerTest extends BaseTestClass {
     public void listGroupSummaryTest() throws Exception {
         ResultActions resultActions;
         for (Group group : getGroups()) {
-            resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/summary/group/" + group.getId()));
+            resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/people/summary/group/" + group.getId()));
             assertSuccess(resultActions);
             Group result = getGroupFromResponse(resultActions);
             assertGroupsEqual(result, group, Util.View.SUMMARY);
@@ -61,7 +61,7 @@ public class ListControllerTest extends BaseTestClass {
     public void listGroupInfoTest() throws Exception {
         ResultActions resultActions;
         for (Group group : getGroups()) {
-            resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/info/group/" + group.getId()));
+            resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/people/info/group/" + group.getId()));
             assertSuccess(resultActions);
             Group result = getGroupFromResponse(resultActions);
             assertGroupsEqual(result, group, Util.View.INFO);
@@ -72,7 +72,7 @@ public class ListControllerTest extends BaseTestClass {
     @Test
     public void listGroupRegionTribeInfo() throws Exception {
         //get summary group info
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/summary/group/1"))
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/people/summary/group/1"))
             .andExpect(jsonPath("$.persons", hasSize(personsPerGroup)));
 
         assertSuccess(resultActions);
@@ -92,7 +92,7 @@ public class ListControllerTest extends BaseTestClass {
                 .andExpect(jsonPath(format("$.persons.[%d].comment", i), is(personList.get(i).getComment())));
         }
 
-        resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/info/group/1"))
+        resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/people/info/group/1"))
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(jsonPath("$.persons", hasSize(personsPerGroup)));

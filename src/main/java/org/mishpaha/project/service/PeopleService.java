@@ -1,11 +1,15 @@
 package org.mishpaha.project.service;
 
+import org.mishpaha.project.data.dao.EmailDaoImpl;
 import org.mishpaha.project.data.dao.GenericDao;
 import org.mishpaha.project.data.dao.GroupDaoImpl;
 import org.mishpaha.project.data.dao.PersonDaoImpl;
+import org.mishpaha.project.data.dao.PhoneDaoImpl;
 import org.mishpaha.project.data.dao.RegionDaoImpl;
+import org.mishpaha.project.data.model.Email;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
+import org.mishpaha.project.data.model.Phone;
 import org.mishpaha.project.data.model.Region;
 import org.mishpaha.project.data.model.Tribe;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ListService {
+public class PeopleService {
 
     @Autowired
     private GenericDao<Person> personDao;
@@ -26,7 +30,9 @@ public class ListService {
     @Autowired
     private GenericDao<Tribe> tribeDao;
     @Autowired
-    private PersonService personService;
+    private GenericDao<Phone> phoneDao;
+    @Autowired
+    private GenericDao<Email> emailDao;
 
     /**
      * P0
@@ -44,8 +50,8 @@ public class ListService {
         Group group = groupDao.get(groupId);
         List<Person> persons = ((PersonDaoImpl) personDao).listGroup(groupId);
         for(Person person : persons){
-            person.setEmails(personService.getPersonEmails(person.getId()));
-            person.setPhones(personService.getPersonPhones(person.getId()));
+            person.setEmails(getPersonEmails(person.getId()));
+            person.setPhones(getPersonPhones(person.getId()));
         }
         group.setPersons(persons);
         return group;
@@ -79,4 +85,48 @@ public class ListService {
         return tribe;
     }
 
+    public List<String> getPersonEmails(int id) {
+        return ((EmailDaoImpl) emailDao).list(id);
+    }
+
+    public List<String> getPersonPhones(int id) {
+        return ((PhoneDaoImpl) phoneDao).list(id);
+    }
+
+    public Person getPerson(int id) {
+        return personDao.get(id);
+    }
+
+    /**
+     * P1
+     * @param person
+     * @return
+     */
+    public int savePerson(Person person) {
+        return personDao.save(person);
+    }
+
+    public int updatePerson(Person person) {
+        return personDao.update(person);
+    }
+
+    public int deletePerson(int id) {
+        return personDao.delete(id);
+    }
+
+    /**
+     * P2
+     * @param person
+     * @param groupId
+     */
+    public void movePersonToGroup(Person person, int groupId) {
+
+    }
+
+    /**
+     * P1
+     */
+    public void movePersonFromGroup() {
+
+    }
 }

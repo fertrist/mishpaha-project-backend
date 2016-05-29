@@ -8,9 +8,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mishpaha.project.config.MvcConfiguration;
 import org.mishpaha.project.controller.EventController;
+import org.mishpaha.project.data.dao.CategoryDaoImpl;
+import org.mishpaha.project.data.dao.CategoryDaoImpl.Categories;
 import org.mishpaha.project.data.dao.EventDaoImpl;
+import org.mishpaha.project.data.dao.EventDaoImpl.EventTypes;
 import org.mishpaha.project.data.model.Event;
+import org.mishpaha.project.data.model.EventType;
 import org.mishpaha.project.data.model.Group;
+import org.mishpaha.project.data.model.Person;
+import org.mishpaha.project.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
@@ -22,10 +28,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
 import static java.lang.String.format;
+import static org.junit.Assert.assertEquals;
+import static org.mishpaha.project.data.dao.EventDaoImpl.EventTypes.meeting;
 import static org.mishpaha.project.util.Util.assertSuccess;
 import static org.mishpaha.project.util.Util.convertObjectToJson;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -67,9 +76,9 @@ public class EventControllerTest extends BaseTestClass{
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(body));
             resultActions.andExpect(status().isOk());
             fromResponse = getEventFromResponse(resultActions);
-            Assert.assertEquals(event, fromResponse);
+            assertEquals(event, fromResponse);
             fromDb = eventDao.get(lastId);
-            Assert.assertEquals(event, fromDb);
+            assertEquals(event, fromDb);
 
             //remove event
             mockMvc.perform(MockMvcRequestBuilders.delete("/events/event/" + lastId)).andExpect(status().isOk());
@@ -83,8 +92,8 @@ public class EventControllerTest extends BaseTestClass{
     @Test
     public void testGroupEvents() throws Exception {
         int groupId = 1;
-        LocalDate start = LocalDate.now().minusMonths(EventController.monthsPast).minusDays(1);
-        LocalDate end = LocalDate.now().plusWeeks(EventController.weeksFuture).plusDays(1);
+        LocalDate end = DateUtil.setDefaultEnd(null, eventController);
+        LocalDate start = DateUtil.setDefaultStart(null, end, eventController);
 
         //default time range
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/events/group/" + groupId));
@@ -92,7 +101,7 @@ public class EventControllerTest extends BaseTestClass{
         List<Event> events = getEventsFromResponse(resultActions);
         LocalDate happened;
         for (Event event : events) {
-            Assert.assertEquals(groupId, event.getGroupId());
+            assertEquals(groupId, event.getGroupId());
             happened = event.getHappened();
             Assert.assertTrue(happened.isAfter(start) && happened.isBefore(end));
         }
@@ -108,7 +117,7 @@ public class EventControllerTest extends BaseTestClass{
         assertSuccess(resultActions);
         events = getEventsFromResponse(resultActions);
         for (Event event : events) {
-            Assert.assertEquals(groupId, event.getGroupId());
+            assertEquals(groupId, event.getGroupId());
             happened = event.getHappened();
             Assert.assertTrue(happened.isAfter(start) && happened.isBefore(end));
         }

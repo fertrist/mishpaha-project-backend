@@ -1,6 +1,8 @@
 package org.mishpaha.project.controller;
 
 import org.mishpaha.project.data.model.Event;
+import org.mishpaha.project.data.model.Report;
+import org.mishpaha.project.exception.DaoMistakeException;
 import org.mishpaha.project.service.EventService;
 import org.mishpaha.project.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,8 @@ import java.util.Map;
  * Handles requests related to event tracking.
  */
 @RestController
+@RequestMapping("/events")
 public class EventController {
-
-    public static final int monthsPast = 1;
-    public static final int weeksFuture = 2;
-
 
     @Autowired
     private EventService eventService;
@@ -36,47 +35,40 @@ public class EventController {
      * @param start start of time range
      * @param end of time range
      */
-    @RequestMapping(value = "/events/group/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/group/{id}", method = RequestMethod.GET)
     public List<Event> getGroupEvents(@PathVariable int id,
             @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate start,
             @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate end) {
-        end = setDefaultEnd(end);
-        start = setDefaultStart(start, end);
+        end = DateUtil.setDefaultEnd(end, this);
+        start = DateUtil.setDefaultStart(start, end, this);
         return eventService.getGroupEvents(id, start, end);
     }
 
-    @RequestMapping(value = "/events/event", method = RequestMethod.POST)
+    /**
+     * Should be correspondent to list region persons functionality.
+     */
+    @RequestMapping(value = "/region/{id}", method = RequestMethod.GET)
+    public List<Event> getRegionEvents(@PathVariable int id,
+                                      @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate start,
+                                      @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate end) {
+        end = DateUtil.setDefaultEnd(end, this);
+        start = DateUtil.setDefaultStart(start, end, this);
+        return eventService.getRegionEvents(id, start, end);
+    }
+
+    @RequestMapping(value = "/event", method = RequestMethod.POST)
     public Event saveEvent(@RequestBody Event event) {
         return eventService.save(event);
     }
 
-    @RequestMapping(value = "/events/event/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/event/{id}", method = RequestMethod.DELETE)
     public void deleteEvent(@PathVariable int id) {
         eventService.delete(id);
     }
 
-    @RequestMapping(value = "/reports/group/{groupId}", method = RequestMethod.GET)
-    public List<Map<String, Object>> getGroupEventReport(@PathVariable int groupId,
-             @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate start,
-             @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate end) {
-        end = setDefaultEnd(end);
-        start = setDefaultStart(start, end);
-        return eventService.getGroupReport(groupId, start, end);
+    @RequestMapping(value = "/event/{id}", method = RequestMethod.PUT)
+    public void updateEvent(@PathVariable int id, @RequestBody String comment) {
+        eventService.update(id, comment);
     }
 
-    private LocalDate setDefaultStart(LocalDate start, LocalDate end) {
-        if (start == null || start.compareTo(end) >= 0) {
-            start = end.minusMonths(monthsPast);
-        }
-        start = DateUtil.getNearestWeekBeginning(start);
-        return start;
-    }
-
-    private LocalDate setDefaultEnd(LocalDate end) {
-        if (end == null) {
-            end = LocalDate.now().plusWeeks(weeksFuture);
-            end = DateUtil.getNearestWeekEnding(end).minusDays(1);
-        }
-        return end;
-    }
 }

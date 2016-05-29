@@ -5,22 +5,125 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mishpaha.project.config.MvcConfiguration;
 import org.mishpaha.project.data.dao.EmailDaoImpl;
+import org.mishpaha.project.data.dao.EventDaoImpl;
 import org.mishpaha.project.data.dao.PhoneDaoImpl;
 import org.mishpaha.project.data.model.Email;
+import org.mishpaha.project.data.model.Event;
+import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Phone;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-/**
- * Tests for basic jdbc operations.
- */
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcConfiguration.class)
 @WebAppConfiguration
-public class EmailPhoneDaoTest extends BaseTestClass {
+public class DaoTest extends BaseTestClass {
+
+    private final String shouldSucceedMessage = "Request should succeed.";
+    private final String shouldFailMessage = "Request should fail.";
+
+    @Test
+    public void testListInsertDeletePerson() {
+        List<Person> initialList = personDao.list();
+        initialList.forEach(System.out::println);
+        int id = 100;
+        Person newPerson = new Person(id, "Иван", "Иванов", "Иванович", true, LocalDate.of(1987, 9, 3),
+            true, false, 1, null, null);
+        assertEquals(shouldSucceedMessage, personDao.save(newPerson), 1);
+        List<Person> resultList = personDao.list();
+        resultList.forEach(System.out::println);
+        assertEquals("New person should be added.", 1, resultList.size() - initialList.size());
+        Person person = personDao.get(id);
+        assertEquals("Objects should be equal!", person, newPerson);
+
+        //delete person
+        assertEquals(shouldSucceedMessage, 1, personDao.delete(id));
+        List<Person> finalList = personDao.list();
+        finalList.forEach(System.out::println);
+
+        //person is absent
+        assertEquals("Person should be removed.", personDao.get(id), null);
+        assertEquals("Person should be removed.", resultList.size() - finalList.size(), 1);
+    }
+
+    @Test
+    public void testUpdatePerson() {
+        int id = 5;
+        //check that person is present
+        Person person = personDao.get(id);
+        System.out.println(String.format("Got a person by id=%d: %s", id, person.toString()));
+        assertEquals("Person name must match.", getPersons().get(id-1).getFirstName(), person.getFirstName());
+
+        //test update
+        Person updatedPerson = new Person();
+        updatedPerson.setId(id);
+        updatedPerson.setFirstName("Имя-Имя-1");
+        assertEquals(shouldSucceedMessage, personDao.update(updatedPerson), 1);
+        person = personDao.get(id);
+        assertEquals("Person name must match.", "Имя-Имя-1", person.getFirstName());
+    }
+
+    /**
+     * Test part of report - count of calls, visits, meetings by categories.
+     */
+    @Test
+    public void testCountCallsMeetingsVisits() {
+        LocalDate now = LocalDate.now();
+        List<Map<String, Object>> list = ((EventDaoImpl) eventDao).getCallsMeetingsVisits(1, now.minusMonths(3), now);
+        for (Map<String, Object> rowMap : list) {
+            Set<String> keySet = rowMap.keySet();
+            for (String key : keySet) {
+                assertTrue(key.equalsIgnoreCase("count") || key.equalsIgnoreCase("type") || key.equalsIgnoreCase("week")
+                    || key.equalsIgnoreCase("new")  || key.equalsIgnoreCase("happened"));
+                switch (key.toLowerCase()) {
+                    case "count" :
+                        assertTrue(rowMap.get(key) instanceof Number);
+                        break;
+                    case "listed" :
+                        assertTrue(((String) rowMap.get(key)).equalsIgnoreCase("yes")
+                            || ((String) rowMap.get(key)).equalsIgnoreCase("no"));
+                        break;
+                    case "type" :
+                        assertTrue(((String) rowMap.get(key)).equalsIgnoreCase("visit")
+                            || ((String) rowMap.get(key)).equalsIgnoreCase("call")
+                            || ((String) rowMap.get(key)).equalsIgnoreCase("meeting"));
+                        break;
+                }
+            }
+        }
+        StringBuilder builder = new StringBuilder();
+        list.forEach(builder::append);
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Test selection of group events.
+     */
+    @Test
+    public void testSelectGroupMeetings() {
+        LocalDate now = LocalDate.now();
+        LocalDate past = now.minusMonths(3);
+        List<Event> events = ((EventDaoImpl) eventDao).getGroupMeetings(1, past, now);
+        for (Event event : events) {
+            assertEquals(1, event.getGroupId());
+            assertNotEquals(0, event.getPersonId());
+            assertEquals(EventDaoImpl.EventTypes.valueOf("group").ordinal() + 1, event.getTypeId());
+            assertTrue(event.getHappened().equals(past) || event.getHappened().equals(now) ||
+                (event.getHappened().isAfter(past) && event.getHappened().isBefore(now)));
+        }
+        System.out.println(Arrays.toString(events.toArray()));
+    }
 
     @Test
     public void testListInsertDeletePhone() {

@@ -18,11 +18,6 @@ public class Report {
     }
 
     public void addWeekRecord(LocalDate weekStart, LocalDate weekEnd, Map<String, Boolean> listed,
-                              List<String> newbies, List<String> guests) {
-        weeks.add(new Week(weekStart, weekEnd, listed, newbies, guests));
-    }
-
-    public void addWeekRecord(LocalDate weekStart, LocalDate weekEnd, Map<String, Boolean> listed,
                               List<String> newbies, List<String> guests, int meetingsNewbies, int visitsNewbies,
                               int meetingsListed,
                               int visitsListed, int calls) {

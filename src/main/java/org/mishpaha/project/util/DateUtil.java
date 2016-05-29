@@ -1,5 +1,9 @@
 package org.mishpaha.project.util;
 
+import org.mishpaha.project.config.Constants;
+import org.mishpaha.project.controller.EventController;
+import org.mishpaha.project.controller.ReportController;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
@@ -49,16 +53,41 @@ public class DateUtil {
     }
 
     public static LocalDate getNearestWeekBeginning(LocalDate current) {
+        boolean desc = current.getDayOfWeek().compareTo(DayOfWeek.THURSDAY) < 0;
         while (current.getDayOfWeek() != FIRST_DAY_OF_WEEK) {
-            current = current.plusDays(1);
+            current = desc ? current.minusDays(1) : current.plusDays(1);
         }
         return current;
     }
 
     public static LocalDate getNearestWeekEnding(LocalDate current) {
+        boolean asc = current.getDayOfWeek().compareTo(DayOfWeek.THURSDAY) > 0;
         while (current.getDayOfWeek() != LAST_DAY_OF_WEEK) {
-            current = current.minusDays(1);
+            current = asc ? current.plusDays(1) : current.minusDays(1);
         }
         return current;
+    }
+
+    public static LocalDate setDefaultStart(LocalDate start, LocalDate end, Object o) {
+        if (start == null || start.compareTo(end) >= 0) {
+            int past = Constants.EVENTS_DEFAULT_MONTH_PAST;
+            if (o.getClass().equals(ReportController.class)) {
+                past = Constants.REPORT_DEFAULT_MONTH_PAST;
+            }
+            start = end.minusMonths(past);
+        }
+        start = DateUtil.getNearestWeekBeginning(start);
+        return start;
+    }
+
+    public static LocalDate setDefaultEnd(LocalDate end, Object o) {
+        if (end == null) {
+            end = LocalDate.now();
+            if (o.getClass().equals(EventController.class)) {
+                end = end.plusWeeks(Constants.EVENTS_DEFAULT_WEEKS_FUTURE);
+            }
+            end = DateUtil.getNearestWeekEnding(end);
+        }
+        return end;
     }
 }

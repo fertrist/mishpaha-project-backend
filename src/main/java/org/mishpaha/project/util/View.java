@@ -1,4 +1,4 @@
-package org.mishpaha.project.controller;
+package org.mishpaha.project.util;
 
 public class View {
 

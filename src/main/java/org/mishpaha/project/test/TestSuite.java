@@ -5,11 +5,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-    ListControllerTest.class,
+    PeopleControllerTest.class,
     EventControllerTest.class,
-    ListServiceTest.class,
-    EmailPhoneDaoTest.class,
-    PersonDaoTest.class,
+    DaoTest.class,
 })
 public class TestSuite {
 

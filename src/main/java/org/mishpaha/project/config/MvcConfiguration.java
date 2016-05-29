@@ -66,7 +66,7 @@ public class MvcConfiguration {
     }
 
     @Bean
-    public GenericDao<Event> getEventDAO(DataSource dataSource) {
+    public EventDaoImpl getEventDAO(DataSource dataSource) {
         return new EventDaoImpl(dataSource, ModelUtil.getTable(Event.class));
     }
 

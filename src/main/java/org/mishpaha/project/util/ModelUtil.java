@@ -45,7 +45,7 @@ public abstract class ModelUtil {
         TABLE_NAMES.put(Phone.class.getSimpleName(), "phones");
         TABLE_NAMES.put(Email.class.getSimpleName(), "emails");
         TABLE_NAMES.put(Person.class.getSimpleName(), "persons");
-        TABLE_NAMES.put(Event.class.getSimpleName(), "events");
+        TABLE_NAMES.put(Event.class.getSimpleName(), "eventsTbl");
         TABLE_NAMES.put(EventType.class.getSimpleName(), "eventTypes");
     }
 
