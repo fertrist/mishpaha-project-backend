@@ -27,8 +27,8 @@ public class ReportController {
                               @RequestParam(required = false) @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate start,
                               @RequestParam(required = false) @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate end)
         throws DaoMistakeException {
-        end = DateUtil.setDefaultEnd(end, this);
-        start = DateUtil.setDefaultStart(start, end, this);
+        end = DateUtil.setDefaultEnd(end, this.getClass());
+        start = DateUtil.setDefaultStart(start, end, this.getClass());
         return reportService.getGroupReport(id, start, end);
     }
 
@@ -37,8 +37,8 @@ public class ReportController {
                                         @RequestParam(required = false) @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate start,
                                         @RequestParam(required = false) @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate end)
         throws DaoMistakeException {
-        end = DateUtil.setDefaultEnd(end, this);
-        start = DateUtil.setDefaultStart(start, end, this);
+        end = DateUtil.setDefaultEnd(end, this.getClass());
+        start = DateUtil.setDefaultStart(start, end, this.getClass());
         return reportService.getRegionReport(id, start, end);
     }
 

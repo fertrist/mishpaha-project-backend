@@ -28,13 +28,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
 import static java.lang.String.format;
 import static org.junit.Assert.assertEquals;
-import static org.mishpaha.project.data.dao.EventDaoImpl.EventTypes.meeting;
 import static org.mishpaha.project.util.Util.assertSuccess;
 import static org.mishpaha.project.util.Util.convertObjectToJson;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -92,8 +90,8 @@ public class EventControllerTest extends BaseTestClass{
     @Test
     public void testGroupEvents() throws Exception {
         int groupId = 1;
-        LocalDate end = DateUtil.setDefaultEnd(null, eventController);
-        LocalDate start = DateUtil.setDefaultStart(null, end, eventController);
+        LocalDate end = DateUtil.setDefaultEnd(null, eventController.getClass());
+        LocalDate start = DateUtil.setDefaultStart(null, end, eventController.getClass());
 
         //default time range
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/events/group/" + groupId));
@@ -112,14 +110,17 @@ public class EventControllerTest extends BaseTestClass{
         end = end.minusWeeks(2);
         resultActions = mockMvc.perform(MockMvcRequestBuilders.get(
             format("/events/group/%d?start=%s&end=%s", groupId, start.toString(), end.toString())));
-        start = start.minusDays(1);
-        end = end.plusDays(1);
         assertSuccess(resultActions);
         events = getEventsFromResponse(resultActions);
+        //to validate API
+        start = DateUtil.getNearestWeekBeginning(start);
+        end = DateUtil.getNearestWeekEnding(end);
         for (Event event : events) {
             assertEquals(groupId, event.getGroupId());
             happened = event.getHappened();
-            Assert.assertTrue(happened.isAfter(start) && happened.isBefore(end));
+            Assert.assertTrue(format("Event %s doesn't happened within range %s - %s ",
+                event.toString(), start.toString(), end.toString()),
+                happened.isAfter(start) && happened.isBefore(end));
         }
     }
 

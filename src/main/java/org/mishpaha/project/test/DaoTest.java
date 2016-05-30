@@ -24,6 +24,7 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcConfiguration.class)
@@ -84,9 +85,11 @@ public class DaoTest extends BaseTestClass {
         for (Map<String, Object> rowMap : list) {
             Set<String> keySet = rowMap.keySet();
             for (String key : keySet) {
-                assertTrue(key.equalsIgnoreCase("count") || key.equalsIgnoreCase("type") || key.equalsIgnoreCase("week")
-                    || key.equalsIgnoreCase("new")  || key.equalsIgnoreCase("happened"));
-                switch (key.toLowerCase()) {
+                key = key.toLowerCase();
+                assertTrue(key.equalsIgnoreCase(count.name()) || key.equalsIgnoreCase(type.name()) || key
+                    .equalsIgnoreCase(week.name()) || key.equalsIgnoreCase(listed.name())
+                    || key.equalsIgnoreCase(happened.name()));
+                switch (key) {
                     case "count" :
                         assertTrue(rowMap.get(key) instanceof Number);
                         break;

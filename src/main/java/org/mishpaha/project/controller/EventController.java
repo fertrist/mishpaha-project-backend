@@ -39,8 +39,8 @@ public class EventController {
     public List<Event> getGroupEvents(@PathVariable int id,
             @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate start,
             @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate end) {
-        end = DateUtil.setDefaultEnd(end, this);
-        start = DateUtil.setDefaultStart(start, end, this);
+        end = DateUtil.setDefaultEnd(end, this.getClass());
+        start = DateUtil.setDefaultStart(start, end, this.getClass());
         return eventService.getGroupEvents(id, start, end);
     }
 
@@ -51,8 +51,8 @@ public class EventController {
     public List<Event> getRegionEvents(@PathVariable int id,
                                       @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate start,
                                       @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate end) {
-        end = DateUtil.setDefaultEnd(end, this);
-        start = DateUtil.setDefaultStart(start, end, this);
+        end = DateUtil.setDefaultEnd(end, this.getClass());
+        start = DateUtil.setDefaultStart(start, end, this.getClass());
         return eventService.getRegionEvents(id, start, end);
     }
 

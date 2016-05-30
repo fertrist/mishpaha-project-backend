@@ -25,8 +25,8 @@ public class ReportControllerTest extends BaseTestClass{
 
     @Test
     public void testGroupReportDefaultDates() throws Exception {
-        LocalDate end = DateUtil.setDefaultEnd(null, reportController);
-        LocalDate start = DateUtil.setDefaultStart(null, end, reportController);
+        LocalDate end = DateUtil.setDefaultEnd(null, reportController.getClass());
+        LocalDate start = DateUtil.setDefaultStart(null, end, reportController.getClass());
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
             .get("/reports/group/1?start=" + start.toString() + "&end=" + end.toString()));
         Util.assertSuccess(resultActions);

@@ -1,5 +1,6 @@
 package org.mishpaha.project.util;
 
+import org.junit.Test;
 import org.mishpaha.project.config.Constants;
 import org.mishpaha.project.controller.EventController;
 import org.mishpaha.project.controller.ReportController;
@@ -10,6 +11,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DateUtil {
 
@@ -53,7 +57,7 @@ public class DateUtil {
     }
 
     public static LocalDate getNearestWeekBeginning(LocalDate current) {
-        boolean desc = current.getDayOfWeek().compareTo(DayOfWeek.THURSDAY) < 0;
+        boolean desc = current.getDayOfWeek().compareTo(DayOfWeek.THURSDAY) <= 0;
         while (current.getDayOfWeek() != FIRST_DAY_OF_WEEK) {
             current = desc ? current.minusDays(1) : current.plusDays(1);
         }
@@ -68,10 +72,10 @@ public class DateUtil {
         return current;
     }
 
-    public static LocalDate setDefaultStart(LocalDate start, LocalDate end, Object o) {
+    public static LocalDate setDefaultStart(LocalDate start, LocalDate end, Class c) {
         if (start == null || start.compareTo(end) >= 0) {
             int past = Constants.EVENTS_DEFAULT_MONTH_PAST;
-            if (o.getClass().equals(ReportController.class)) {
+            if (c.equals(ReportController.class)) {
                 past = Constants.REPORT_DEFAULT_MONTH_PAST;
             }
             start = end.minusMonths(past);
@@ -80,14 +84,74 @@ public class DateUtil {
         return start;
     }
 
-    public static LocalDate setDefaultEnd(LocalDate end, Object o) {
+    public static LocalDate setDefaultEnd(LocalDate end, Class c) {
         if (end == null) {
             end = LocalDate.now();
-            if (o.getClass().equals(EventController.class)) {
+            if (c.equals(EventController.class)) {
                 end = end.plusWeeks(Constants.EVENTS_DEFAULT_WEEKS_FUTURE);
             }
-            end = DateUtil.getNearestWeekEnding(end);
         }
+        end = DateUtil.getNearestWeekEnding(end);
         return end;
+    }
+
+    @Test
+    public void testDefaultDates() {
+        Class eventClass = EventController.class;
+        Class reportClass = ReportController.class;
+
+        //custom dates events
+        LocalDate start = LocalDate.of(2016, 4, 29);
+        LocalDate end = LocalDate.of(2016, 5, 24);
+        end = setDefaultEnd(end, eventClass);
+        start = setDefaultStart(start, end, eventClass);
+        assertEquals(LocalDate.of(2016, 5, 2), start);
+        assertEquals(LocalDate.of(2016, 5, 22), end);
+
+        //custom dates report
+        start = LocalDate.of(2016, 4, 29);
+        end = LocalDate.of(2016, 5, 24);
+        end = setDefaultEnd(end, reportClass);
+        start = setDefaultStart(start, end, reportClass);
+        System.out.println();
+        assertEquals(LocalDate.of(2016, 5, 2), start);
+        assertEquals(LocalDate.of(2016, 5, 22), end);
+
+        //default dates events
+        start = null; end = null;
+        end = setDefaultEnd(end, eventClass);
+        start = setDefaultStart(start, end, eventClass);
+        assertEquals(DayOfWeek.MONDAY, start.getDayOfWeek());
+        assertEquals(DayOfWeek.SUNDAY, end.getDayOfWeek());
+        assertTrue(start.plusMonths(1).isBefore(end));
+
+        //default dates report
+        start = null; end = null;
+        end = setDefaultEnd(end, reportClass);
+        start = setDefaultStart(start, end, reportClass);
+        assertEquals(DayOfWeek.MONDAY, start.getDayOfWeek());
+        assertEquals(DayOfWeek.SUNDAY, end.getDayOfWeek());
+        assertTrue(start.plusMonths(2).plusWeeks(2).isBefore(end));
+
+        //start after end events
+        start = LocalDate.of(2016, 5, 29);
+        end = LocalDate.of(2016, 4, 29);
+        end = setDefaultEnd(end, eventClass);
+        start = setDefaultStart(start, end, eventClass);
+        assertEquals(DayOfWeek.MONDAY, start.getDayOfWeek());
+        assertEquals(DayOfWeek.SUNDAY, end.getDayOfWeek());
+        assertEquals(LocalDate.of(2016, 4, 4), start);
+        assertEquals(LocalDate.of(2016, 5, 1), end);
+
+        //start after end report
+        start = LocalDate.of(2016, 5, 29);
+        end = LocalDate.of(2016, 4, 29);
+        end = setDefaultEnd(end, reportClass);
+        start = setDefaultStart(start, end, reportClass);
+        assertEquals(DayOfWeek.MONDAY, start.getDayOfWeek());
+        assertEquals(DayOfWeek.SUNDAY, end.getDayOfWeek());
+        assertEquals(LocalDate.of(2016, 2, 1), start);
+        assertEquals(LocalDate.of(2016, 5, 1), end);
+
     }
 }
