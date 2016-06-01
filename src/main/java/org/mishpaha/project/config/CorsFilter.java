@@ -23,7 +23,7 @@ class CorsFilter implements Filter {
 
     private String[] acceptedHosts = new String[] {"localhost"};
     private String accessControlAllowHeaders = "Accept-Encoding, X-Requested-With, Access-Control-Request-Method, " +
-        "Access-Control-Request-Headers, Accept-Encoding, Content-Type";
+        "Access-Control-Request-Headers, Accept-Encoding, Content-Type, Authorization";
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException
@@ -36,11 +36,16 @@ class CorsFilter implements Filter {
             response.setHeader("Access-Control-Allow-Origin", origin);
             response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
             response.setHeader("Access-Control-Max-Age", "3600");
-            response.setHeader("Access-Control-Allow-Headers", accessControlAllowHeaders.toLowerCase());
-            //response.setHeader("Access-Control-Allow-Credentials", "true");
-            //response.setHeader("Access-Control-Expose-Headers", "Location");
+            response.setHeader("Access-Control-Allow-Headers", accessControlAllowHeaders);
+            response.setHeader("Access-Control-Allow-Credentials", "true");
         }
-        chain.doFilter(req, res);
+        if("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(200);
+            response.getWriter().print("OK");
+            response.getWriter().flush();
+        } else {
+            chain.doFilter(req, res);
+        }
         System.out.println(getResponse(response));
     }
 
