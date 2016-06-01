@@ -11,15 +11,24 @@
     <properties>
         <java.version>1.8</java.version>
         <servlet-api.version>3.1.0</servlet-api.version>
+        <spring.latest.version>4.2.6.RELEASE</spring.latest.version>
+        <spring.security.version>4.1.0.RELEASE</spring.security.version>
+        <spring.boot.version>1.3.5.RELEASE</spring.boot.version>
     </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.2.5.RELEASE</version>
+        <version>1.3.5.RELEASE</version>
     </parent>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.latest.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -41,7 +50,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>${spring.version}</version>
+            <version>${spring.latest.version}</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
@@ -50,7 +59,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>${spring.version}</version>
+            <version>${spring.latest.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -132,19 +141,19 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>4.0.3.RELEASE</version>
+            <version>${spring.security.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>4.0.3.RELEASE</version>
+            <version>${spring.security.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>4.0.3.RELEASE</version>
+            <version>${spring.security.version}</version>
         </dependency>
 
         <dependency>

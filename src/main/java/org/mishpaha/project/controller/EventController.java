@@ -1,8 +1,6 @@
 package org.mishpaha.project.controller;
 
 import org.mishpaha.project.data.model.Event;
-import org.mishpaha.project.data.model.Report;
-import org.mishpaha.project.exception.DaoMistakeException;
 import org.mishpaha.project.service.EventService;
 import org.mishpaha.project.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Handles requests related to event tracking.

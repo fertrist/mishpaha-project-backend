@@ -3,7 +3,7 @@ package org.mishpaha.project.test;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mishpaha.project.config.MvcConfiguration;
+import org.mishpaha.project.config.Application;
 import org.mishpaha.project.controller.PeopleController;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = MvcConfiguration.class)
+@SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 public class PeopleControllerTest extends BaseTestClass {
 

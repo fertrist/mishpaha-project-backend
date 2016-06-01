@@ -3,7 +3,7 @@ package org.mishpaha.project.test;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mishpaha.project.config.MvcConfiguration;
+import org.mishpaha.project.config.Application;
 import org.mishpaha.project.data.dao.EmailDaoImpl;
 import org.mishpaha.project.data.dao.EventDaoImpl;
 import org.mishpaha.project.data.dao.PhoneDaoImpl;
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = MvcConfiguration.class)
+@ContextConfiguration(classes = Application.class)
 @WebAppConfiguration
 public class DaoTest extends BaseTestClass {
 

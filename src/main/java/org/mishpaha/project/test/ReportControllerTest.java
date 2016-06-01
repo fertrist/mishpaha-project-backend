@@ -2,7 +2,7 @@ package org.mishpaha.project.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mishpaha.project.config.MvcConfiguration;
+import org.mishpaha.project.config.Application;
 import org.mishpaha.project.controller.ReportController;
 import org.mishpaha.project.util.DateUtil;
 import org.mishpaha.project.util.Util;
@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalDate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = MvcConfiguration.class)
+@SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 public class ReportControllerTest extends BaseTestClass{
 

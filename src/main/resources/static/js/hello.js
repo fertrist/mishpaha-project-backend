@@ -19,10 +19,9 @@ angular.module('hello', [ 'ngRoute' ])
     //$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
   })
 .controller('home', function($scope, $http) {
-  $scope.greeting = "Hello, World!";
-    // $http.get('/resource/').success(function(data) {
-    //     $scope.greeting = data;
-    // })
+    $http.get('http://localhost:8080/resource/').success(function(data) {
+        $scope.greeting = data;
+    })
   })
 .controller('navigation',
   function($rootScope, $scope, $http, $location) {
@@ -32,18 +31,17 @@ angular.module('hello', [ 'ngRoute' ])
       + btoa(credentials.username + ":" + credentials.password)
     } : {};
 
-      // $http.get('user', {headers : headers}).success(function(data) {
-      //   if (data.name) {
-      //     $rootScope.authenticated = true;
-      //   } else {
-      //     $rootScope.authenticated = false;
-      //   }
-      //   callback && callback();
-      // }).error(function() {
-      //   $rootScope.authenticated = false;
-      //   callback && callback();
-      // });
-      $rootScope.authenticated = true;
+    $http.get("http://localhost:8080/user", {headers : headers}).success(function(data) {
+        if (data.name) {
+          $rootScope.authenticated = true;
+        } else {
+          $rootScope.authenticated = false;
+        }
+        callback && callback();
+      }).error(function() {
+        $rootScope.authenticated = false;
+        callback && callback();
+      });
     }
 
     authenticate();
@@ -61,14 +59,12 @@ angular.module('hello', [ 'ngRoute' ])
     };
 
     $scope.logout = function() {
-      // $http.post('logout', {}).success(function() {
-      //   $rootScope.authenticated = false;
-      //   $location.path("/");
-      // }).error(function(data) {
-      //   $rootScope.authenticated = false;
-      // });
-      $rootScope.authenticated = false;
-      $location.path("/");
+      $http.post('logout', {}).success(function() {
+        $rootScope.authenticated = false;
+        $location.path("/");
+      }).error(function(data) {
+        $rootScope.authenticated = false;
+      });
     }
 
   })

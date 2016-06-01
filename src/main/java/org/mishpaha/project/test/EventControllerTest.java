@@ -6,16 +6,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mishpaha.project.config.MvcConfiguration;
+import org.mishpaha.project.config.Application;
 import org.mishpaha.project.controller.EventController;
-import org.mishpaha.project.data.dao.CategoryDaoImpl;
-import org.mishpaha.project.data.dao.CategoryDaoImpl.Categories;
 import org.mishpaha.project.data.dao.EventDaoImpl;
-import org.mishpaha.project.data.dao.EventDaoImpl.EventTypes;
 import org.mishpaha.project.data.model.Event;
-import org.mishpaha.project.data.model.EventType;
 import org.mishpaha.project.data.model.Group;
-import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -39,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = MvcConfiguration.class)
+@SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 public class EventControllerTest extends BaseTestClass{
 

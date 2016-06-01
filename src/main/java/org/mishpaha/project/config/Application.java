@@ -49,7 +49,7 @@ import javax.sql.DataSource;
 @SpringBootApplication
 @ComponentScan(basePackages="org.mishpaha.project")
 @EnableAutoConfiguration
-public class MvcConfiguration {
+public class Application {
 
     static final String PROFILE_TEST = "test";
     static final String PROFILE_DEV = "dev";
@@ -60,7 +60,7 @@ public class MvcConfiguration {
     }
 
     public static void main(String[] args) {
-        SpringApplication springApplication = new SpringApplication(MvcConfiguration.class);
+        SpringApplication springApplication = new SpringApplication(Application.class);
         springApplication.setAdditionalProfiles(PROFILE_DEV);
         springApplication.run(args);
     }
