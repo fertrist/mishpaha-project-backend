@@ -1,3 +1,10 @@
+INSERT INTO users(username,password,enabled)
+VALUES ('admin','6029759c61d9ddaeefbd0f831d3e08fd107daef5e42ba5c33059c4cfe4e90c5edf407abab313d3f1', true);
+INSERT INTO user_roles (username, role)
+VALUES ('admin', 'ROLE_USER');
+INSERT INTO user_roles (username, role)
+VALUES ('admin', 'ROLE_ADMIN');
+
 INSERT INTO categories (name) values ('white');
 INSERT INTO categories (name) values ('blue');
 INSERT INTO categories (name) values ('green');

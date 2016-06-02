@@ -30,7 +30,7 @@ class CorsFilter implements Filter {
     {
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = ((HttpServletRequest) req);
-        System.out.println(getRequest(request));
+        //System.out.println(getRequest(request));
         String origin = request.getHeader("origin");
         if (isAcceptedOrigin(origin)) {
             response.setHeader("Access-Control-Allow-Origin", origin);
@@ -46,7 +46,7 @@ class CorsFilter implements Filter {
         } else {
             chain.doFilter(req, res);
         }
-        System.out.println(getResponse(response));
+        //System.out.println(getResponse(response));
     }
 
     private String getRequest(HttpServletRequest request) {

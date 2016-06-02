@@ -12,9 +12,6 @@ CREATE TABLE user_roles (
   UNIQUE KEY uni_username_role (role,username),
   CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES users (username)
 );
-CREATE TABLE security_groups (
-
-);
 
 CREATE TABLE phones(
 	personId int NOT NULL,
