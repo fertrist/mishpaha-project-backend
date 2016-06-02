@@ -1,14 +1,3 @@
-INSERT INTO users(username,password,enabled)
-VALUES ('admin','6029759c61d9ddaeefbd0f831d3e08fd107daef5e42ba5c33059c4cfe4e90c5edf407abab313d3f1', true);
-INSERT INTO users(username,password,enabled)
-VALUES ('user','6eed72034a0365aa0f839435eb57af6d51b52269de191127c197630b299e3e6d08b36279afec0351', true);
-INSERT INTO user_roles (username, role)
-VALUES ('admin', 'ROLE_USER');
-INSERT INTO user_roles (username, role)
-VALUES ('admin', 'ROLE_ADMIN');
-INSERT INTO user_roles (username, role)
-VALUES ('user', 'ROLE_ADMIN');
-
 INSERT INTO categories (name) values ('white');
 INSERT INTO categories (name) values ('blue');
 INSERT INTO categories (name) values ('green');
