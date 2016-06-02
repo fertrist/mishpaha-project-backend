@@ -24,53 +24,41 @@ public class PeopleController {
     @Autowired
     private PeopleService peopleService;
 
-    @RequestMapping(value = "/info/person/{id}")
-    @JsonView(View.Summary.class)
-    public Person getPerson(int id) {
-        return peopleService.getPerson(id);
-    }
-
-    @RequestMapping(value = "/summary/person/{id}")
-    @JsonView(View.Summary.class)
-    public Person getPersonInfo(int id) {
-        return peopleService.getPerson(id);
-    }
-
     @RequestMapping(value = "/summary/group/{id}", method = RequestMethod.GET)
     @JsonView(View.Summary.class)
-    public Group getGroup(@PathVariable int id) {
+    public Group getGroup(@PathVariable Integer id) {
         return peopleService.getGroupSummary(id);
     }
 
     @RequestMapping(value = "/info/group/{id}")
     @JsonView(View.Info.class)
-    public Group getGroupInfo(@PathVariable int id) {
+    public Group getGroupInfo(@PathVariable Integer id) {
         return peopleService.getGroupInfo(id);
     }
 
 
     @RequestMapping(value = "/summary/region/{id}", method = RequestMethod.GET)
     @JsonView(View.Summary.class)
-    public Region getRegion(@PathVariable int id) {
+    public Region getRegion(@PathVariable Integer id) {
         return peopleService.getRegion(id);
     }
 
     @RequestMapping(value = "/info/region/{id}")
     @JsonView(View.Info.class)
-    public Region getRegionInfo(@PathVariable int id) {
+    public Region getRegionInfo(@PathVariable Integer id) {
         return peopleService.getRegion(id);
     }
 
 
     @RequestMapping(value = "/summary/tribe/{id}", method = RequestMethod.GET)
     @JsonView(View.Summary.class)
-    public Tribe getTribe(@PathVariable int id) {
+    public Tribe getTribe(@PathVariable Integer id) {
         return peopleService.getTribe(id);
     }
 
     @RequestMapping(value = "/info/tribe/{id}")
     @JsonView(View.Info.class)
-    public Tribe getTribeInfo(@PathVariable int id) {
+    public Tribe getTribeInfo(@PathVariable Integer id) {
         return peopleService.getTribe(id);
     }
 
@@ -85,7 +73,20 @@ public class PeopleController {
     }
 
     @RequestMapping(value = "/person/{id}", method = RequestMethod.DELETE)
-    public int deletePerson(@PathVariable int id, @RequestBody Person person) {
+    public int deletePerson(@PathVariable Integer id, @RequestBody Person person) {
         return peopleService.deletePerson(id);
     }
+
+    @RequestMapping(value = "/person/{id}/info")
+    @JsonView(View.Summary.class)
+    public Person getPerson(@PathVariable Integer id) {
+        return peopleService.getPerson(id);
+    }
+
+    @RequestMapping(value = "/person/{id}/summary")
+    @JsonView(View.Summary.class)
+    public Person getPersonInfo(Integer id) {
+        return peopleService.getPerson(id);
+    }
+
 }

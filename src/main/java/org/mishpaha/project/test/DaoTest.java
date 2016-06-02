@@ -24,7 +24,11 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.*;
+import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.count;
+import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.happened;
+import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.listed;
+import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.type;
+import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.week;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = Application.class)

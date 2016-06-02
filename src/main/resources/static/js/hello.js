@@ -1,4 +1,5 @@
 angular.module('hello', [ 'ngRoute' ])
+.constant('ENV', {HOST:'http://localhost:8080'})
 .config(function($routeProvider, $httpProvider) {
   $routeProvider.when('/', {
     templateUrl : 'home.html',
@@ -16,32 +17,34 @@ angular.module('hello', [ 'ngRoute' ])
     templateUrl : 'report.html',
     controller : 'reportCtrl'
   }).otherwise('/');
-    //$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+   $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
   })
-.controller('home', function($scope, $http) {
-    $http.get('http://localhost:8080/resource/').success(function(data) {
-        $scope.greeting = data;
-    })
+.controller('home', function($scope, $http, ENV) {
+     var url = ENV.HOST + "/resource";
+     $http.get(url).success(function(data) {
+         $scope.greeting = data;
+     })
   })
 .controller('navigation',
-  function($rootScope, $scope, $http, $location) {
+  function($rootScope, $scope, $http, $location, ENV) {
+    var url = ENV.HOST + "/user";
     var authenticate = function(credentials, callback) {
 
       var headers = credentials ? {authorization : "Basic "
       + btoa(credentials.username + ":" + credentials.password)
     } : {};
 
-    $http.get("http://localhost:8080/user", {headers : headers}).success(function(data) {
-        if (data.name) {
-          $rootScope.authenticated = true;
-        } else {
-          $rootScope.authenticated = false;
-        }
-        callback && callback();
-      }).error(function() {
-        $rootScope.authenticated = false;
-        callback && callback();
-      });
+       $http.get(url, {headers : headers}).success(function(data) {
+         if (data.name) {
+           $rootScope.authenticated = true;
+         } else {
+           $rootScope.authenticated = false;
+         }
+         callback && callback();
+       }).error(function() {
+         $rootScope.authenticated = false;
+         callback && callback();
+       });
     }
 
     authenticate();
@@ -59,16 +62,24 @@ angular.module('hello', [ 'ngRoute' ])
     };
 
     $scope.logout = function() {
-      $http.post('logout', {}).success(function() {
-        $rootScope.authenticated = false;
-        $location.path("/");
-      }).error(function(data) {
-        $rootScope.authenticated = false;
-      });
+       $http.post(ENV.HOST + '/logout', {}).success(function() {
+         $rootScope.authenticated = false;
+         $location.path("/");
+       }).error(function(data) {
+         $rootScope.authenticated = false;
+       });
     }
 
   })
 .controller('eventsCtrl', function($rootScope, $scope, $http, $location){
+  
+  // function($scope, $http, ENV) {
+  //     $http.get(ENV.HOST)
+  // }
+  var getGroups = function() {
+
+  }
+
   $scope.dates = [
   "2016-04-10",
   "2016-04-11",
@@ -102,6 +113,7 @@ angular.module('hello', [ 'ngRoute' ])
   "2016-05-09",
   "2016-05-10"
   ];
+
     //white, blue, green, jewish
     $scope.categories = ["#FFC39F" /*leader*/, "#E5EEE0" /*white*/, "#5ED1BA" /*blue*/, "#7AEE3C" /*green*/, "#91B52D" /*jew*/];
     $scope.backGround = function(category) {
@@ -274,7 +286,7 @@ angular.module('hello', [ 'ngRoute' ])
    {id:12, firstName : "Name-12", midName : "Фамилия-4", lastName : "Отчество-4", categoryId : 3, isJew : true, givesTithe : true, comment : null, "sex":true, "birthDay":[1990,9,1], "emails":["Имя_1.a@gmail.com", "Имя_1.b@gmail.com"], "phones":["063000001","067000001"], "address":"Киев_1"},
    ]
  }];
-
+ 
  $scope.copy;
 
  $scope.selectPerson = function(person) {
@@ -394,5 +406,59 @@ findItem = function(array, item) {
     "16.05.16",
     "23.05.16"
   ];
+
+  $scope.eventsObj = {
+    "p_1" :
+    [
+    {"id":2144,"typeId":1, happened : [2016,4,1]},
+    {"id":2145,"typeId":2, happened : [2016,4,10]}
+    ],
+    "p_2" :
+    [
+    {"id":2146,"typeId":3,happened:[2016,4,11]},
+    {"id":2147,"typeId":4,happened:[2016,4,13]},
+    {"id":2155,"typeId":2,happened:[2016,4,13]},
+    {"id":2156,"typeId":3,happened:[2016,4,13]}
+    ],
+    "p_3" :
+    [
+    {"id":2148,"typeId":1,happened:[2016,4,13]},
+    {"id":2149,"typeId":2,happened:[2016,4,15]}
+    ],
+    "p_8" :
+    [
+    {"id":2150,"typeId":3,happened:[2016,4,10]}
+    ],
+    "p_5" :
+    [
+    {"id":2151,"typeId":4,happened:[2016,4,18]}
+    ],
+    "p_6" :
+    [
+    {"id":2152,"typeId":1,happened:[2016,4,20]}
+    ],
+    "p_7" :
+    [
+    {"id":2153,"typeId":2,happened:[2016,4,30]}
+    ],
+    "p_9" :
+    [
+    {"id":2154,"typeId":1,happened:[2016,5,4]}
+    ],
+    "p_10" :
+    [
+    {"id":2155,"typeId":1,happened:[2016,5,4]}
+    ],
+    "p_11" :
+    [
+    {"id":2156,"typeId":1,happened:[2016,5,4]}
+    ],
+    "p_12" :
+    [
+    {"id":2157,"typeId":1,happened:[2016,5,4]}
+    ]
+  };
+
+
 
 });
