@@ -15,6 +15,7 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import javax.sql.DataSource;
 
 @Configuration
+@EnableWebSecurity
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -25,16 +26,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Override to configure user store.
      */
-    /*@Override
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.
-                jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery("select username, password, enabled from " + usersTable + " where username=?")
-                .authoritiesByUsernameQuery("select username, role from " + usersTable + " where username=?");
+        auth
+            .inMemoryAuthentication()
+            .withUser("user").password("password").roles("USER").and()
+            .withUser("admin").password("password").roles("USER", "ADMIN");
+//        auth.
+//                jdbcAuthentication()
+//                .dataSource(dataSource)
+//                .usersByUsernameQuery("select username, password, enabled from " + usersTable + " where username=?")
+//                .authoritiesByUsernameQuery("select username, role from " + usersTable + " where username=?");
         //passwords should be written to database with the same encoding. Now they are loaded by init script
         //.passwordEncoder(new StandardPasswordEncoder("53cr3t"));
-    }*/
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().loginPage("/").and()
                 .httpBasic().and()
                 .authorizeRequests()
-                .antMatchers("/home.html", "/login.html", "/").permitAll()
+                .antMatchers("/home.html", "/login.html", "/", "/js/**", "/css/**").permitAll()
                 .anyRequest().authenticated().and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
                 .csrf().csrfTokenRepository(csrfTokenRepository());
