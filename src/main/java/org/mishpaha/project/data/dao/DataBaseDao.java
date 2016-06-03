@@ -20,8 +20,8 @@ public class DataBaseDao {
 
     private static final String OS = System.getProperty("os.name");
     private static final String SEPARATOR = OS.contains("Windows") ? "\\" : "/";
-    private static final String INIT_SCRIPT = String.format("main%sresources%ssql%screateTables.sql",
-            SEPARATOR, SEPARATOR, SEPARATOR);
+    private static final String INIT_SCRIPT = String.format("main%sresources%ssql%sh2%sschema.sql",
+            SEPARATOR, SEPARATOR, SEPARATOR, SEPARATOR);
     private JdbcTemplate jdbcTemplate;
 
     @Autowired

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.IOException;
@@ -92,5 +94,9 @@ public class Util {
     public static Group convertJsonToGroup(String json) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(json, Group.class);
+    }
+
+    public static UserDetails getPrincipal(){
+        return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

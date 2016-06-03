@@ -8,6 +8,9 @@ import org.mishpaha.project.data.model.Tribe;
 import org.mishpaha.project.service.PeopleService;
 import org.mishpaha.project.util.View;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +29,8 @@ public class PeopleController {
 
     @RequestMapping(value = "/summary/group/{id}", method = RequestMethod.GET)
     @JsonView(View.Summary.class)
-    public Group getGroup(@PathVariable Integer id) {
+    public Group getGroup(@AuthenticationPrincipal Authentication principal, @PathVariable Integer id) {
+
         return peopleService.getGroupSummary(id);
     }
 
@@ -85,7 +89,7 @@ public class PeopleController {
 
     @RequestMapping(value = "/person/{id}/summary")
     @JsonView(View.Summary.class)
-    public Person getPersonInfo(Integer id) {
+    public Person getPersonInfo(@PathVariable Integer id) {
         return peopleService.getPerson(id);
     }
 

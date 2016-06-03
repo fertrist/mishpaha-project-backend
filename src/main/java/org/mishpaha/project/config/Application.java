@@ -53,17 +53,13 @@ import javax.sql.DataSource;
 @EnableAutoConfiguration
 public class Application {
 
-    static final String PROFILE_TEST = "test";
-    static final String PROFILE_DEV = "dev";
-    static final String PROFILE_PROD = "prod";
-
     @Bean CommandLineRunner init() {
         return (evt) -> {};
     }
 
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(Application.class);
-        springApplication.setAdditionalProfiles(PROFILE_DEV);
+        springApplication.setAdditionalProfiles(Constants.PROFILE_DEV);
         springApplication.run(args);
     }
 
@@ -152,8 +148,8 @@ public class Application {
         return new DataBaseDao(dataSource);
     }
 
-    @Profile(PROFILE_DEV)
-    @Bean
+//    @Profile(Constants.PROFILE_DEV)
+//    @Bean
     public DataSource getDevelopmentDataSource() {
 //        BasicDataSource dataSource = new BasicDataSource();
 //        dataSource.setDriverClassName("org.h2.Driver");
@@ -171,6 +167,18 @@ public class Application {
                 .build();
     }
 
+    @Profile(Constants.PROFILE_TEST)
+    @Bean
+    public DataSource getTestingDataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("org.h2.Driver");
+        dataSource.setUrl("jdbc:h2:mem:people");
+        dataSource.setUsername("user");
+        dataSource.setPassword("password");
+        dataSource.setInitialSize(5);
+        dataSource.setMaxActive(10);
+        return dataSource;
+    }
     //	@Profile("prod")
 //	@Bean
 //	public DataSource getProductionDataSource() {
