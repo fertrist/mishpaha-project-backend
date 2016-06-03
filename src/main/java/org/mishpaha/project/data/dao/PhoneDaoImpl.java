@@ -1,6 +1,8 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.Phone;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 
 import javax.sql.DataSource;
@@ -13,6 +15,8 @@ import static java.lang.String.format;
  */
 public class PhoneDaoImpl extends DaoImplementation<Phone>{
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PhoneDaoImpl.class);
+
     public PhoneDaoImpl(DataSource dataSource, String table) {
         super(dataSource, table);
     }
@@ -20,8 +24,10 @@ public class PhoneDaoImpl extends DaoImplementation<Phone>{
     @Override
     public int save(Phone entity) {
         try {
-            return operations.update(format(INSERT, table, "personId, phone",
-                format("%d, '%s'", entity.getPersonId(), entity.getPhone())));
+            String sql = format(INSERT, table, "personId, phone",
+                format("%d, '%s'", entity.getPersonId(), entity.getPhone()));
+            LOGGER.info(sql);
+            return operations.update(sql);
         } catch (DataAccessException e) {
             e.printStackTrace();
             return 0;

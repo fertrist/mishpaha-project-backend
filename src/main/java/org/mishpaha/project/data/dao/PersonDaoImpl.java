@@ -3,6 +3,8 @@ package org.mishpaha.project.data.dao;
 import org.mishpaha.project.data.model.*;
 import org.mishpaha.project.util.DateUtil;
 import org.mishpaha.project.util.ModelUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -19,6 +21,8 @@ import static org.springframework.util.StringUtils.isEmpty;
  * Person dao implementation.
  */
 public class PersonDaoImpl extends DaoImplementation<Person> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersonDaoImpl.class);
 
     public PersonDaoImpl(DataSource dataSource, String table) {
         super(dataSource, table);
@@ -75,6 +79,7 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
             values.add(getQuotedString(entity.getComment()));
         }
         sql = String.format(sql, String.join(", ", fields), String.join(", ", values));
+        LOGGER.info(sql);
         return operations.update(sql);
     }
 

@@ -2,11 +2,15 @@ package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.Tribe;
 import org.mishpaha.project.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.util.List;
 
 public class TribeDaoImpl extends DaoImplementation<Tribe> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TribeDaoImpl.class);
 
     public TribeDaoImpl(DataSource dataSource, String table) {
         super(dataSource, table);
@@ -14,8 +18,10 @@ public class TribeDaoImpl extends DaoImplementation<Tribe> {
 
     @Override
     public int save(Tribe entity) {
-        return operations.update(String.format("INSERT INTO %s (name) values (%s)", table,
-            Util.getQuotedString(entity.getName())));
+        String sql = String.format("INSERT INTO %s (name) values (%s)", table,
+            Util.getQuotedString(entity.getName()));
+        LOGGER.info(sql);
+        return operations.update(sql);
     }
 
     @Override

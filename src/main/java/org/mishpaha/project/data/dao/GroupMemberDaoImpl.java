@@ -1,6 +1,8 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.GroupMember;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -10,14 +12,18 @@ import java.util.List;
  */
 public class GroupMemberDaoImpl extends DaoImplementation<GroupMember>{
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroupMemberDaoImpl.class);
+
     public GroupMemberDaoImpl(DataSource dataSource, String table) {
         super(dataSource, table);
     }
 
     @Override
     public int save(GroupMember entity) {
-        return operations.update(String.format("INSERT INTO %s (personId, groupId) values(%d, %d)",
-            table, entity.getPersonId(), entity.getGroupId()));
+        String sql = String.format("INSERT INTO %s (personId, groupId) values(%d, %d)",
+            table, entity.getPersonId(), entity.getGroupId());
+        LOGGER.info(sql);
+        return operations.update(sql);
     }
 
     @Override

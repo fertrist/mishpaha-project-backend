@@ -6,6 +6,8 @@ import org.mishpaha.project.data.model.EventType;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.util.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -23,6 +25,8 @@ import static org.mishpaha.project.util.ModelUtil.getTable;
 import static org.mishpaha.project.util.Util.getQuotedString;
 
 public class EventDaoImpl extends DaoImplementation<Event>{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventDaoImpl.class);
 
     public enum EventTypes{
         meeting, visit, call, group, club, common
@@ -51,6 +55,7 @@ public class EventDaoImpl extends DaoImplementation<Event>{
         String sql = format(INSERT, table, "personId, groupId, typeId, happened",
             format("%d,%d,%d,%s", entity.getPersonId(), entity.getGroupId(), entity.getTypeId(),
                 getQuotedString(entity.getHappened().toString())));
+        LOGGER.info(sql);
         return operations.update(sql);
     }
 
@@ -126,8 +131,10 @@ public class EventDaoImpl extends DaoImplementation<Event>{
      * Save event type.
      */
     public int saveEventType(String eventType) {
-        return operations.update(format(INSERT, getTable(EventType.class), "type",
-            getQuotedString(eventType)));
+        String sql = format(INSERT, getTable(EventType.class), "type",
+            getQuotedString(eventType));
+        LOGGER.info(sql);
+        return operations.update(sql);
     }
 
     /**

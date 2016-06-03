@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mishpaha.project.config.Application;
+import org.mishpaha.project.config.Constants;
 import org.mishpaha.project.controller.EventController;
 import org.mishpaha.project.data.dao.EventDaoImpl;
 import org.mishpaha.project.data.model.Event;
@@ -15,6 +16,7 @@ import org.mishpaha.project.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,6 +38,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
+@ActiveProfiles(Constants.PROFILE_TEST)
+
 public class EventControllerTest extends BaseTestClass{
 
     @Autowired

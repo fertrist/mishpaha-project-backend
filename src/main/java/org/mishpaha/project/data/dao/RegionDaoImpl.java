@@ -1,6 +1,8 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.Region;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -12,10 +14,14 @@ public class RegionDaoImpl extends DaoImplementation<Region>{
         super(dataSource, table);
     }
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegionDaoImpl.class);
+
     @Override
     public int save(Region region) {
-        return operations.update(format("INSERT INTO %s (id, leaderId, tribeId) values (%d, %d, %d)",
-            table, region.getId(), region.getLeaderId(), region.getTribeId()));
+        String sql = format("INSERT INTO %s (id, leaderId, tribeId) values (%d, %d, %d)",
+            table, region.getId(), region.getLeaderId(), region.getTribeId());
+        LOGGER.info(sql);
+        return operations.update(sql);
     }
 
     @Override

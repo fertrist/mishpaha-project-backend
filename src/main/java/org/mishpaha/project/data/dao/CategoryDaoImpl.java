@@ -1,6 +1,8 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.Category;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -14,6 +16,8 @@ public class CategoryDaoImpl extends DaoImplementation<Category> {
         white, blue, green, brown, guest
     }
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CategoryDaoImpl.class);
+
     public CategoryDaoImpl(DataSource dataSource, String table) {
         super(dataSource, table);
     }
@@ -22,9 +26,11 @@ public class CategoryDaoImpl extends DaoImplementation<Category> {
     public int save(Category entity) {
         if (entity.getId() > 0) {
             String sql = String.format("UPDATE %s SET name=? WHERE id=?", table);
+            LOGGER.info(sql);
             return operations.update(sql, entity.getName(), entity.getId());
         } else {
             String sql = String.format("INSERT INTO %s (name) values (?)", table);
+            LOGGER.info(sql);
             return operations.update(sql, entity.getName());
         }
     }

@@ -1,6 +1,8 @@
 package org.mishpaha.project.data.dao;
 
 import org.mishpaha.project.data.model.Email;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 
 import javax.sql.DataSource;
@@ -13,6 +15,8 @@ import static java.lang.String.format;
  */
 public class EmailDaoImpl extends DaoImplementation<Email>{
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailDaoImpl.class);
+
     public EmailDaoImpl(DataSource dataSource, String table) {
         super(dataSource, table);
     }
@@ -20,8 +24,10 @@ public class EmailDaoImpl extends DaoImplementation<Email>{
     @Override
     public int save(Email entity) {
         try {
-            return operations.update(format(INSERT, table, "personId, email",
-                format("%d, '%s'", entity.getPersonId(), entity.getEmail())));
+            String sql = format(INSERT, table, "personId, email",
+                format("%d, '%s'", entity.getPersonId(), entity.getEmail()));
+            LOGGER.info(sql);
+            return operations.update(sql);
         } catch (DataAccessException e) {
             e.printStackTrace();
             return 0;

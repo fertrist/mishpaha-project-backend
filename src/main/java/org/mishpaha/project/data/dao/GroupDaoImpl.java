@@ -3,6 +3,8 @@ package org.mishpaha.project.data.dao;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.util.ModelUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -11,14 +13,18 @@ import static java.lang.String.format;
 
 public class GroupDaoImpl extends DaoImplementation<Group>{
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroupDaoImpl.class);
+
     public GroupDaoImpl(DataSource dataSource, String table) {
         super(dataSource, table);
     }
 
     @Override
     public int save(Group group) {
-        return operations.update(format("INSERT INTO %s (id, leaderId, regionId) values (%d, %d, %d)",
-            table, group.getId(), group.getLeaderId(), group.getRegionId()));
+        String sql = format("INSERT INTO %s (id, leaderId, regionId) values (%d, %d, %d)",
+            table, group.getId(), group.getLeaderId(), group.getRegionId());
+        LOGGER.info(sql);
+        return operations.update(sql);
     }
 
     @Override
