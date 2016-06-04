@@ -93,4 +93,15 @@ public class SecurityDaoImpl {
         return operations.update("DELETE FROM user_roles WHERE username=" + Util.getQuotedString(username));
     }
 
+    public List<User> list() {
+        List<User> users = operations.query("SELECT username, password FROM users",
+            (rs, numRow) -> {
+                return new User(rs.getString("username"), rs.getString("password"));
+            });
+        for (User user : users) {
+            user.setRoles(getRoles(user.getUsername()));
+        }
+        return users;
+    }
+
 }

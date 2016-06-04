@@ -16,7 +16,10 @@ angular.module('hello', [ 'ngRoute' ])
   }).when('/report',{
     templateUrl : 'report.html',
     controller : 'reportCtrl'
-  }).otherwise('/');
+  }).when('/users',{
+        templateUrl : 'users.html',
+        controller : 'usersCtrl'
+   }).otherwise('/');
    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
   })
 .controller('home', function($scope, $http, ENV) {
@@ -27,7 +30,7 @@ angular.module('hello', [ 'ngRoute' ])
   })
 .controller('navigation',
   function($rootScope, $scope, $http, $location, ENV) {
-    var url = ENV.HOST + "/security/user";
+    var url = ENV.HOST + "/security/authenticated";
     var authenticate = function(credentials, callback) {
 
       var headers = credentials ? {authorization : "Basic "
@@ -460,5 +463,7 @@ findItem = function(array, item) {
   };
 
 
+
+}).controller('usersCtrl', function($rootScope, $scope, $http, $location){
 
 });

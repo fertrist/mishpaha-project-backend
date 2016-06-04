@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -24,9 +25,14 @@ public class SecurityController {
     @Autowired
     private SecurityService securityService;
 
-    @RequestMapping(value = USER, method = RequestMethod.GET)
+    @RequestMapping(value = AUTHENTICATED, method = RequestMethod.GET)
     public Principal getUser(Principal user) {
         return user;
+    }
+
+    @RequestMapping(value = USERS, method = RequestMethod.GET)
+    public List<User> getUsers() {
+        return securityService.getAllUsers();
     }
 
     @RequestMapping(value = USER, method = RequestMethod.POST)

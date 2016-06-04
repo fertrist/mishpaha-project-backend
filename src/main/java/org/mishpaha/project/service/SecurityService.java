@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -63,5 +64,9 @@ public class SecurityService {
             return 0;
         }
         return securityDao.delete(username);
+    }
+
+    public List<User> getAllUsers() {
+        return securityDao.list();
     }
 }

@@ -66,6 +66,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(REPORTS_BASE + REGION_ID).access(region_role)
                 .antMatchers(REPORTS_BASE + GROUP_ID).access(group_role)
                 .antMatchers(REPORTS_BASE + TRIBE_ID).access(tribe_role)
+
+                .antMatchers(SECURITY_BASE + USERS, SECURITY_BASE + USERS + "/**").access("hasRole('ADMIN')")
             .anyRequest().authenticated().and()
             .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
             .csrf().csrfTokenRepository(csrfTokenRepository());

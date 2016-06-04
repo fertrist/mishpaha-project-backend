@@ -24,7 +24,9 @@ public class Constants {
     public static final String EVENT_ID = "/event/{id}";
 
     public static final String SECURITY_BASE = "/security";
-    public static final String USER = "/user";
+    public static final String USERS = "/users";
+    public static final String AUTHENTICATED = "/authenticated";
+    public static final String USER = USERS + "/user";
 
     public static final int EVENTS_DEFAULT_MONTH_PAST = 1;
     public static final int EVENTS_DEFAULT_WEEKS_FUTURE = 2;
