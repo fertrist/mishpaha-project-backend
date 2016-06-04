@@ -15,7 +15,7 @@ import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Phone;
 import org.mishpaha.project.data.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -47,6 +47,8 @@ public class DaoTest extends BaseTestClass {
 
     @Autowired
     private SecurityDaoImpl securityDao;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
     public void testListInsertDeletePerson() {
@@ -238,7 +240,6 @@ public class DaoTest extends BaseTestClass {
 
     @Test
     public void testSecurityDao() {
-        StandardPasswordEncoder passwordEncoder = new StandardPasswordEncoder(SecurityConfig.SECRET);
         for (int i = 10; i < 20; i++) {
             User user = new User("user" + i, "password" + i);
             user.setRoles(Arrays.asList("ROLE_GROUP_" + i, "ROLE_GROUP_" + i*2));

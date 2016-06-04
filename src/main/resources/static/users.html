@@ -1,0 +1,77 @@
+<div>
+    <table class="table table-hover">
+        <thead>
+        <th>№</th>
+        <th>username</th>
+        <th>roles</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="user in users"
+                data-toggle="modal" data-target="#updateUserModal" ng-click="selectUser(user)">
+                <td>{{$index+1}}</td>
+                <td>{{user.username}}</td>
+                <td>{{arrayToString(user.roles)}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="updateUserModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form class="form-horizontal" role="form">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Update user</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="username">username:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="username" placeholder="enter username"
+                                       ng-model="copy.username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="roles">roles:</label>
+                            <div class="col-sm-8" id="roles">
+                                <div class="input-group" ng-repeat="role in copy.roles">
+                                    <input type="text" class="form-control"
+                                           placeholder="enter role" ng-model="role">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success" type="button" ng-click="removeRole(role)"><span
+                                            class="glyphicon glyphicon-minus"></span></button>
+                                    </span>
+                                </div>
+                                <div class="input-group col-sm-12">
+                                    <input type="text" class="form-control" placeholder="enter role" ng-model="newRole">
+								<span class="input-group-btn">
+									<button class="btn btn-success" type="button" ng-click="addRole()"><span
+                                            class="glyphicon glyphicon-plus"></span></button>
+								</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="password"
+                                   ng-click="changePasswordFlag()">change password:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="password" placeholder="enter password"
+                                       ng-model="password" ng-disabled="!changePassword">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-sm-2">
+                            <button type="submit" class="btn btn-default" ng-click="submitUpdate()" data-dismiss="modal">Submit</button>
+                        </div>
+                        <div class="col-sm-10">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

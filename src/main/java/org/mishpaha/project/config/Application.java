@@ -46,6 +46,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 import javax.sql.DataSource;
 
@@ -62,6 +64,11 @@ public class Application {
         SpringApplication springApplication = new SpringApplication(Application.class);
         springApplication.setAdditionalProfiles(Constants.PROFILE_DEV);
         springApplication.run(args);
+    }
+
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return new StandardPasswordEncoder(SecurityConfig.SECRET);
     }
 
     @Bean

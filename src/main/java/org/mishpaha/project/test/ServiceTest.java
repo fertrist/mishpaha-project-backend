@@ -4,13 +4,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mishpaha.project.config.Application;
 import org.mishpaha.project.config.Constants;
-import org.mishpaha.project.config.SecurityConfig;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Region;
 import org.mishpaha.project.data.model.User;
 import org.mishpaha.project.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -30,10 +29,11 @@ public class ServiceTest extends BaseTestClass {
 
     @Autowired
     private SecurityService securityService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
     public void testCreateRegionTribeRoles() {
-        StandardPasswordEncoder passwordEncoder = new StandardPasswordEncoder(SecurityConfig.SECRET);
         User user = new User("regionLeader", "thePassword123**!");
         user.setRoles(Arrays.asList("ROLE_REGION_1", "ROLE_REGION_2", "ROLE_GROUP_1"));
         User created = securityService.save(user);

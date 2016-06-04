@@ -4,7 +4,7 @@
 
 	<div ng-repeat="g in groups">
 		<div class="panel-heading">{{'Група-' + g.id}}</div>
-		<table class="table">
+		<table class="table table-hover">
 			<thead>
 				<th>№</th>
 				<th>Им'я</th>
@@ -14,7 +14,7 @@
 				<th>Адреса</th>
 			</thead>
 			<tbody>
-				<tr class="table-hover" ng-repeat="p in g.persons | orderBy : 'categoryId'"
+			<tr ng-repeat="p in g.persons | orderBy : 'categoryId'"
 				data-toggle="modal" data-target="#updatePersonModal" ng-click="selectPerson(p)">
 				<td ng-style="backGround(p.categoryId)">{{$index+1}}</td>
 				<td>{{p.firstName + ' ' + p.midName + ' ' + p.lastName}}</td>

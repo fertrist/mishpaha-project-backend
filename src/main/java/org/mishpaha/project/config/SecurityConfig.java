@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
@@ -26,6 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String SECRET = "53cr3t";
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private final static String usersTable = "users";
     private final static String userRolesTable = "user_roles";
 
@@ -40,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .usersByUsernameQuery("select username, password, enabled from " + usersTable + " where username=?")
             .authoritiesByUsernameQuery("select username, role from " + userRolesTable + " where username=?")
         //passwords should be written to database with the same encoding. Now they are loaded by init script
-        .passwordEncoder(new StandardPasswordEncoder(SECRET))
+        .passwordEncoder(passwordEncoder)
         ;
     }
 

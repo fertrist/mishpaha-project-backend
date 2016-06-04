@@ -6,6 +6,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,8 +36,13 @@ public class SecurityController {
         return securityService.getAllUsers();
     }
 
+    @RequestMapping(value = USER, method = RequestMethod.PUT)
+    public User updateUser(@RequestBody User user) {
+        return securityService.update(user);
+    }
+
     @RequestMapping(value = USER, method = RequestMethod.POST)
-    public User saveUser(User user) {
+    public User saveUser(@RequestBody User user) {
         return securityService.save(user);
     }
 
