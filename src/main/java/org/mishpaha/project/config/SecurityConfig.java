@@ -15,6 +15,9 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 import javax.sql.DataSource;
 
+import static java.lang.String.format;
+import static org.mishpaha.project.config.Constants.*;
+
 @Configuration
 @EnableWebSecurity
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
@@ -43,14 +46,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        final String template = "hasAnyRole('ROLE_%s_'.concat(#id), 'ADMIN')";
+        final String group_role = format(template, "GROUP");
+        final String region_role = format(template, "REGION");
+        final String tribe_role = format(template, "TRIBE");
         http
-                .formLogin().loginPage("/").and()
-                .httpBasic().and()
-                .authorizeRequests()
+            .formLogin().loginPage("/").and()
+            .httpBasic().and()
+            .authorizeRequests()
                 .antMatchers("/home.html", "/login.html", "/", "/js/**", "/css/**").permitAll()
-                .anyRequest().authenticated().and()
-                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
-                .csrf().csrfTokenRepository(csrfTokenRepository());
+                .antMatchers(PEOPLE_BASE + GROUP_ID + "/**").access(group_role)
+                .antMatchers(PEOPLE_BASE + REGION_ID + "/**").access(region_role)
+                .antMatchers(PEOPLE_BASE + TRIBE_ID + "/**").access(tribe_role)
+
+                .antMatchers(EVENTS_BASE + GROUP_ID).access(group_role)
+                .antMatchers(EVENTS_BASE + REGION_ID).access(region_role)
+                .antMatchers(EVENTS_BASE + TRIBE_ID).access(tribe_role)
+
+                .antMatchers(REPORTS_BASE + REGION_ID).access(region_role)
+                .antMatchers(REPORTS_BASE + GROUP_ID).access(group_role)
+                .antMatchers(REPORTS_BASE + TRIBE_ID).access(tribe_role)
+            .anyRequest().authenticated().and()
+            .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
+            .csrf().csrfTokenRepository(csrfTokenRepository());
     }
 
     private CsrfTokenRepository csrfTokenRepository() {

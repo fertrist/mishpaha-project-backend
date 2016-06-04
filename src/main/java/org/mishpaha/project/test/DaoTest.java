@@ -1,16 +1,22 @@
 package org.mishpaha.project.test;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mishpaha.project.config.Application;
+import org.mishpaha.project.config.Constants;
+import org.mishpaha.project.config.SecurityConfig;
 import org.mishpaha.project.data.dao.EmailDaoImpl;
 import org.mishpaha.project.data.dao.EventDaoImpl;
 import org.mishpaha.project.data.dao.PhoneDaoImpl;
+import org.mishpaha.project.data.dao.SecurityDaoImpl;
 import org.mishpaha.project.data.model.Email;
 import org.mishpaha.project.data.model.Event;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Phone;
+import org.mishpaha.project.data.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -33,10 +39,14 @@ import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.week;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = Application.class)
 @WebAppConfiguration
+@ActiveProfiles(Constants.PROFILE_TEST)
 public class DaoTest extends BaseTestClass {
 
     private final String shouldSucceedMessage = "Request should succeed.";
     private final String shouldFailMessage = "Request should fail.";
+
+    @Autowired
+    private SecurityDaoImpl securityDao;
 
     @Test
     public void testListInsertDeletePerson() {
@@ -136,37 +146,37 @@ public class DaoTest extends BaseTestClass {
     public void testListInsertDeletePhone() {
         List<Phone> initialList = phoneDao.list();
         initialList.forEach(System.out::println);
-        Assert.assertEquals("Initial count doesn't not match.", getPersons().size()*2, initialList.size());
+        assertEquals("Initial count doesn't not match.", getPersons().size()*2, initialList.size());
 
         //add new phone record
         int personId = 1;
         Phone newPhone = new Phone(personId, "0631234565");
-        Assert.assertEquals(shouldSucceedMessage, 1, phoneDao.save(newPhone));
+        assertEquals(shouldSucceedMessage, 1, phoneDao.save(newPhone));
         List<String> personsPhones = ((PhoneDaoImpl) phoneDao).list(personId);
         personsPhones.forEach(System.out::println);
-        Assert.assertEquals("Phone count doesn't not match.", getPhones(personId).size() + 1, personsPhones.size());
+        assertEquals("Phone count doesn't not match.", getPhones(personId).size() + 1, personsPhones.size());
         //add two more phones
         newPhone.setPhone("0977894563");
-        Assert.assertEquals(shouldSucceedMessage, 1, phoneDao.save(newPhone));
+        assertEquals(shouldSucceedMessage, 1, phoneDao.save(newPhone));
         newPhone.setPhone("0980004562");
-        Assert.assertEquals(shouldSucceedMessage, 1, phoneDao.save(newPhone));
+        assertEquals(shouldSucceedMessage, 1, phoneDao.save(newPhone));
         personsPhones = ((PhoneDaoImpl) phoneDao).list(personId);
         personsPhones.forEach(System.out::println);
-        Assert.assertEquals("Phone count doesn't not match.", getPhones(personId).size() + 3, personsPhones.size());
+        assertEquals("Phone count doesn't not match.", getPhones(personId).size() + 3, personsPhones.size());
 
         //delete phone
-        Assert.assertEquals(shouldSucceedMessage, 1, ((PhoneDaoImpl) phoneDao).delete(newPhone));
+        assertEquals(shouldSucceedMessage, 1, ((PhoneDaoImpl) phoneDao).delete(newPhone));
         personsPhones = ((PhoneDaoImpl) phoneDao).list(personId);
         personsPhones.forEach(System.out::println);
-        Assert.assertEquals("Phone count doesn't not match.", getPhones(personId).size() + 2, personsPhones.size());
+        assertEquals("Phone count doesn't not match.", getPhones(personId).size() + 2, personsPhones.size());
         //delete others by one request
-        Assert.assertEquals(shouldSucceedMessage, 4, phoneDao.delete(personId));
+        assertEquals(shouldSucceedMessage, 4, phoneDao.delete(personId));
         personsPhones = ((PhoneDaoImpl) phoneDao).list(personId);
-        Assert.assertEquals("List should be empty.", getPhones(personId).size()-2, personsPhones.size());
+        assertEquals("List should be empty.", getPhones(personId).size()-2, personsPhones.size());
 
         //phone is absent
         initialList = phoneDao.list();
-        Assert.assertEquals("Phone count doesn't not match.", getPersons().size()*2-2, initialList.size());
+        assertEquals("Phone count doesn't not match.", getPersons().size()*2-2, initialList.size());
     }
 
     /**
@@ -178,51 +188,66 @@ public class DaoTest extends BaseTestClass {
         phoneDao.list().forEach(System.out::println);
         int personId = 3;
         String oldPhone = ((PhoneDaoImpl) phoneDao).list(personId).get(1);
-        Assert.assertEquals(shouldSucceedMessage, 1, ((PhoneDaoImpl) phoneDao).delete(new Phone(personId, oldPhone)));
+        assertEquals(shouldSucceedMessage, 1, ((PhoneDaoImpl) phoneDao).delete(new Phone(personId, oldPhone)));
         phoneDao.list().forEach(System.out::println);
 
         //"update" phone
         String newPhone = "0993652356";
-        Assert.assertEquals(shouldSucceedMessage, 1, phoneDao.save(new Phone(personId, newPhone)));
+        assertEquals(shouldSucceedMessage, 1, phoneDao.save(new Phone(personId, newPhone)));
         phoneDao.list().forEach(System.out::println);
         //try to save the same phone
-        Assert.assertEquals(shouldSucceedMessage, 0, phoneDao.save(new Phone(personId, newPhone)));
+        assertEquals(shouldSucceedMessage, 0, phoneDao.save(new Phone(personId, newPhone)));
     }
 
     @Test
     public void testListInsertDeleteEmail() {
         List<Email> initialList = emailDao.list();
         initialList.forEach(System.out::println);
-        Assert.assertEquals("Initial count doesn't not match.", getPersons().size()*2, initialList.size());
+        assertEquals("Initial count doesn't not match.", getPersons().size()*2, initialList.size());
 
         //add new email record
         int personId = 3;
         Email newEmail = new Email(personId, "fedorov.fedor@i.ua");
-        Assert.assertEquals(shouldSucceedMessage, 1, emailDao.save(newEmail));
+        assertEquals(shouldSucceedMessage, 1, emailDao.save(newEmail));
         List<String> personsEmails = ((EmailDaoImpl) emailDao).list(personId);
         personsEmails.forEach(System.out::println);
-        Assert.assertEquals("Email count doesn't not match.", 3, personsEmails.size());
+        assertEquals("Email count doesn't not match.", 3, personsEmails.size());
         //add two more emails
         newEmail.setEmail("fedorov.fedor@ukr.net");
-        Assert.assertEquals(shouldSucceedMessage, 1, emailDao.save(newEmail));
+        assertEquals(shouldSucceedMessage, 1, emailDao.save(newEmail));
         newEmail.setEmail("fedorov.fedor@yandex.ru");
-        Assert.assertEquals(shouldSucceedMessage, 1, emailDao.save(newEmail));
+        assertEquals(shouldSucceedMessage, 1, emailDao.save(newEmail));
         personsEmails = ((EmailDaoImpl) emailDao).list(personId);
         personsEmails.forEach(System.out::println);
-        Assert.assertEquals("Email count doesn't not match.", 5, personsEmails.size());
+        assertEquals("Email count doesn't not match.", 5, personsEmails.size());
 
         //delete email
-        Assert.assertEquals(shouldSucceedMessage, 1, ((EmailDaoImpl) emailDao).delete(newEmail));
+        assertEquals(shouldSucceedMessage, 1, ((EmailDaoImpl) emailDao).delete(newEmail));
         personsEmails = ((EmailDaoImpl) emailDao).list(personId);
         personsEmails.forEach(System.out::println);
-        Assert.assertEquals("Email count doesn't not match.", 4, personsEmails.size());
+        assertEquals("Email count doesn't not match.", 4, personsEmails.size());
         //delete other by one request
-        Assert.assertEquals(shouldSucceedMessage, 4, emailDao.delete(personId));
+        assertEquals(shouldSucceedMessage, 4, emailDao.delete(personId));
         personsEmails = ((EmailDaoImpl) emailDao).list(personId);
-        Assert.assertEquals("List should be empty.", 0, personsEmails.size());
+        assertEquals("List should be empty.", 0, personsEmails.size());
 
         //email is absent
         initialList = emailDao.list();
-        Assert.assertEquals("Email count doesn't not match.", getPersons().size()*2-2, initialList.size());
+        assertEquals("Email count doesn't not match.", getPersons().size()*2-2, initialList.size());
+    }
+
+    @Test
+    public void testSecurityDao() {
+        StandardPasswordEncoder passwordEncoder = new StandardPasswordEncoder(SecurityConfig.SECRET);
+        for (int i = 10; i < 20; i++) {
+            User user = new User("user" + i, "password" + i);
+            user.setRoles(Arrays.asList("ROLE_GROUP_" + i, "ROLE_GROUP_" + i*2));
+            User created = securityDao.save(user);
+            assertEquals(user.getUsername(), created.getUsername());
+            assertTrue(passwordEncoder.matches(user.getPassword(), created.getPassword()));
+            assertEquals(user.getRoles().size(), created.getRoles().size());
+            assertTrue(user.getRoles().containsAll(created.getRoles())
+                && created.getRoles().containsAll(user.getRoles()));
+        }
     }
 }

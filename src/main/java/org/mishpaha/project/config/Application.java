@@ -16,6 +16,7 @@ import org.mishpaha.project.data.dao.PersonDaoImpl;
 import org.mishpaha.project.data.dao.PhoneDaoImpl;
 import org.mishpaha.project.data.dao.RegionDaoImpl;
 import org.mishpaha.project.data.dao.SchoolDaoImpl;
+import org.mishpaha.project.data.dao.SecurityDaoImpl;
 import org.mishpaha.project.data.dao.TrainingDaoImpl;
 import org.mishpaha.project.data.dao.TribeDaoImpl;
 import org.mishpaha.project.data.dao.VolunteerDaoImpl;
@@ -61,6 +62,11 @@ public class Application {
         SpringApplication springApplication = new SpringApplication(Application.class);
         springApplication.setAdditionalProfiles(Constants.PROFILE_DEV);
         springApplication.run(args);
+    }
+
+    @Bean
+    public SecurityDaoImpl getSecurityDAO(DataSource dataSource) {
+        return new SecurityDaoImpl(dataSource);
     }
 
     @Bean
@@ -148,8 +154,8 @@ public class Application {
         return new DataBaseDao(dataSource);
     }
 
-//    @Profile(Constants.PROFILE_DEV)
-//    @Bean
+        @Profile(Constants.PROFILE_DEV)
+        @Bean
     public DataSource getDevelopmentDataSource() {
 //        BasicDataSource dataSource = new BasicDataSource();
 //        dataSource.setDriverClassName("org.h2.Driver");

@@ -23,13 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mishpaha.project.data.dao.CategoryDaoImpl.Categories.green;
 import static org.mishpaha.project.data.dao.CategoryDaoImpl.Categories.white;
 import static org.mishpaha.project.data.dao.EventDaoImpl.EventTypes.call;
 import static org.mishpaha.project.data.dao.EventDaoImpl.EventTypes.group;
@@ -68,10 +66,10 @@ abstract class BaseTestClass {
 
     //each 15th is group leader, each 31th is region leader, each 23d is tribe leader
     protected static final int personsPerGroup = 15;
-    private static final int groupsPerRegion = 2;
-    private static final int regionsPerTribe = 2;
-    private static final int tribeCount = 1;
-    private static final int personsCount = personsPerGroup * groupsPerRegion * regionsPerTribe * tribeCount +
+    protected static final int groupsPerRegion = 2;
+    protected static final int regionsPerTribe = 2;
+    protected static final int tribeCount = 1;
+    protected static final int personsCount = personsPerGroup * groupsPerRegion * regionsPerTribe * tribeCount +
         tribeCount + regionsPerTribe * tribeCount; //extra points for region and tribe leaders
     private List<EventType> eventTypes = new ArrayList<>();
 

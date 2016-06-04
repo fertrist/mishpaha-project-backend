@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.mishpaha.project.config.Constants.*;
+
 /**
  * Handles requests related to event tracking.
  */
 @RestController
-@RequestMapping("/events")
+@RequestMapping(EVENTS_BASE)
 public class EventController {
 
     @Autowired
@@ -32,7 +34,7 @@ public class EventController {
      * @param start start of time range
      * @param end of time range
      */
-    @RequestMapping(value = "/group/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = GROUP_ID, method = RequestMethod.GET)
     public List<Event> getGroupEvents(@PathVariable int id,
             @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate start,
             @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate end) {
@@ -44,7 +46,7 @@ public class EventController {
     /**
      * Should be correspondent to list region persons functionality.
      */
-    @RequestMapping(value = "/region/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = REGION_ID, method = RequestMethod.GET)
     public List<Event> getRegionEvents(@PathVariable int id,
                                       @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate start,
                                       @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate end) {
@@ -53,17 +55,17 @@ public class EventController {
         return eventService.getRegionEvents(id, start, end);
     }
 
-    @RequestMapping(value = "/event", method = RequestMethod.POST)
+    @RequestMapping(value = EVENT, method = RequestMethod.POST)
     public Event saveEvent(@RequestBody Event event) {
         return eventService.save(event);
     }
 
-    @RequestMapping(value = "/event/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = EVENT_ID, method = RequestMethod.DELETE)
     public void deleteEvent(@PathVariable int id) {
         eventService.delete(id);
     }
 
-    @RequestMapping(value = "/event/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = EVENT_ID, method = RequestMethod.PUT)
     public void updateEvent(@PathVariable int id, @RequestBody String comment) {
         eventService.update(id, comment);
     }

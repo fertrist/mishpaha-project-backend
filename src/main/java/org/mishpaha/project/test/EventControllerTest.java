@@ -39,7 +39,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @ActiveProfiles(Constants.PROFILE_TEST)
-
 public class EventControllerTest extends BaseTestClass{
 
     @Autowired

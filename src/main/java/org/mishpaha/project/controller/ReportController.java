@@ -15,14 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.mishpaha.project.config.Constants.*;
+
 @RestController
-@RequestMapping("/reports")
+@RequestMapping(REPORTS_BASE)
 public class ReportController {
 
     @Autowired
     private ReportService reportService;
 
-    @RequestMapping(value = "/group/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = GROUP_ID, method = RequestMethod.GET)
     public Report getGroupReport(@PathVariable int id,
                               @RequestParam(required = false) @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate start,
                               @RequestParam(required = false) @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate end)
@@ -32,7 +34,7 @@ public class ReportController {
         return reportService.getGroupReport(id, start, end);
     }
 
-    @RequestMapping(value = "/region/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = REGION_ID, method = RequestMethod.GET)
     public List<Report> getRegionReport(@PathVariable int id,
                                         @RequestParam(required = false) @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate start,
                                         @RequestParam(required = false) @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate end)

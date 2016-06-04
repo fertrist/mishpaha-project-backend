@@ -8,6 +8,8 @@ import org.mishpaha.project.util.DateUtil;
 @Suite.SuiteClasses({
     PeopleControllerTest.class,
     EventControllerTest.class,
+    ReportControllerTest.class,
+    ServiceTest.class,
     DaoTest.class,
     DateUtil.class
 })

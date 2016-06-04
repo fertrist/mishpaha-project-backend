@@ -8,89 +8,75 @@ import org.mishpaha.project.data.model.Tribe;
 import org.mishpaha.project.service.PeopleService;
 import org.mishpaha.project.util.View;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.mishpaha.project.config.Constants.*;
+
 /**
  * Handles requests related to listing persons.
  */
 @RestController
-@RequestMapping("/people")
+@RequestMapping(PEOPLE_BASE)
 public class PeopleController {
 
     @Autowired
     private PeopleService peopleService;
 
-    @RequestMapping(value = "/summary/group/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = GROUP_SUMMARY, method = RequestMethod.GET)
     @JsonView(View.Summary.class)
-    public Group getGroup(@AuthenticationPrincipal Authentication principal, @PathVariable Integer id) {
-
+    public Group getGroup(@PathVariable Integer id) {
         return peopleService.getGroupSummary(id);
     }
 
-    @RequestMapping(value = "/info/group/{id}")
+    @RequestMapping(value = GROUP_INFO)
     @JsonView(View.Info.class)
     public Group getGroupInfo(@PathVariable Integer id) {
         return peopleService.getGroupInfo(id);
     }
 
 
-    @RequestMapping(value = "/summary/region/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = REGION_SUMMARY, method = RequestMethod.GET)
     @JsonView(View.Summary.class)
     public Region getRegion(@PathVariable Integer id) {
         return peopleService.getRegion(id);
     }
 
-    @RequestMapping(value = "/info/region/{id}")
+    @RequestMapping(value = REGION_INFO)
     @JsonView(View.Info.class)
     public Region getRegionInfo(@PathVariable Integer id) {
         return peopleService.getRegion(id);
     }
 
 
-    @RequestMapping(value = "/summary/tribe/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = TRIBE_SUMMARY, method = RequestMethod.GET)
     @JsonView(View.Summary.class)
     public Tribe getTribe(@PathVariable Integer id) {
         return peopleService.getTribe(id);
     }
 
-    @RequestMapping(value = "/info/tribe/{id}")
+    @RequestMapping(value = TRIBE_INFO)
     @JsonView(View.Info.class)
     public Tribe getTribeInfo(@PathVariable Integer id) {
         return peopleService.getTribe(id);
     }
 
-    @RequestMapping(value = "/person", method = RequestMethod.POST)
+    @RequestMapping(value = PERSON, method = RequestMethod.POST)
     public int savePerson(@RequestBody Person person) {
         return peopleService.savePerson(person);
     }
 
-    @RequestMapping(value = "/person", method = RequestMethod.PUT)
+    @RequestMapping(value = PERSON, method = RequestMethod.PUT)
     public int updatePerson(@RequestBody Person person) {
         return peopleService.savePerson(person);
     }
 
-    @RequestMapping(value = "/person/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = PERSON_ID, method = RequestMethod.DELETE)
     public int deletePerson(@PathVariable Integer id, @RequestBody Person person) {
         return peopleService.deletePerson(id);
-    }
-
-    @RequestMapping(value = "/person/{id}/info")
-    @JsonView(View.Summary.class)
-    public Person getPerson(@PathVariable Integer id) {
-        return peopleService.getPerson(id);
-    }
-
-    @RequestMapping(value = "/person/{id}/summary")
-    @JsonView(View.Summary.class)
-    public Person getPersonInfo(@PathVariable Integer id) {
-        return peopleService.getPerson(id);
     }
 
 }

@@ -20,14 +20,14 @@ angular.module('hello', [ 'ngRoute' ])
    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
   })
 .controller('home', function($scope, $http, ENV) {
-     var url = ENV.HOST + "/resource";
+     var url = ENV.HOST + "/security/resource";
      $http.get(url).success(function(data) {
          $scope.greeting = data;
      })
   })
 .controller('navigation',
   function($rootScope, $scope, $http, $location, ENV) {
-    var url = ENV.HOST + "/user";
+    var url = ENV.HOST + "/security/user";
     var authenticate = function(credentials, callback) {
 
       var headers = credentials ? {authorization : "Basic "

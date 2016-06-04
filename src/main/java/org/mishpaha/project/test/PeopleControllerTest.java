@@ -53,7 +53,7 @@ public class PeopleControllerTest extends BaseTestClass {
     public void listGroupSummaryTest() throws Exception {
         ResultActions resultActions;
         for (Group group : getGroups()) {
-            resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/people/summary/group/" + group.getId()));
+            resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/people/group/" + group.getId() + "/summary"));
             assertSuccess(resultActions);
             Group result = getGroupFromResponse(resultActions);
             assertGroupsEqual(result, group, Util.View.SUMMARY);
@@ -64,7 +64,7 @@ public class PeopleControllerTest extends BaseTestClass {
     public void listGroupInfoTest() throws Exception {
         ResultActions resultActions;
         for (Group group : getGroups()) {
-            resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/people/info/group/" + group.getId()));
+            resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/people/group/" + group.getId() + "/info"));
             assertSuccess(resultActions);
             Group result = getGroupFromResponse(resultActions);
             assertGroupsEqual(result, group, Util.View.INFO);
@@ -75,7 +75,7 @@ public class PeopleControllerTest extends BaseTestClass {
     @Test
     public void listGroupRegionTribeInfo() throws Exception {
         //get summary group info
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/people/summary/group/1"))
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/people/group/1/summary"))
             .andExpect(jsonPath("$.persons", hasSize(personsPerGroup)));
 
         assertSuccess(resultActions);
@@ -95,7 +95,7 @@ public class PeopleControllerTest extends BaseTestClass {
                 .andExpect(jsonPath(format("$.persons.[%d].comment", i), is(personList.get(i).getComment())));
         }
 
-        resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/people/info/group/1"))
+        resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/people/group/1/info"))
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(jsonPath("$.persons", hasSize(personsPerGroup)));
