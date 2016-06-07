@@ -1,7 +1,10 @@
 package org.mishpaha.project.data.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.mishpaha.project.data.dao.Unit;
+import org.mishpaha.project.util.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,10 +12,13 @@ import java.util.List;
  */
 public class Region implements Unit{
 
+    @JsonView(View.Summary.class)
     private int id;
     private int leaderId;
+    @JsonView(View.Summary.class)
     private int tribeId;
     private String leader = null;
+    @JsonView(View.Summary.class)
     private List<Group> groups = null;
 
     public Region(int id, int leaderId, int tribeId) {
@@ -42,6 +48,9 @@ public class Region implements Unit{
     }
 
     public List<Group> getGroups() {
+        if (groups == null) {
+            groups = new ArrayList<>();
+        }
         return groups;
     }
 

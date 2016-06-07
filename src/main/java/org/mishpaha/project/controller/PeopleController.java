@@ -8,11 +8,15 @@ import org.mishpaha.project.data.model.Tribe;
 import org.mishpaha.project.service.PeopleService;
 import org.mishpaha.project.util.View;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 import static org.mishpaha.project.config.Constants.*;
 
@@ -26,6 +30,24 @@ public class PeopleController {
     @Autowired
     private PeopleService peopleService;
 
+    /**
+     * Get all lists that are allowed for a user.
+     */
+    @RequestMapping(value = STAFF_INFO, method = RequestMethod.GET)
+    @JsonView(View.Info.class)
+    public List<Tribe> getStaffInfo(@AuthenticationPrincipal UserDetails userDetails) {
+        return peopleService.getStaff(userDetails);
+    }
+
+    /**
+     * Get all lists that are allowed for a user.
+     */
+    @RequestMapping(value = STAFF_SUMMARY, method = RequestMethod.GET)
+    @JsonView(View.Summary.class)
+    public List<Tribe> getStaffSummary(@AuthenticationPrincipal UserDetails userDetails) {
+        return peopleService.getStaff(userDetails);
+    }
+
     @RequestMapping(value = GROUP_SUMMARY, method = RequestMethod.GET)
     @JsonView(View.Summary.class)
     public Group getGroup(@PathVariable Integer id) {
@@ -35,7 +57,7 @@ public class PeopleController {
     @RequestMapping(value = GROUP_INFO)
     @JsonView(View.Info.class)
     public Group getGroupInfo(@PathVariable Integer id) {
-        return peopleService.getGroupInfo(id);
+        return peopleService.getGroup(id);
     }
 
 

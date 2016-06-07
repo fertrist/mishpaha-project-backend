@@ -11,6 +11,9 @@ public class Constants {
     public static final String TRIBE_ID = "/tribe/{id}";
     public static final String SUMMARY = "/summary";
     public static final String INFO = "/info";
+    public static final String STAFF = "/staff";
+    public static final String STAFF_INFO = STAFF + INFO;
+    public static final String STAFF_SUMMARY = STAFF + SUMMARY;
     public static final String GROUP_SUMMARY = GROUP_ID + SUMMARY;
     public static final String GROUP_INFO = GROUP_ID + INFO;
     public static final String REGION_SUMMARY = REGION_ID + SUMMARY;

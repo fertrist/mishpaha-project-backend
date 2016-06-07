@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.mishpaha.project.util.View;
 import org.mishpaha.project.data.dao.Unit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Group implements Unit{
@@ -27,6 +28,9 @@ public class Group implements Unit{
     }
 
     public List<Person> getPersons() {
+        if (persons == null) {
+            persons = new ArrayList<>();
+        }
         return persons;
     }
 

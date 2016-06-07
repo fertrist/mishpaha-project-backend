@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mishpaha.project.config.Application;
 import org.mishpaha.project.config.Constants;
+import org.mishpaha.project.data.dao.SecurityDaoImpl;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Region;
 import org.mishpaha.project.data.model.User;
@@ -17,6 +18,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -30,6 +32,8 @@ public class ServiceTest extends BaseTestClass {
     @Autowired
     private SecurityService securityService;
     @Autowired
+    private SecurityDaoImpl securityDao;
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Test
@@ -39,33 +43,33 @@ public class ServiceTest extends BaseTestClass {
         User created = securityService.save(user);
         assertEquals(user.getUsername(), created.getUsername());
         assertTrue(passwordEncoder.matches(user.getPassword(), created.getPassword()));
-        assertEquals(groupsPerRegion*2+2, created.getRoles().size());
-        assertTrue(created.getRoles().contains("ROLE_REGION_1")
-            && created.getRoles().contains("ROLE_REGION_2"));
+        List<String> createdRoles = securityDao.getRoles("regionLeader");
+        assertEquals(groupsPerRegion*2+2, createdRoles.size());
+        assertTrue(createdRoles.contains("ROLE_REGION_1") && createdRoles.contains("ROLE_REGION_2"));
         for (Group group : getGroups()) {
             if (group.getRegionId() != 1 && group.getRegionId() != 2) {
                 continue;
             }
-            assertTrue(created.getRoles().contains("ROLE_GROUP_" + group.getId()));
+            assertTrue(createdRoles.contains("ROLE_GROUP_" + group.getId()));
         }
-
         user = new User("tribeLeader", "thePassword321**!");
         user.setRoles(Collections.singletonList("ROLE_TRIBE_1"));
         created = securityService.save(user);
         assertEquals(user.getUsername(), created.getUsername());
         assertTrue(passwordEncoder.matches(user.getPassword(), created.getPassword()));
-        assertEquals(groupsPerRegion*regionsPerTribe + regionsPerTribe + 1, created.getRoles().size());
-        assertTrue(created.getRoles().contains("ROLE_TRIBE_1"));
+        createdRoles = securityDao.getRoles("tribeLeader");
+        assertEquals(groupsPerRegion*regionsPerTribe + regionsPerTribe + 1, createdRoles.size());
+        assertTrue(createdRoles.contains("ROLE_TRIBE_1"));
         for (Region region : getRegions()) {
             if (region.getTribeId() != 1) {
                 continue;
             }
-            assertTrue(created.getRoles().contains("ROLE_REGION_" + region.getId()));
+            assertTrue(createdRoles.contains("ROLE_REGION_" + region.getId()));
             for (Group group : getGroups()) {
                 if (group.getRegionId() != region.getId()) {
                     continue;
                 }
-                assertTrue(created.getRoles().contains("ROLE_GROUP_" + group.getId()));
+                assertTrue(createdRoles.contains("ROLE_GROUP_" + group.getId()));
             }
         }
     }

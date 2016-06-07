@@ -6,17 +6,23 @@ import org.mishpaha.project.data.dao.GroupDaoImpl;
 import org.mishpaha.project.data.dao.PersonDaoImpl;
 import org.mishpaha.project.data.dao.PhoneDaoImpl;
 import org.mishpaha.project.data.dao.RegionDaoImpl;
+import org.mishpaha.project.data.dao.Unit;
+import org.mishpaha.project.data.dao.Unit.Units;
 import org.mishpaha.project.data.model.Email;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Phone;
 import org.mishpaha.project.data.model.Region;
 import org.mishpaha.project.data.model.Tribe;
+import org.mishpaha.project.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PeopleService {
@@ -33,6 +39,140 @@ public class PeopleService {
     private GenericDao<Phone> phoneDao;
     @Autowired
     private GenericDao<Email> emailDao;
+    @Autowired
+    private SecurityService securityService;
+
+    public List<Tribe> getStaff(UserDetails userDetails) {
+        //get roles
+        Set<String> authorities = new HashSet<>();
+        userDetails.getAuthorities().stream().forEach(item -> authorities.add(item.getAuthority()));
+        List<String> roles = securityService.compressRoles(new ArrayList<>(authorities));
+        //get all data
+        List<Tribe> result = new ArrayList<>();
+        for (String role : roles) {
+            Unit unit = getUnitByRole(role);
+            addUnitToResult(result, unit);
+        }
+        return result;
+    }
+
+    private Unit getUnitByRole(String role) {
+        int id = Util.getUnitIdFromRole(role);
+        Units unit = Util.getUnitFromRole(role);
+        if (unit == Units.TRIBE) {
+            return getTribe(id);
+        } else if (unit == Units.REGION) {
+            return getRegion(id);
+        }
+        return getGroup(id);
+    }
+
+    private void addUnitToResult(List<Tribe> result, Unit unit) {
+        if (unit.getUnit() == Units.TRIBE) {
+            Tribe tribe = (Tribe) unit;
+            addTribeToResult(result, tribe);
+        } else if (unit.getUnit() == Units.REGION) {
+            Region region = (Region) unit;
+            addRegionToResult(result, region);
+        } else if (unit.getUnit() == Units.GROUP) {
+            Group group = (Group) unit;
+            addGroupToResult(result, group);
+        }
+    }
+
+    private void addTribeToResult(List<Tribe> result, Tribe tribe) {
+        for (Tribe t : result) {
+            if (t.getId() != tribe.getId()) {
+                continue;
+            }
+            for (Region region : tribe.getRegions()) {
+                if (!containsUnit(t.getRegions(), region.getId())){
+                    t.getRegions().add(region);
+                } else {
+                    t.getRegions().stream().forEach(r -> {
+                        if (r.getId() == region.getId()) {
+                            appendGroupsWithDiff(r.getGroups(), region.getGroups());
+                        }
+                    });
+                }
+            }
+            return;
+        }
+        result.add(tribe);
+    }
+
+    private void addRegionToResult(List<Tribe> result, Region region) {
+        boolean added = false;
+        for (Tribe tribe : result) {
+            //check if tribe for that region exists
+            if (tribe.getId() != region.getTribeId()) {
+                continue;
+            }
+            //if region already exists just add it's groups
+            for (Region reg : tribe.getRegions()) {
+                if (reg.getId() == region.getId()) {
+                    appendGroupsWithDiff(reg.getGroups(), region.getGroups());
+                    return;
+                }
+            }
+            //else just add that region
+            added = tribe.getRegions().add(region);
+        }
+        //if required tribe doesn't exist just create it
+        if (!added) {
+            Tribe tribe = tribeDao.get(region.getTribeId());
+            tribe.getRegions().add(region);
+            result.add(tribe);
+        }
+    }
+
+    private void appendGroupsWithDiff(List<Group> groups, List<Group> diffGroups) {
+        diffGroups.stream().forEach(diff -> {
+            if (!containsUnit(groups, diff.getId())) {
+                groups.add(diff);
+            }
+        });
+    }
+
+    private boolean containsUnit(List<? extends Unit> units, int unitId) {
+        for (Unit unit : units) {
+            if (unit.getId() == unitId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void addGroupToResult(List<Tribe> people, Group group) {
+        Region region = regionDao.get(group.getId());
+        region.getGroups().add(group);
+        boolean added = false;
+        for (Tribe tribe : people) {
+            if (tribe.getId() != region.getTribeId()) {
+                continue;
+            }
+            for (Region reg : tribe.getRegions()) {
+                if (reg.getId() != group.getRegionId()) {
+                    continue;
+                }
+                if (!containsUnit(reg.getGroups(), group.getId())) {
+                    added = reg.getGroups().add(group);
+                } else {
+                    return;
+                }
+            }
+            //if has reached this place, then there is no required region
+            if (!added) {
+                tribe.getRegions().add(region);
+            }
+        }
+        //if has reached this place, there is no required tribe
+        if (!added) {
+            Tribe newTribe = tribeDao.get(region.getTribeId());
+            newTribe.getRegions().add(region);
+            people.add(newTribe);
+        }
+    }
 
     /**
      * P0
@@ -46,7 +186,7 @@ public class PeopleService {
     /**
      * P1
      */
-    public Group getGroupInfo(int groupId) {
+    public Group getGroup(int groupId) {
         Group group = groupDao.get(groupId);
         List<Person> persons = ((PersonDaoImpl) personDao).listGroup(groupId);
         for(Person person : persons){
@@ -65,7 +205,7 @@ public class PeopleService {
         List<Integer> groupIds = ((GroupDaoImpl) groupDao).getGroupsForRegion(regionId);
         List<Group> groups = new ArrayList<>();
         for (int groupId : groupIds) {
-            groups.add(getGroupSummary(groupId));
+            groups.add(getGroup(groupId));
         }
         region.setGroups(groups);
         return region;

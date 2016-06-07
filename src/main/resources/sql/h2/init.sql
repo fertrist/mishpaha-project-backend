@@ -1,17 +1,21 @@
 INSERT INTO users(username,password,enabled)
-VALUES ('admin','6029759c61d9ddaeefbd0f831d3e08fd107daef5e42ba5c33059c4cfe4e90c5edf407abab313d3f1', true);
+VALUES ('admin','7a59f998d1ad141ee0b78448f6c2cdeaecdaf10587f0b57305f5680625a5c30eeff5f718b53e43d8', true);
 INSERT INTO user_roles (username, role)
 VALUES ('admin', 'ROLE_USER');
 INSERT INTO user_roles (username, role)
 VALUES ('admin', 'ROLE_ADMIN');
 INSERT INTO users(username,password,enabled)
-VALUES ('user1','6029759c61d9ddaeefbd0f831d3e08fd107daef5e42ba5c33059c4cfe4e90c5edf407abab313d3f1', true);
+VALUES ('group1','7a59f998d1ad141ee0b78448f6c2cdeaecdaf10587f0b57305f5680625a5c30eeff5f718b53e43d8', true);
 INSERT INTO user_roles (username, role)
-VALUES ('user1', 'ROLE_GROUP_1');
+VALUES ('group1', 'ROLE_GROUP_1');
 INSERT INTO users(username, password, enabled)
-VALUES ('user2','6029759c61d9ddaeefbd0f831d3e08fd107daef5e42ba5c33059c4cfe4e90c5edf407abab313d3f1', true);
+VALUES ('region2','7a59f998d1ad141ee0b78448f6c2cdeaecdaf10587f0b57305f5680625a5c30eeff5f718b53e43d8', true);
 INSERT INTO user_roles (username, role)
-VALUES ('user2', 'ROLE_GROUP_2');
+VALUES ('region2', 'ROLE_REGION_2');
+INSERT INTO users(username, password, enabled)
+VALUES ('tribe1','7a59f998d1ad141ee0b78448f6c2cdeaecdaf10587f0b57305f5680625a5c30eeff5f718b53e43d8', true);
+INSERT INTO user_roles (username, role)
+VALUES ('tribe1', 'ROLE_TRIBE_1');
 
 INSERT INTO categories (name) values ('white');
 INSERT INTO categories (name) values ('blue');

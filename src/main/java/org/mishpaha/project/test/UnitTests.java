@@ -10,7 +10,7 @@ public class UnitTests {
     public void testEncoding() {
         int i = 0;
         while (i < 10) {
-            String password = "password";
+            String password = "psw";
             StandardPasswordEncoder passwordEncoder = new StandardPasswordEncoder(SecurityConfig.SECRET);
             String hashedPassword = passwordEncoder.encode(password);
             System.out.println(hashedPassword);

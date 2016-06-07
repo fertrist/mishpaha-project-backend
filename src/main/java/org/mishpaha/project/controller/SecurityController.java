@@ -53,10 +53,8 @@ public class SecurityController {
 
     @RequestMapping("/resource")
     public Map<String,Object> home(@AuthenticationPrincipal UserDetails principal) {
-        String name = principal.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) ? "Admin" : "User";
         Map<String,Object> model = new HashMap<>();
-        model.put("id", UUID.randomUUID().toString());
-        model.put("content", "Hello " + name);
+        model.put("content", "Hello, " + principal.getUsername() + "!");
         return model;
     }
 

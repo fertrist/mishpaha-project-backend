@@ -3,6 +3,8 @@ package org.mishpaha.project.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
+import org.mishpaha.project.data.dao.Unit;
+import org.mishpaha.project.data.dao.Unit.Units;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -98,5 +100,21 @@ public class Util {
 
     public static UserDetails getPrincipal(){
         return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    public static int getUnitIdFromRole(String role) {
+        String [] split = role.split("_");
+        return Integer.valueOf(split[split.length-1]);
+    }
+
+    public static Units getUnitFromRole(String role) {
+        if (role.contains(Units.TRIBE.name())) {
+            return Units.TRIBE;
+        } else if (role.contains(Units.REGION.name())) {
+            return Units.REGION;
+        } else if (role.contains(Units.GROUP.name())) {
+            return Units.GROUP;
+        }
+        return Units.GROUP;
     }
 }

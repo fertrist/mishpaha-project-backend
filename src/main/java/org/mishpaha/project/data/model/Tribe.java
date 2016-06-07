@@ -1,13 +1,20 @@
 package org.mishpaha.project.data.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import org.mishpaha.project.data.dao.Unit;
+import org.mishpaha.project.util.View;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by fertrist on 24.09.15.
  */
-public class Tribe {
+public class Tribe implements Unit {
+    @JsonView(View.Summary.class)
     private int id;
     private String name;
+    @JsonView(View.Summary.class)
     private List<Region> regions = null;
 
     public Tribe(String name) {
@@ -20,11 +27,19 @@ public class Tribe {
     }
 
     public List<Region> getRegions() {
+        if (regions == null) {
+            regions = new ArrayList<>();
+        }
         return regions;
     }
 
     public void setRegions(List<Region> regions) {
         this.regions = regions;
+    }
+
+    @Override
+    public Units getUnit() {
+        return Units.TRIBE;
     }
 
     public int getId() {

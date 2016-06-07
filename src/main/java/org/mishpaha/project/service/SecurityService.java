@@ -4,10 +4,12 @@ import org.mishpaha.project.data.dao.GenericDao;
 import org.mishpaha.project.data.dao.GroupDaoImpl;
 import org.mishpaha.project.data.dao.RegionDaoImpl;
 import org.mishpaha.project.data.dao.SecurityDaoImpl;
+import org.mishpaha.project.data.dao.Unit.Units;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Region;
 import org.mishpaha.project.data.model.User;
+import org.mishpaha.project.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,16 +33,12 @@ public class SecurityService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public enum Unit {
-        GROUP, REGION, TRIBE
-    }
-
     public User save(User user) {
         if (user.getRoles() != null) {
             Set<String> roles = new HashSet<>(user.getRoles());
             for (String role : user.getRoles()) {
-                if (!(role.contains(Unit.GROUP.name()) || role.contains(Unit.REGION.name())
-                    || role.contains(Unit.TRIBE.name()))) {
+                if (!(role.contains(Units.GROUP.name()) || role.contains(Units.REGION.name())
+                    || role.contains(Units.TRIBE.name()))) {
                     continue;
                 }
                 roles.addAll(expandRole(role));
@@ -52,14 +50,14 @@ public class SecurityService {
         return created;
     }
 
-    private Set<String> expandRole(String role) {
+    public Set<String> expandRole(String role) {
         Set<String> roles = new HashSet<>();
-        String [] split = role.split("_");
-        int id = Integer.valueOf(split[split.length-1]);
-        if (role.contains(Unit.REGION.name())) {
+        int id = Util.getUnitIdFromRole(role);
+        Units unit = Util.getUnitFromRole(role);
+        if (unit == Units.REGION) {
             ((GroupDaoImpl) groupDao).getGroupsForRegion(id).stream()
                 .forEach(groupId -> roles.add("ROLE_GROUP_" + groupId));
-        } else if (role.contains(Unit.TRIBE.name())) {
+        } else if (unit == Units.TRIBE) {
             ((RegionDaoImpl) regionDao).getRegionsForTribe(id).stream()
                 .forEach(regionId -> {
                     roles.add("ROLE_REGION_" + regionId);
@@ -70,21 +68,21 @@ public class SecurityService {
         return roles;
     }
 
-    private List<String> compressRoles(List<String> roles) {
+    public List<String> compressRoles(List<String> roles) {
         Set<String> compressed = new HashSet<>(roles);
         roles.stream().forEach(role -> {
-            if (!role.contains(Unit.TRIBE.name()) && !role.contains(Unit.REGION.name())) {
+            Units unit = Util.getUnitFromRole(role);
+            if (unit != Units.TRIBE && unit != Units.REGION) {
                 return;
             }
-            String [] split = role.split("_");
-            int id = Integer.valueOf(split[split.length-1]);
-            if (role.contains(Unit.TRIBE.name())) {
+            int id = Util.getUnitIdFromRole(role);
+            if (unit == Units.TRIBE) {
                 ((RegionDaoImpl) regionDao).getRegionsForTribe(id).stream().forEach(regionId -> {
                         compressed.remove("ROLE_REGION_" + regionId);
                         ((GroupDaoImpl) groupDao).getGroupsForRegion(regionId).stream()
                             .forEach(groupId -> compressed.remove("ROLE_GROUP_" + groupId));
                     });
-            } else if (role.contains(Unit.REGION.name())) {
+            } else {
                 ((GroupDaoImpl) groupDao).getGroupsForRegion(id).stream()
                     .forEach(groupId -> compressed.remove("ROLE_GROUP_" + groupId));
             }
@@ -103,8 +101,8 @@ public class SecurityService {
             newRoles.removeAll(existent.getRoles());
             Set<String> roles = new HashSet<>(user.getRoles());
             for (String role : user.getRoles()) {
-                if (!(role.contains(Unit.GROUP.name()) || role.contains(Unit.REGION.name())
-                    || role.contains(Unit.TRIBE.name()))) {
+                if (!(role.contains(Units.GROUP.name()) || role.contains(Units.REGION.name())
+                    || role.contains(Units.TRIBE.name()))) {
                     continue;
                 }
                 roles.addAll(expandRole(role));
