@@ -5,6 +5,7 @@ import org.mishpaha.project.data.model.Event;
 import org.mishpaha.project.data.model.EventType;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
+import org.mishpaha.project.data.model.Region;
 import org.mishpaha.project.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,10 +79,10 @@ public class EventDaoImpl extends DaoImplementation<Event>{
         });
     }
 
-   @Override
+    @Override
     public List<Event> list() { throw new UnsupportedOperationException();}
 
-    public List<Event> list(int groupId, LocalDate start, LocalDate end) {
+    public List<Event> listGroupEvents(int groupId, LocalDate start, LocalDate end) {
         return list(new Group(groupId), start, end, null, null);
     }
 
@@ -187,10 +188,21 @@ public class EventDaoImpl extends DaoImplementation<Event>{
         String joinPersonsCategories = categories != null && categories.length > 0 ?
             joinPersons + "JOIN " + getTable(Category.class) + " c ON p.categoryId=c.id " : "";
 
-        String joinGroups = unit.getUnit() == Unit.Units.REGION ?
-            "JOIN " + getTable(Group.class) + " g ON e" + ".groupId=g.id " : "";
+        String joinUnits = "";
+        if (unit.getUnit() == Unit.Units.REGION || unit.getUnit() == Unit.Units.TRIBE) {
+            joinUnits = "JOIN " + getTable(Group.class) + " g ON e.groupId=g.id ";
+        }
+        if (unit.getUnit() == Unit.Units.TRIBE) {
+            joinUnits += "JOIN " + getTable(Region.class) + " r ON g.regionId=r.id ";
+        }
 
-        String unitIdClause = (unit.getUnit() == Unit.Units.REGION ? "g.regionId=" : "e.groupId=") + unit.getId() + " ";
+        String unitIdClause = "e.groupId=";
+        if (unit.getUnit() == Unit.Units.REGION) {
+            unitIdClause = "g.regionId=";
+        } else if (unit.getUnit() == Unit.Units.TRIBE) {
+            unitIdClause = "r.tribeId=";
+        }
+        unitIdClause += unit.getId() + " ";
 
         String betweenClause = "(e.happened BETWEEN "
             + getQuotedString(start.toString()) + " AND " + getQuotedString(end.toString()) + ")";
@@ -226,7 +238,7 @@ public class EventDaoImpl extends DaoImplementation<Event>{
 
         return
             "SELECT " + join(selectFields, ",")
-                + " FROM " + eventsTbl + " e " + joinEventTypes + joinPersonsCategories + joinGroups
+                + " FROM " + eventsTbl + " e " + joinEventTypes + joinPersonsCategories + joinUnits
                 + "WHERE " + unitIdClause + "AND " + betweenClause + typesClause + categoriesClause;
     }
 

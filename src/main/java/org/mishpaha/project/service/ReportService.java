@@ -44,7 +44,7 @@ public class ReportService {
      */
     public Report getGroupReport(int groupId, LocalDate start, LocalDate end) throws DaoMistakeException {
 
-        //get group list
+        //get group listGroupEvents
         List<Person> groupList = ((PersonDaoImpl) personDao).listGroup(groupId);
 
         //get group meeting events

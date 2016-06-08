@@ -17,6 +17,8 @@ public class Tribe implements Unit {
     @JsonView(View.Summary.class)
     private List<Region> regions = null;
 
+    public Tribe(){}
+
     public Tribe(String name) {
         this.name = name;
     }

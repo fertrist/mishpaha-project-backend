@@ -1,11 +1,14 @@
 package org.mishpaha.project.controller;
 
 import org.mishpaha.project.data.model.Event;
+import org.mishpaha.project.data.model.EventType;
 import org.mishpaha.project.service.EventService;
 import org.mishpaha.project.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static org.mishpaha.project.config.Constants.*;
 
@@ -28,6 +32,14 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+    @RequestMapping(method = RequestMethod.GET)
+    public Map<String, List<Event>> getEvents(@AuthenticationPrincipal UserDetails userDetails,
+                                  @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate start,
+                                  @RequestParam(required = false) @DateTimeFormat(iso= ISO.DATE) LocalDate end) {
+        end = DateUtil.setDefaultEnd(end, this.getClass());
+        start = DateUtil.setDefaultStart(start, end, this.getClass());
+        return eventService.getEvents(userDetails, start, end);
+    }
     /**
      * Returns events for a given group.
      * @param id group id
@@ -68,6 +80,11 @@ public class EventController {
     @RequestMapping(value = EVENT_ID, method = RequestMethod.PUT)
     public void updateEvent(@PathVariable int id, @RequestBody String comment) {
         eventService.update(id, comment);
+    }
+
+    @RequestMapping(value = "/types", method = RequestMethod.GET)
+    public List<EventType> getEventTypes() {
+        return eventService.getEventTypes();
     }
 
 }

@@ -21,6 +21,9 @@ public class Region implements Unit{
     @JsonView(View.Summary.class)
     private List<Group> groups = null;
 
+    public Region() {
+    }
+
     public Region(int id, int leaderId, int tribeId) {
         this(leaderId, tribeId);
         this.id = id;
