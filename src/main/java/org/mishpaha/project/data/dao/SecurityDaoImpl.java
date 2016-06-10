@@ -142,4 +142,10 @@ public class SecurityDaoImpl {
         return users;
     }
 
+    public List<String> listAdminRoles() {
+        return operations.query("SELECT role FROM user_roles WHERE role LIKE '%TRIBE%' GROUP BY role", (rs, i) -> {
+            return rs.getString("role");
+        });
+    }
+
 }

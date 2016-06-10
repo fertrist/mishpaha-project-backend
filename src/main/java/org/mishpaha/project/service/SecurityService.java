@@ -9,8 +9,8 @@ import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Region;
 import org.mishpaha.project.data.model.User;
-import org.mishpaha.project.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.mishpaha.project.util.Util.getUnitFromRole;
+import static org.mishpaha.project.util.Util.getUnitIdFromRole;
 
 @Service
 public class SecurityService {
@@ -50,11 +53,35 @@ public class SecurityService {
         return created;
     }
 
-    public Set<String> expandRole(String role) {
+    public List<String> processRoles(UserDetails userDetails) {
+        Set<String> authorities = new HashSet<>();
+        userDetails.getAuthorities().stream().forEach(item -> authorities.add(item.getAuthority()));
+        if (authorities.contains("ROLE_ADMIN")) {
+            authorities.addAll(getAdminRoles());
+            authorities.remove("ROLE_ADMIN");
+        }
+        return compressRoles(new ArrayList<>(authorities));
+    }
+
+    public List<Integer> getGroupsFromRoles(UserDetails userDetails) {
         Set<String> roles = new HashSet<>();
-        int id = Util.getUnitIdFromRole(role);
-        Units unit = Util.getUnitFromRole(role);
-        if (unit == Units.REGION) {
+        processRoles(userDetails).stream().forEach(role -> roles.addAll(expandRole(role)));
+        List<Integer> groupIds = new ArrayList<>();
+        for(String role : roles) {
+            if (getUnitFromRole(role) == Units.GROUP) {
+                groupIds.add(getUnitIdFromRole(role));
+            }
+        }
+        return groupIds;
+    }
+
+    private Set<String> expandRole(String role) {
+        Set<String> roles = new HashSet<>();
+        int id = getUnitIdFromRole(role);
+        Units unit = getUnitFromRole(role);
+        if (unit == Units.GROUP) {
+            roles.add("ROLE_GROUP_" + id);
+        } else if (unit == Units.REGION) {
             ((GroupDaoImpl) groupDao).getGroupsForRegion(id).stream()
                 .forEach(groupId -> roles.add("ROLE_GROUP_" + groupId));
         } else if (unit == Units.TRIBE) {
@@ -68,14 +95,14 @@ public class SecurityService {
         return roles;
     }
 
-    public List<String> compressRoles(List<String> roles) {
+    private List<String> compressRoles(List<String> roles) {
         Set<String> compressed = new HashSet<>(roles);
         roles.stream().forEach(role -> {
-            Units unit = Util.getUnitFromRole(role);
+            Units unit = getUnitFromRole(role);
             if (unit != Units.TRIBE && unit != Units.REGION) {
                 return;
             }
-            int id = Util.getUnitIdFromRole(role);
+            int id = getUnitIdFromRole(role);
             if (unit == Units.TRIBE) {
                 ((RegionDaoImpl) regionDao).getRegionsForTribe(id).stream().forEach(regionId -> {
                         compressed.remove("ROLE_REGION_" + regionId);
@@ -128,5 +155,9 @@ public class SecurityService {
         List<User> users = securityDao.list();
         users.forEach(user -> user.setRoles(compressRoles(user.getRoles())));
         return users;
+    }
+
+    private List<String> getAdminRoles() {
+        return securityDao.listAdminRoles();
     }
 }

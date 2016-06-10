@@ -1,8 +1,6 @@
 INSERT INTO users(username,password,enabled)
 VALUES ('admin','7a59f998d1ad141ee0b78448f6c2cdeaecdaf10587f0b57305f5680625a5c30eeff5f718b53e43d8', true);
 INSERT INTO user_roles (username, role)
-VALUES ('admin', 'ROLE_USER');
-INSERT INTO user_roles (username, role)
 VALUES ('admin', 'ROLE_ADMIN');
 INSERT INTO users(username,password,enabled)
 VALUES ('group1','7a59f998d1ad141ee0b78448f6c2cdeaecdaf10587f0b57305f5680625a5c30eeff5f718b53e43d8', true);

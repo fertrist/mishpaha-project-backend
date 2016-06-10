@@ -33,19 +33,19 @@ public class PeopleController {
     /**
      * Get all lists that are allowed for a user.
      */
-    @RequestMapping(value = STAFF_INFO, method = RequestMethod.GET)
+    @RequestMapping(value = INFO, method = RequestMethod.GET)
     @JsonView(View.Info.class)
-    public List<Tribe> getStaffInfo(@AuthenticationPrincipal UserDetails userDetails) {
-        return peopleService.getStaff(userDetails);
+    public List<Tribe> getPeopleInfo(@AuthenticationPrincipal UserDetails userDetails) {
+        return peopleService.getPeople(userDetails);
     }
 
     /**
      * Get all lists that are allowed for a user.
      */
-    @RequestMapping(value = STAFF_SUMMARY, method = RequestMethod.GET)
+    @RequestMapping(value = SUMMARY, method = RequestMethod.GET)
     @JsonView(View.Summary.class)
-    public List<Tribe> getStaffSummary(@AuthenticationPrincipal UserDetails userDetails) {
-        return peopleService.getStaff(userDetails);
+    public List<Tribe> getPeopleSummary(@AuthenticationPrincipal UserDetails userDetails) {
+        return peopleService.getPeople(userDetails);
     }
 
     @RequestMapping(value = GROUP_SUMMARY, method = RequestMethod.GET)

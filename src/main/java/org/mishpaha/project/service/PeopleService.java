@@ -42,11 +42,9 @@ public class PeopleService {
     @Autowired
     private SecurityService securityService;
 
-    public List<Tribe> getStaff(UserDetails userDetails) {
+    public List<Tribe> getPeople(UserDetails userDetails) {
         //get roles
-        Set<String> authorities = new HashSet<>();
-        userDetails.getAuthorities().stream().forEach(item -> authorities.add(item.getAuthority()));
-        List<String> roles = securityService.compressRoles(new ArrayList<>(authorities));
+        List<String> roles = securityService.processRoles(userDetails);
         //get all data
         List<Tribe> result = new ArrayList<>();
         for (String role : roles) {

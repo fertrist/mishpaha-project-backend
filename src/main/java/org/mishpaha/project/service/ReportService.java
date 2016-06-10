@@ -1,7 +1,6 @@
 package org.mishpaha.project.service;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.mishpaha.project.data.dao.CategoryDaoImpl.Categories;
 import org.mishpaha.project.data.dao.EventDaoImpl;
 import org.mishpaha.project.data.dao.EventDaoImpl.EventTypes;
 import org.mishpaha.project.data.dao.GenericDao;
@@ -12,14 +11,17 @@ import org.mishpaha.project.data.model.Report;
 import org.mishpaha.project.exception.DaoMistakeException;
 import org.mishpaha.project.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.mishpaha.project.data.dao.CategoryDaoImpl.Categories.blue;
 import static org.mishpaha.project.data.dao.CategoryDaoImpl.Categories.brown;
@@ -38,6 +40,22 @@ public class ReportService {
     private EventDaoImpl eventDao;
     @Autowired
     private GenericDao<Person> personDao;
+    @Autowired
+    private SecurityService securityService;
+
+    public List<Report> getReport(UserDetails userDetails, LocalDate start, LocalDate end) {
+        Set<String> roles = new HashSet<>();
+        List<Report> reports = new ArrayList<>();
+        List<Integer> groupIds = securityService.getGroupsFromRoles(userDetails);
+        for (Integer id : groupIds) {
+            try {
+                reports.add(getGroupReport(id, start, end));
+            } catch (DaoMistakeException e) {
+                e.printStackTrace();
+            }
+        }
+        return reports;
+    }
 
     /**
      * TODO : process all results and group by week.

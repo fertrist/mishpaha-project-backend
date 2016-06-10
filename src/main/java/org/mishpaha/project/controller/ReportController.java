@@ -6,6 +6,8 @@ import org.mishpaha.project.service.ReportService;
 import org.mishpaha.project.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +25,15 @@ public class ReportController {
 
     @Autowired
     private ReportService reportService;
+
+    @RequestMapping(method = RequestMethod.GET)
+    public List<Report> getReport(@AuthenticationPrincipal UserDetails userDetails,
+        @RequestParam(required = false) @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate start,
+        @RequestParam(required = false) @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate end) {
+        end = DateUtil.setDefaultEnd(end, this.getClass());
+        start = DateUtil.setDefaultStart(start, end, this.getClass());
+        return reportService.getReport(userDetails, start, end);
+    }
 
     @RequestMapping(value = GROUP_ID, method = RequestMethod.GET)
     public Report getGroupReport(@PathVariable int id,

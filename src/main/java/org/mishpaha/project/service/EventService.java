@@ -32,9 +32,7 @@ public class EventService {
 
     public Map<String, List<Event>> getEvents(UserDetails userDetails, LocalDate start, LocalDate end) {
         //get roles
-        Set<String> authorities = new HashSet<>();
-        userDetails.getAuthorities().stream().forEach(item -> authorities.add(item.getAuthority()));
-        List<String> roles = securityService.compressRoles(new ArrayList<>(authorities));
+        List<String> roles = securityService.processRoles(userDetails);
         List<Event> events = new ArrayList<>();
         //get all data
         for (String role : roles) {
