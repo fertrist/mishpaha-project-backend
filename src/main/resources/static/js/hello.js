@@ -8,8 +8,8 @@ angular.module('hello', [ 'ngRoute' ])
     templateUrl : 'login.html',
     controller : 'navigation'
   }).when('/events',{
-    templateUrl : 'events.html',
-    controller : 'eventsCtrl'
+    templateUrl : 'table.html',
+    controller : 'tableCtrl'
   }).when('/list',{
     templateUrl : 'list.html',
     controller : 'listCtrl'
@@ -82,7 +82,7 @@ angular.module('hello', [ 'ngRoute' ])
     }
 
   })
-.controller('eventsCtrl', function($rootScope, $scope, $http, $location){
+.controller('tableCtrl', function($rootScope, $scope, $http, $location){
   
   // function($scope, $http, ENV) {
   //     $http.get(ENV.HOST)
