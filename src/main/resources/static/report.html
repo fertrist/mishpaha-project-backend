@@ -1,5 +1,5 @@
 <div>
-	<table class="table table-hover">
+	<table class="table table-hover table-fixed">
 		<thead>
 			<th>Тиждень</th>
 			<th>За списком</th>
@@ -8,25 +8,23 @@
 			<th>Гості</th>
 			<th>Нові</th>
 			<th>Візити</th>
-			<th>Зустрічі нові</th>
 			<th>Зустрічі</th>
 			<th>Дзвінки</th>
 		</thead>
-		<tbody>
-			<tr ng-repeat="week in weeks">
-				<td>{{week}}</td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+		<tbody ng-repeat="report in reports">
+			<tr class="reportGroup">
+				<td>Група {{report.groupId}}</td>
 			</tr>
-			<tr>
-				
+			<tr ng-repeat="week in report.weeks">
+				<td>{{getWeekDates(week)}}</td>
+				<td>{{listedSize(week.listed)}}</td>
+				<td>{{presentListed(week.listed) + week.newbies.length + week.guests.length}}</td>
+				<td>{{presentListed(week.listed)}}</td>
+				<td>{{week.guests.length}}</td>
+				<td>{{week.newbies.length}}</td>
+				<td>{{week.visitsNewbies + week.visitsListed}}</td>
+				<td>{{week.meetingsListed + week.meetingsNewbies}}</td>
+				<td>{{week.calls}}</td>
 			</tr>
 		</tbody>
 	</table>

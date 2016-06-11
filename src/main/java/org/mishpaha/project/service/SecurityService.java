@@ -72,6 +72,7 @@ public class SecurityService {
                 groupIds.add(getUnitIdFromRole(role));
             }
         }
+        groupIds.sort(Integer::compareTo);
         return groupIds;
     }
 

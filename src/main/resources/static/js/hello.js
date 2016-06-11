@@ -406,73 +406,62 @@ findItem = function(array, item) {
   return -1;
 }
 })
-.controller('reportCtrl', function($rootScope, $scope, $http, $location){
-  $scope.weeks = [
-    "04.04.16",
-    "11.04.16",
-    "18.04.16",
-    "25.04.16",
-    "02.05.16",
-    "09.05.16",
-    "16.05.16",
-    "23.05.16"
-  ];
+.controller('reportCtrl',
+  function($rootScope, $scope, $http, $location, ENV){
 
-  $scope.eventsObj = {
-    "p_1" :
-    [
-    {"id":2144,"typeId":1, happened : [2016,4,1]},
-    {"id":2145,"typeId":2, happened : [2016,4,10]}
-    ],
-    "p_2" :
-    [
-    {"id":2146,"typeId":3,happened:[2016,4,11]},
-    {"id":2147,"typeId":4,happened:[2016,4,13]},
-    {"id":2155,"typeId":2,happened:[2016,4,13]},
-    {"id":2156,"typeId":3,happened:[2016,4,13]}
-    ],
-    "p_3" :
-    [
-    {"id":2148,"typeId":1,happened:[2016,4,13]},
-    {"id":2149,"typeId":2,happened:[2016,4,15]}
-    ],
-    "p_8" :
-    [
-    {"id":2150,"typeId":3,happened:[2016,4,10]}
-    ],
-    "p_5" :
-    [
-    {"id":2151,"typeId":4,happened:[2016,4,18]}
-    ],
-    "p_6" :
-    [
-    {"id":2152,"typeId":1,happened:[2016,4,20]}
-    ],
-    "p_7" :
-    [
-    {"id":2153,"typeId":2,happened:[2016,4,30]}
-    ],
-    "p_9" :
-    [
-    {"id":2154,"typeId":1,happened:[2016,5,4]}
-    ],
-    "p_10" :
-    [
-    {"id":2155,"typeId":1,happened:[2016,5,4]}
-    ],
-    "p_11" :
-    [
-    {"id":2156,"typeId":1,happened:[2016,5,4]}
-    ],
-    "p_12" :
-    [
-    {"id":2157,"typeId":1,happened:[2016,5,4]}
-    ]
-  };
+  $scope.reports;
+  $scope.start;
+  $scope.end;
+  function getReport() {
+    var url = ENV.HOST + "/reports";
+    if ($scope.start) {
+        url += "?start=" + startDate;
+    }
+    if ($scope.end) {
+        url += "&end=" + endDate;
+    }
+    $http.get(url).then(function(response){
+      $scope.reports = response.data;
+    });
+  }
+  getReport();
 
+  $scope.getWeekDates = function(week) {
+    var date = "";
+    if (week.weekStart[1] < 10) {
+        date += "0";
+    }
+    date += week.weekStart[1] + ".";
+    if (week.weekStart[2] < 10) {
+        date += "0";
+    }
+    date += week.weekStart[2] + "-";
+    if (week.weekEnd[1] < 10) {
+        date += "0";
+    }
+    date += week.weekEnd[1] + ".";
+    if (week.weekEnd[2] < 10) {
+        date += "0";
+    }
+    date += week.weekEnd[2];
+    return date;
+  }
 
+$scope.listedSize = function(listed){
+    return Object.keys(listed).length;
+}
+$scope.presentListed = function(listed) {
+    var size = 0, key;
+    for (name in listed) {
+        if (listed.hasOwnProperty(name) && listed[name]) {
+            size++;
+        };
+    }
+    return size;
+}
 
-}).controller('usersCtrl', function($rootScope, $scope, $http, $location, ENV){
+}).controller('usersCtrl',
+  function($rootScope, $scope, $http, $location, ENV){
 
     $scope.users = null;
     var getUsers = function() {
