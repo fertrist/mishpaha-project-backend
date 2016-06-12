@@ -15,11 +15,15 @@
 				<div class="col-md-10 marginLess">Name</div>
 			</div>
 
-			<div class="row col-md-12 marginLess" ng-repeat="group in groups">
-				<div class="marginLess">
-					<div class="marginLess tableRow bordered" ng-repeat="p in group.persons | orderBy : 'categoryId' track by $index" ng-style="backGround(p.categoryId)">
-						<div class="col-md-2 marginLess">{{$index+1}}</div>
-						<div class="col-md-10 marginLess">{{p.firstName}}</div>
+			<div class="row col-md-12 marginLess" ng-repeat="tribe in tribes">
+				<div ng-repeat="region in tribe.regions">
+					<div ng-repeat="group in region.groups">
+						<div class="marginLess">
+							<div class="marginLess tableRow bordered" ng-repeat="p in group.persons | orderBy : 'categoryId' track by $index" ng-style="backGround(p.categoryId)">
+								<div class="col-md-2 marginLess">{{$index+1}}</div>
+								<div class="col-md-10 marginLess">{{p.firstName}}</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -27,19 +31,23 @@
 
     	<div class="col-md-10 cells marginLess">
 	        <div class="row col-md-12">
-	            <div class="headerCell green bordered" ng-repeat="i in dates">{{i.slice(5,i.length)}}</div>
+	            <div class="headerCell green bordered" ng-repeat="d in dates">{{getMiniDate(d)}}</div>
 	        </div>
 
 	        <!-- Dates -->
-	        <div ng-repeat="group in groups" class="row col-md-12">
-	            <div class="tableRow" ng-repeat="p in group.persons | orderBy : 'categoryId'" ng-mouseover="">
-	                <div class="cell bordered" ng-repeat="i in dates" ng-click="setEvent(p.id, i)">
-	                    <div class="event marginLess col-md-12" ng-repeat="ev in getEventsForDate(p.id, i)"
-	                         style="background-color:{{eventStyles[ev.typeId]}};height:{{100/eventsForDate.length+'%'}}"
-	                         ng-click="checkedType !== eventTypes.indexOf('clean') || removeEvent(p.id, ev)">
-	                    </div>
-	                </div>
-	            </div>
+	        <div ng-repeat="tribe in tribes" class="row col-md-12">
+				<div ng-repeat="region in tribe.regions">
+					<div ng-repeat="group in region.groups">
+						<div class="tableRow" ng-repeat="p in group.persons | orderBy : 'categoryId'" ng-mouseover="">
+							<div class="cell bordered" ng-repeat="d in dates" ng-click="saveEvent(p.id, d)">
+								<div class="event marginLess col-md-12" ng-repeat="ev in getEventsForDate(p.id, d)"
+									 style="background-color:{{eventTypesStyles[ev.typeId]}};height:{{100/eventsForDate.length+'%'}}"
+									 ng-click="removeEvent(p.id, ev)">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 	        </div>
    		</div>
 	</div>

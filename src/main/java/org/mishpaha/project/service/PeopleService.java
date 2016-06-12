@@ -8,6 +8,7 @@ import org.mishpaha.project.data.dao.PhoneDaoImpl;
 import org.mishpaha.project.data.dao.RegionDaoImpl;
 import org.mishpaha.project.data.dao.Unit;
 import org.mishpaha.project.data.dao.Unit.Units;
+import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.Email;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
@@ -20,9 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class PeopleService {
@@ -39,6 +38,8 @@ public class PeopleService {
     private GenericDao<Phone> phoneDao;
     @Autowired
     private GenericDao<Email> emailDao;
+    @Autowired
+    private GenericDao<Category> categoryDao;
     @Autowired
     private SecurityService securityService;
 
@@ -250,6 +251,10 @@ public class PeopleService {
 
     public int deletePerson(int id) {
         return personDao.delete(id);
+    }
+
+    public List<Category> getCategories() {
+        return categoryDao.list();
     }
 
     /**

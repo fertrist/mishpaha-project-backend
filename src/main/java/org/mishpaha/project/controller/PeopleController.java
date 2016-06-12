@@ -1,6 +1,7 @@
 package org.mishpaha.project.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Region;
@@ -99,6 +100,11 @@ public class PeopleController {
     @RequestMapping(value = PERSON_ID, method = RequestMethod.DELETE)
     public int deletePerson(@PathVariable Integer id, @RequestBody Person person) {
         return peopleService.deletePerson(id);
+    }
+
+    @RequestMapping(value = "/categories", method = RequestMethod.GET)
+    public List<Category> getCategories() {
+        return peopleService.getCategories();
     }
 
 }
