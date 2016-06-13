@@ -70,7 +70,7 @@ public class EventService {
     }
 
     public Event save(Event event) {
-        return eventDao.save(event) == 1 ? event : null;
+        return eventDao.saveGetEvent(event);
     }
 
     public int delete(int id) {

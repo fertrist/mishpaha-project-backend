@@ -144,11 +144,14 @@ angular.module('people')
 
     $scope.eventsForDate;
 
-    $scope.checkedType = 0;
+    $scope.checkedType = 1;
 
     //which event we are currently working with
     $scope.setCheckedType = function(index) {
         var type = $scope.eventButtons[index];
+        if (type == "clean") {
+            $scope.checkedType = -1;
+        }
         for(var i = 0; i < $scope.eventTypes.length; i++) {
             if ($scope.eventTypes[i].type == type) {
                 $scope.checkedType = $scope.eventTypes[i].id;
@@ -156,11 +159,12 @@ angular.module('people')
         }
     }
 
-    $scope.saveEvent = function(personId, date) {
-      var parsedDate = [parseInt(date.substring(0,4)), parseInt(date.substring(5,7)), parseInt(date.substring(8,10))];
-      var event = {"typeId" : $scope.checkedType, happened: parsedDate};
+    $scope.saveEvent = function(personId, groupId, date) {
+        var parsedDate = [parseInt(date.substring(0,4)), parseInt(date.substring(5,7)), parseInt(date.substring(8,10))];
+        var event = {"id" : 0, "personId" : personId, "groupId" : groupId,
+         "typeId" : $scope.checkedType, happened: parsedDate};
         //check removal case
-        if ($scope.eventTypes[$scope.checkedType] == "clean") {
+        if ($scope.checkedType == -1) {
           return;
         }
         //check duplicate case
@@ -173,16 +177,14 @@ angular.module('people')
         }
         var url = ENV.HOST + "/events/event";
         event["id"] = 0;
-        $http.post(url, event).success(function(response){
+        $http.post(url, event).then(function(response){
             event = response.data;
-        });
-        if (event.id != 0) {
             $scope.events["p_" + personId].push(event);
-        }
-      }
+        });
+    }
 
       $scope.removeEvent = function(personId, event) {
-        if ($scope.eventTypes[$scope.checkedType] == "clean") {
+        if ($scope.checkedType != -1) {
             return;
         }
         var index = findEventInEvents($scope.events["p_" + personId], event);
@@ -217,9 +219,8 @@ angular.module('people')
           return;
         }
         $scope.eventsForDate = new Array();
-        var happened;
         for (var i = 0; i < personEvents.length; i++) {
-          happened = arrayDateToString(personEvents[i].happened);
+          var happened = arrayDateToString(personEvents[i].happened);
           if (happened == date) {
             $scope.eventsForDate.push(personEvents[i]);
           }

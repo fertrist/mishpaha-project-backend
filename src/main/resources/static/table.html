@@ -40,7 +40,7 @@
 				<div ng-repeat="region in tribe.regions">
 					<div ng-repeat="group in region.groups">
 						<div class="tableRow" ng-repeat="p in group.persons | orderBy : 'categoryId'" ng-mouseover="">
-							<div class="cell bordered" ng-repeat="d in dates" ng-click="saveEvent(p.id, d)">
+							<div class="cell bordered" ng-repeat="d in dates" ng-click="saveEvent(p.id, group.id, d)">
 								<div class="event marginLess col-md-12" ng-repeat="ev in getEventsForDate(p.id, d)"
 									 style="background-color:{{eventTypesStyles[ev.typeId]}};height:{{100/eventsForDate.length+'%'}}"
 									 ng-click="removeEvent(p.id, ev)">

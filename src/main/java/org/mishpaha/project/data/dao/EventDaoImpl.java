@@ -51,6 +51,15 @@ public class EventDaoImpl extends DaoImplementation<Event>{
 
     }
 
+    public Event saveGetEvent(Event event) {
+        String sql = format(INSERT, table, "personId, groupId, typeId, happened",
+            format("%d,%d,%d,%s", event.getPersonId(), event.getGroupId(), event.getTypeId(),
+                getQuotedString(event.getHappened().toString())));
+        LOGGER.info(sql);
+        operations.update(sql);
+        return get(event);
+    }
+
     @Override
     public int save(Event entity) {
         String sql = format(INSERT, table, "personId, groupId, typeId, happened",
@@ -58,6 +67,19 @@ public class EventDaoImpl extends DaoImplementation<Event>{
                 getQuotedString(entity.getHappened().toString())));
         LOGGER.info(sql);
         return operations.update(sql);
+    }
+
+    public Event get(Event event) {
+        String sql = "SELECT id, typeId, personId, groupId, happened, comment FROM " + table
+            + " WHERE typeId=" + event.getTypeId() + " AND personId=" + event.getPersonId()
+            + " AND happened=" + getQuotedString(event.getHappened().toString());
+        LOGGER.info(sql);
+        return operations.query(sql, rs -> {
+            if (rs.next()) {
+                return getEvent(rs);
+            }
+            return null;
+        });
     }
 
     @Override
@@ -165,6 +187,7 @@ public class EventDaoImpl extends DaoImplementation<Event>{
         event.setPersonId(rs.getInt("personId"));
         event.setGroupId(rs.getInt("groupId"));
         event.setHappened(DateUtil.fromDate(rs.getDate("happened")));
+        event.setComment(rs.getString("comment"));
         return event;
     }
 
@@ -235,6 +258,7 @@ public class EventDaoImpl extends DaoImplementation<Event>{
         if (isNotEmpty(joinPersonsCategories)) {
             selectFields.add("c.name as category");
         }
+        selectFields.add("e.comment");
 
         return
             "SELECT " + join(selectFields, ",")
