@@ -12,7 +12,7 @@ angular.module('people', [ 'ngRoute' ])
     controller : 'tableController',
     resolve: {
         peopleData: function(tableDataFactory) {
-            return tableDataFactory.getPeople();
+            return tableDataFactory.getPeopleSummary();
         },
         eventTypesData: function(tableDataFactory){
             return tableDataFactory.getEventTypes();
@@ -26,7 +26,15 @@ angular.module('people', [ 'ngRoute' ])
     }
   }).when('/list',{
     templateUrl : 'list.html',
-    controller : 'listController'
+    controller : 'listController',
+    resolve: {
+        peopleData: function(tableDataFactory) {
+            return tableDataFactory.getPeopleInfo();
+        },
+        categoriesData: function(tableDataFactory){
+            return tableDataFactory.getCategories();
+        }
+    }
   }).when('/report',{
     templateUrl : 'report.html',
     controller : 'reportController'
@@ -95,121 +103,6 @@ angular.module('people', [ 'ngRoute' ])
        });
     }
 
-  })
-.controller('listController', function($rootScope, $scope, $http, $location){
-
-  $scope.people;
-  function getPeople() {
-    $scope.people = [];
-  }
- 
-  $scope.copy;
-
-  $scope.selectPerson = function(person) {
-      $scope.copy = {};
-      $scope.copy.id = person.id;
-      $scope.copy.firstName = person.firstName;
-      $scope.copy.midName = person.midName;
-      $scope.copy.lastName = person.lastName;
-      $scope.copy.categoryId = person.categoryId;
-      $scope.copy.isJew = person.isJew;
-      $scope.copy.givesTithe = person.givesTithe;
-      $scope.copy.comment = person.comment;
-      $scope.copy.sex = person.sex;
-      $scope.copy.birthDay = person.birthDay;
-      $scope.copy.emails = [];
-      $scope.copy.phones = [];
-      for (var i = 0; i < person.emails.length; i++) {
-        $scope.copy.emails[i] = person.emails[i];
-      }
-      for (var i = 0; i < person.phones.length; i++) {
-        $scope.copy.phones[i] = person.phones[i];
-      }
-      $scope.copy.address = person.address;
-  };
-
-    getPersonCopy = function(person){
-      var copy = {};
-      copy.id = person.id;
-      copy.firstName = person.firstName;
-      copy.midName = person.midName;
-      copy.lastName = person.lastName;
-      copy.categoryId = person.categoryId;
-      copy.isJew = person.isJew;
-      copy.givesTithe = person.givesTithe;
-      copy.comment = person.comment;
-      copy.sex = person.sex;
-      copy.birthDay = person.birthDay;
-      copy.emails = [];
-      copy.phones = [];
-      for (var i = 0; i < person.emails.length; i++) {
-        copy.emails[i] = person.emails[i];
-      }
-      for (var i = 0; i < person.phones.length; i++) {
-        copy.phones[i] = person.phones[i];
-      }
-      copy.address = person.address;
-      return copy;
-    }
-
-    $scope.categories = ["#FFC39F" /*leader*/, "#E5EEE0" /*white*/, "#5ED1BA" /*blue*/,
-    "#7AEE3C" /*green*/, "#91B52D" /*specific*/];
-
-    $scope.backGround = function(category) {
-      return {"background-color" : $scope.categories[category-1]};
-    };
-
-    $scope.arrayToString = function(string){
-      return string.join(", ");
-    };
-
-    $scope.arrayToDate = function(array){
-      return array.join("-");
-    };
-
-    $scope.submitUpdate = function(groupId) {
-      for (var i = 0; i < $scope.groups.length; i++) {
-        for (var j = 0; j < $scope.groups[i].persons.length; j++) {
-          if ($scope.groups[i].persons[j].id == $scope.copy.id) {
-            $scope.groups[i].persons[j] = getPersonCopy($scope.copy);
-            $scope.copy = {};
-            return;
-          }
-        }
-      }
-    };
-
-    $scope.newPhone;
-    $scope.newEmail;
-    $scope.addPhone = function() {
-      //check duplicate case
-      if (!$scope.newPhone || findItem($scope.copy.phones, $scope.newPhone) !== -1) {
-        return;
-      }
-      $scope.copy.phones.push($scope.newPhone);
-      $scope.newPhone = "";
-    }
-
-    $scope.addEmail = function() {
-      //check duplicate case
-      if (!$scope.newEmail || findItem($scope.copy.emails, $scope.newEmail) !== -1) {
-        return;
-      }
-      $scope.copy.emails.push($scope.newEmail);
-      $scope.newEmail = "";
-    }
-
-    findItem = function(array, item) {
-      if (array == null) {
-        return -1;
-      }
-      for (var i = 0; i < array.length; i++) {
-        if (array[i] == item){
-          return i;
-        }
-      }
-      return -1;
-    }
 })
 .controller('reportController',
   function($rootScope, $scope, $http, $location, ENV){

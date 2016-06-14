@@ -83,12 +83,14 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         return operations.update(sql);
     }
 
+    public Person updatePerson(Person person) {
+        int result = update(person);
+        return get(person.getId());
+    }
+
     @Override
     public int update(Person entity) {
         List<String> params = new ArrayList<>();
-        if (entity.getId() != 0) {
-            params.add("id=" + entity.getId());
-        }
         if (!isEmpty(entity.getFirstName())) {
             params.add("firstName=" + String.format(template, entity.getFirstName()));
         }
@@ -111,7 +113,13 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
             params.add("categoryId=" + entity.getCategoryId());
         }
         if (entity.getBirthDay() != null) {
-            params.add("birthday=" + String.format(template, getDateAsQuotedString(entity.getBirthDay())));
+            params.add("birthday=" + String.format(template, entity.getBirthDay().toString()));
+        }
+        if (!isEmpty(entity.getAddress())) {
+            params.add("address=" + String.format(template, entity.getAddress()));
+        }
+        if (!isEmpty(entity.getComment())) {
+            params.add("comment=" + String.format(template, entity.getComment()));
         }
         String sql = String.format(UPDATE, table, String.join(", ", params));
         return operations.update(sql, entity.getId());

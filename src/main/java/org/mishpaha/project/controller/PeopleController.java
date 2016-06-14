@@ -93,8 +93,9 @@ public class PeopleController {
     }
 
     @RequestMapping(value = PERSON, method = RequestMethod.PUT)
-    public int updatePerson(@RequestBody Person person) {
-        return peopleService.savePerson(person);
+    @JsonView(View.Info.class)
+    public Person updatePerson(@RequestBody Person person) {
+        return peopleService.updatePerson(person);
     }
 
     @RequestMapping(value = PERSON_ID, method = RequestMethod.DELETE)

@@ -94,7 +94,7 @@ angular.module('people')
             color = "#FF6400";
         } else if ($scope.eventTypes[i].type == "club") {
             color = "#FF8373";
-        } else if ($scope.eventTypes[i].type == "holiday") {
+        } else if ($scope.eventTypes[i].type == "common") {
             color = "#3BCCEE";
         }
         if(color) {

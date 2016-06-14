@@ -1,7 +1,15 @@
 angular.module('people')
 .factory('tableDataFactory', function($http, ENV) {
      var factoryResult = {
-         getPeople: function() {
+         getPeopleInfo: function() {
+             var url = ENV.HOST + "/people/info";
+             var promise = $http.get(url).then(function(response) {
+                 return response.data;
+             });
+             return promise;
+         },
+
+         getPeopleSummary: function() {
              var url = ENV.HOST + "/people/summary";
              var promise = $http.get(url).then(function(response) {
                  return response.data;

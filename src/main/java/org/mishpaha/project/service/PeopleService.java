@@ -245,8 +245,21 @@ public class PeopleService {
         return personDao.save(person);
     }
 
-    public int updatePerson(Person person) {
-        return personDao.update(person);
+    public Person updatePerson(Person person) {
+        Person updated = ((PersonDaoImpl)personDao).updatePerson(person);
+        List<String> personEmails = getPersonEmails(person.getId());
+        if (!personEmails.equals(person.getEmails())) {
+            ((EmailDaoImpl)emailDao).delete(person.getId());
+            ((EmailDaoImpl)emailDao).batchSave(person.getId(), person.getEmails());
+        }
+        List<String> personPhones = getPersonPhones(person.getId());
+        if (!personPhones.equals(person.getPhones())) {
+            ((PhoneDaoImpl) phoneDao).delete(person.getId());
+            ((PhoneDaoImpl) phoneDao).batchSave(person.getId(), person.getPhones());
+        }
+        updated.setEmails(getPersonEmails(person.getId()));
+        updated.setPhones(getPersonPhones(person.getId()));
+        return updated;
     }
 
     public int deletePerson(int id) {
@@ -257,19 +270,4 @@ public class PeopleService {
         return categoryDao.list();
     }
 
-    /**
-     * P2
-     * @param person
-     * @param groupId
-     */
-    public void movePersonToGroup(Person person, int groupId) {
-
-    }
-
-    /**
-     * P1
-     */
-    public void movePersonFromGroup() {
-
-    }
 }

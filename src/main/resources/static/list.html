@@ -2,127 +2,131 @@
 	<!-- Default panel contents -->
 	<div class="panel-heading">Список людей</div>
 
-	<div ng-repeat="g in groups">
-		<div class="panel-heading">{{'Група-' + g.id}}</div>
-		<table class="table table-hover">
-			<thead>
-				<th>№</th>
-				<th>Им'я</th>
-				<th>Дата народження</th>
-				<th>Номер телефону</th>
-				<th>Ел.пошта</th>
-				<th>Адреса</th>
-			</thead>
-			<tbody>
-			<tr ng-repeat="p in g.persons | orderBy : 'categoryId'"
-				data-toggle="modal" data-target="#updatePersonModal" ng-click="selectPerson(p)">
-				<td ng-style="backGround(p.categoryId)">{{$index+1}}</td>
-				<td>{{p.firstName + ' ' + p.midName + ' ' + p.lastName}}</td>
-				<td>{{arrayToDate(p.birthDay)}}</td>
-				<td>{{arrayToString(p.phones)}}</td>
-				<td>{{arrayToString(p.emails)}}</td>
-				<td>{{p.address}}</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
+	<div ng-repeat="tribe in people">
+		<div ng-repeat="region in tribe.regions">
+			<div class="panel-heading">{{'Регіон-' + region.id}}</div>
+			<table class="table table-hover">
+				<thead>
+					<th>№</th>
+					<th>Им'я</th>
+					<th>Дата народження</th>
+					<th>Номер телефону</th>
+					<th>Ел.пошта</th>
+					<th>Адреса</th>
+				</thead>
+				<tbody ng-repeat="g in region.groups">
+					<tr><td></td><td>{{'Група-' + g.id}}</td></tr>
+					<tr ng-repeat="p in g.persons | orderBy : 'categoryId'"
+						data-toggle="modal" data-target="#updatePersonModal" ng-click="selectPerson(p)">
+						<td ng-style="backGround(p.categoryId)">{{$index+1}}</td>
+						<td>{{p.firstName + ' ' + p.midName + ' ' + p.lastName}}</td>
+						<td>{{arrayToDate(p.birthDay)}}</td>
+						<td>{{arrayToString(p.phones)}}</td>
+						<td>{{arrayToString(p.emails)}}</td>
+						<td>{{p.address}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 
-<!-- Modal -->
-<div class="modal fade" id="updatePersonModal" role="dialog">
-	<div class="modal-dialog">
-		<!-- Modal content-->
-		<div class="modal-content">
-			<form class="form-horizontal" role="form">
 
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">{{selected.firstName + ' ' + selected.midName + ' ' + selected.lastName}}</h4>
-				</div>
-				<div class="modal-body">
-					<div class="form-group">
-						<label class="control-label col-sm-4" for="firstName">Ім'я:</label>
-						<div class="col-sm-8">
-							<input type="text" class="form-control" id="firstName" placeholder="Введіть ім'я" ng-model="copy.firstName">
-						</div>
+	<!-- Modal -->
+	<div class="modal fade" id="updatePersonModal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<form class="form-horizontal" role="form">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">{{selected.firstName + ' ' + selected.midName + ' ' + selected.lastName}}</h4>
 					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-4" for="midName">Прізвище:</label>
-						<div class="col-sm-8">
-							<input type="text" class="form-control" id="midName" placeholder="Введіть прізвище" ng-model="copy.midName">
+					<div class="modal-body">
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="firstName">Ім'я:</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="firstName" placeholder="Введіть ім'я" ng-model="copy.firstName">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-4" for="lastName">По-батькові:</label>
-						<div class="col-sm-8">
-							<input type="text" class="form-control" id="lastName" placeholder="Введіть по-батькові" ng-model="copy.lastName">
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="midName">Прізвище:</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="midName" placeholder="Введіть прізвище" ng-model="copy.midName">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-4" for="category">Категорія:</label>
-						<div class="col-sm-8">
-							<select type="text" class="form-control categoryOptions" id="category" ng-style="backGround(copy.categoryId)" ng-model="copy.categoryId">
-								<option ng-repeat="category in categories" ng-style="backGround($index+1)" 
-								value="{{$index+1}}"></option>
-							</select>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="lastName">По-батькові:</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="lastName" placeholder="Введіть по-батькові" ng-model="copy.lastName">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-4" for="birthDay">Дата народження:</label>
-						<div class="col-sm-8">          
-							<input type="text" class="form-control" id="birthDay" placeholder="Введіть дату народження" ng-model="copy.birthDay">
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="category">Категорія:</label>
+							<div class="col-sm-8">
+								<select type="text" class="form-control categoryOptions" id="category" ng-style="backGround(copy.categoryId)" ng-model="copy.categoryId">
+									<option ng-repeat="category in categories" ng-style="backGround(category.id)"
+									value="{{category.id}}"></option>
+								</select>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-4" for="phones">Телефон:</label>
-						<div class="col-sm-8" id="phones">          
-							<input ng-repeat="phone in copy.phones" type="text" class="form-control" placeholder="Введіть телефон" ng-model="phone" disabled="true">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Введіть телефон" ng-model="newPhone">
-								<span class="input-group-btn">
-									<button class="btn btn-success" type="button" ng-click="addPhone(newPhone)"><span class="glyphicon glyphicon-plus"></span></button>
-								</span>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="birthDay">Дата народження:</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="birthDay"
+									   placeholder="Введіть дату народження" ng-model="copy.birthDay">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="phones">Телефон:</label>
+							<div class="col-sm-8" id="phones">
+								<input ng-repeat="phone in copy.phones" type="text" class="form-control" placeholder="Введіть телефон" ng-model="phone" disabled="true">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="Введіть телефон" ng-model="newPhone">
+									<span class="input-group-btn">
+										<button class="btn btn-success" type="button" ng-click="addPhone(newPhone)"><span class="glyphicon glyphicon-plus"></span></button>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="emails">Ел.пошта:</label>
+							<div class="col-sm-8" id="emails">
+								<input ng-repeat="email in copy.emails" type="email" class="form-control" placeholder="Введіть ел.пошту" ng-model="email" disabled="true">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="Введіть ел.пошту" ng-model="newEmail">
+									<span class="input-group-btn">
+										<button class="btn btn-success" type="button" ng-click="addEmail()"><span class="glyphicon glyphicon-plus"></span></button>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="address">Адреса:</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="address" placeholder="Введіть адресу" ng-model="copy.address">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 col-sm-offset-2" for="sex">Стать:</label>
+							<div class="col-sm-6" id="sex">
+								<div class="col-sm-6">
+									<label for="male">Чол.</label>
+									<input type="radio" id="male" ng-model="copy.sex" ng-value="true">
+								</div>
+								<div class="col-sm-6">
+									<label for="female">Жін.</label>
+									<input type="radio" id="female" ng-model="copy.sex" ng-value="false">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="comments">Коментар:</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="comments" placeholder="Введіть коментар" ng-model="copy.comment">
 							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-4" for="emails">Ел.пошта:</label>
-						<div class="col-sm-8" id="emails">          
-							<input ng-repeat="email in copy.emails" type="email" class="form-control" placeholder="Введіть ел.пошту" ng-model="email" disabled="true">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Введіть ел.пошту" ng-model="newEmail">
-								<span class="input-group-btn">
-									<button class="btn btn-success" type="button" ng-click="addEmail()"><span class="glyphicon glyphicon-plus"></span></button>
-								</span>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-4" for="address">Адреса:</label>
-						<div class="col-sm-8">          
-							<input type="text" class="form-control" id="address" placeholder="Введіть адресу" ng-model="copy.address">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 col-sm-offset-2" for="sex">Стать:</label>
-						<div class="col-sm-6" id="sex">  
-							<div class="col-sm-6">        
-								<label for="male">Чол.</label>
-								<input type="radio" id="male" ng-model="copy.sex" ng-value="true">
-							</div>
-							<div class="col-sm-6">
-								<label for="female">Жін.</label>
-								<input type="radio" id="female" ng-model="copy.sex" ng-value="false">
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-4" for="comments">Коментар:</label>
-						<div class="col-sm-8">          
-							<input type="text" class="form-control" id="comments" placeholder="Введіть коментар" ng-model="copy.comment">
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
+					<div class="modal-footer">
 					<div class="col-sm-2">
 						<button type="submit" class="btn btn-default" ng-click="submitUpdate()" data-dismiss="modal">Submit</button>
 					</div>
@@ -130,8 +134,8 @@
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</div>
-			</form>
+				</form>
+			</div>
 		</div>
 	</div>
-</div>
 </div>

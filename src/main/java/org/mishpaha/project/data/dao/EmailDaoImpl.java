@@ -4,8 +4,11 @@ import org.mishpaha.project.data.model.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -32,6 +35,22 @@ public class EmailDaoImpl extends DaoImplementation<Email>{
             e.printStackTrace();
             return 0;
         }
+    }
+
+    public int batchSave(int id, List<String> emails) {
+        String sql = "INSERT INTO emails(personId, email) VALUES(?, ?)";
+        return operations.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
+                preparedStatement.setInt(1, id);
+                preparedStatement.setString(2, emails.get(i));
+            }
+
+            @Override
+            public int getBatchSize() {
+                return emails.size();
+            }
+        }).length;
     }
 
     /**

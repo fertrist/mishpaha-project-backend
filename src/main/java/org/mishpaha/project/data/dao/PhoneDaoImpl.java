@@ -4,8 +4,11 @@ import org.mishpaha.project.data.model.Phone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -32,6 +35,22 @@ public class PhoneDaoImpl extends DaoImplementation<Phone>{
             e.printStackTrace();
             return 0;
         }
+    }
+
+    public int batchSave(int id, List<String> phones) {
+        String sql = "INSERT INTO phones(personId, phone) VALUES(?, ?)";
+        return operations.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
+                preparedStatement.setInt(1, id);
+                preparedStatement.setString(2, phones.get(i));
+            }
+
+            @Override
+            public int getBatchSize() {
+                return phones.size();
+            }
+        }).length;
     }
 
     /**
