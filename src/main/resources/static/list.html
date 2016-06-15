@@ -4,7 +4,12 @@
 
 	<div ng-repeat="tribe in people">
 		<div ng-repeat="region in tribe.regions">
-			<div class="panel-heading">{{'Регіон-' + region.id}}</div>
+			<div class="panel-heading">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updatePersonModal">
+					<span class="glyphicon glyphicon-plus" ng-click=""></span>
+				</button>
+				{{'Регіон-' + region.id}}
+			</div>
 			<table class="table table-hover">
 				<thead>
 					<th>№</th>
@@ -17,7 +22,7 @@
 				<tbody ng-repeat="g in region.groups">
 					<tr><td></td><td>{{'Група-' + g.id}}</td></tr>
 					<tr ng-repeat="p in g.persons | orderBy : 'categoryId'"
-						data-toggle="modal" data-target="#updatePersonModal" ng-click="selectPerson(p)">
+						data-toggle="modal" data-target="#updatePersonModal" ng-click="selectPerson(p, g.id)">
 						<td ng-style="backGround(p.categoryId)">{{$index+1}}</td>
 						<td>{{p.firstName + ' ' + p.midName + ' ' + p.lastName}}</td>
 						<td>{{arrayToDate(p.birthDay)}}</td>
@@ -58,6 +63,16 @@
 							<label class="control-label col-sm-4" for="lastName">По-батькові:</label>
 							<div class="col-sm-8">
 								<input type="text" class="form-control" id="lastName" placeholder="Введіть по-батькові" ng-model="copy.lastName">
+							</div>
+						</div>
+						<div class="form-group" ng-show="allGroups.length > 1">
+							<label class="control-label col-sm-4" for="groupInput">Група:</label>
+							<div class="col-sm-8">
+								<select type="text" class="form-control" id="groupInput" ng-model="copy.groupId" value="copy.groupId">
+									<option ng-repeat="gr in allGroups" value="{{gr.id}}"
+											ng-selected="copy.groupId==gr.id">
+										{{gr.id}}</option>
+								</select>
 							</div>
 						</div>
 						<div class="form-group">

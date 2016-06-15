@@ -20,6 +20,7 @@ public class Person {
     private String midName;
     @JsonView(View.Summary.class)
     private String lastName;
+    private int groupId;
     @JsonView(View.Summary.class)
     private int categoryId;
     //true means men

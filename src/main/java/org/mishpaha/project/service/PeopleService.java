@@ -11,6 +11,7 @@ import org.mishpaha.project.data.dao.Unit.Units;
 import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.Email;
 import org.mishpaha.project.data.model.Group;
+import org.mishpaha.project.data.model.GroupMember;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Phone;
 import org.mishpaha.project.data.model.Region;
@@ -40,6 +41,8 @@ public class PeopleService {
     private GenericDao<Email> emailDao;
     @Autowired
     private GenericDao<Category> categoryDao;
+    @Autowired
+    private GenericDao<GroupMember> groupMemberDao;
     @Autowired
     private SecurityService securityService;
 

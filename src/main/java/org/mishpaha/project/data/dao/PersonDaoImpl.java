@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mishpaha.project.util.DateUtil.getDateAsQuotedString;
 import static org.mishpaha.project.util.Util.getQuotedString;
 import static org.springframework.util.StringUtils.isEmpty;
 
@@ -121,6 +120,12 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
         if (!isEmpty(entity.getComment())) {
             params.add("comment=" + String.format(template, entity.getComment()));
         }
+        if (!isEmpty(entity.getAddress())) {
+            params.add("address=" + String.format(template, entity.getAddress()));
+        }
+        if (!isEmpty(entity.getComment())) {
+            params.add("comment=" + String.format(template, entity.getComment()));
+        }
         String sql = String.format(UPDATE, table, String.join(", ", params));
         return operations.update(sql, entity.getId());
     }
@@ -168,47 +173,5 @@ public class PersonDaoImpl extends DaoImplementation<Person> {
             return getPerson(rs);
         });
     }
-
-    //commented out as we use the same get Group method to  retrieve all groups
-
-    /*public List<Person> listRegion(int id) {
-        String groupMembers = ModelUtil.getTable(GroupMember.class);
-        String sql = String.format("SELECT * FROM %1$s JOIN %2$s WHERE %3$s.id=%4$s.personId AND %5$s.groupId=%6$d",
-            table, groupMembers, table, groupMembers, groupMembers, id);
-        return operations.query(sql, (rs, numRow) -> {
-            return new Person(
-                rs.getInt("id"),
-                rs.getString("firstName"),
-                rs.getString("midName"),
-                rs.getString("lastName"),
-                rs.getBoolean("sex"),
-                rs.getDate("birthday"),
-                rs.getBoolean("isJew"),
-                rs.getBoolean("givesTithe"),
-                rs.getInt("categoryId"),
-                rs.getString("comment")
-            );
-        });
-    }*/
-
-    /*public List<Person> listTribe(int id) {
-        String groupMembers = ModelUtil.getTable(GroupMember.class);
-        String sql = String.format("SELECT * FROM %1$s JOIN %2$s WHERE %3$s.id=%4$s.personId AND %5$s.groupId=%6$d",
-            table, groupMembers, table, groupMembers, groupMembers, id);
-        return operations.query(sql, (rs, numRow) -> {
-            return new Person(
-                rs.getInt("id"),
-                rs.getString("firstName"),
-                rs.getString("midName"),
-                rs.getString("lastName"),
-                rs.getBoolean("sex"),
-                rs.getDate("birthday"),
-                rs.getBoolean("isJew"),
-                rs.getBoolean("givesTithe"),
-                rs.getInt("categoryId"),
-                rs.getString("comment")
-            );
-        });
-    }*/
 
 }

@@ -42,6 +42,15 @@ public class GroupMemberDaoImpl extends DaoImplementation<GroupMember>{
         });
     }
 
+    public int getGroupId(int id) {
+        return operations.query(String.format("SELECT FROM %s WHERE personId=%d", table, id), rs -> {
+            if (rs.next()) {
+                return rs.getInt("groupId");
+            }
+            return null;
+        });
+    }
+
     @Override
     public List<GroupMember> list() {
         return operations.query(String.format(SELECT_ALL, table), (rs, rowNum) -> {
