@@ -4,11 +4,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mishpaha.project.config.Application;
 import org.mishpaha.project.config.Constants;
-import org.mishpaha.project.config.SecurityConfig;
-import org.mishpaha.project.data.dao.EmailDaoImpl;
-import org.mishpaha.project.data.dao.EventDaoImpl;
-import org.mishpaha.project.data.dao.PhoneDaoImpl;
-import org.mishpaha.project.data.dao.SecurityDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.EmailDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.EventDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.PhoneDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.SecurityDaoImpl;
 import org.mishpaha.project.data.model.Email;
 import org.mishpaha.project.data.model.Event;
 import org.mishpaha.project.data.model.Person;
@@ -30,11 +29,11 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.count;
-import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.happened;
-import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.listed;
-import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.type;
-import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.week;
+import static org.mishpaha.project.data.dao.jdbc.EventDaoImpl.ReportFields.count;
+import static org.mishpaha.project.data.dao.jdbc.EventDaoImpl.ReportFields.happened;
+import static org.mishpaha.project.data.dao.jdbc.EventDaoImpl.ReportFields.listed;
+import static org.mishpaha.project.data.dao.jdbc.EventDaoImpl.ReportFields.type;
+import static org.mishpaha.project.data.dao.jdbc.EventDaoImpl.ReportFields.week;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = Application.class)

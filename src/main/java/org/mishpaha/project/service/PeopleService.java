@@ -1,13 +1,13 @@
 package org.mishpaha.project.service;
 
-import org.mishpaha.project.data.dao.EmailDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.EmailDaoImpl;
 import org.mishpaha.project.data.dao.GenericDao;
-import org.mishpaha.project.data.dao.GroupDaoImpl;
-import org.mishpaha.project.data.dao.PersonDaoImpl;
-import org.mishpaha.project.data.dao.PhoneDaoImpl;
-import org.mishpaha.project.data.dao.RegionDaoImpl;
-import org.mishpaha.project.data.dao.Unit;
-import org.mishpaha.project.data.dao.Unit.Units;
+import org.mishpaha.project.data.dao.jdbc.GroupDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.PersonDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.PhoneDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.RegionDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.Unit;
+import org.mishpaha.project.data.dao.jdbc.Unit.Units;
 import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.Email;
 import org.mishpaha.project.data.model.Group;

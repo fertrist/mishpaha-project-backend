@@ -1,4 +1,4 @@
-package org.mishpaha.project.data.dao;
+package org.mishpaha.project.data.dao.jdbc;
 
 import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.Event;

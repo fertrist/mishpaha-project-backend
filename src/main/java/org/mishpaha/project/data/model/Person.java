@@ -224,4 +224,9 @@ public class Person {
             '}';
     }
 
+    public Person clone() {
+        return new Person(getFirstName(), getMidName(), getLastName(), getSex(), getBirthDay(),
+                isJew, givesTithe, getCategoryId(), getAddress(), getComment());
+    }
+
 }

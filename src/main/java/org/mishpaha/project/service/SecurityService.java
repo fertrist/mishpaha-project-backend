@@ -1,10 +1,10 @@
 package org.mishpaha.project.service;
 
 import org.mishpaha.project.data.dao.GenericDao;
-import org.mishpaha.project.data.dao.GroupDaoImpl;
-import org.mishpaha.project.data.dao.RegionDaoImpl;
-import org.mishpaha.project.data.dao.SecurityDaoImpl;
-import org.mishpaha.project.data.dao.Unit.Units;
+import org.mishpaha.project.data.dao.jdbc.GroupDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.RegionDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.SecurityDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.Unit.Units;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Region;

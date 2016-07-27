@@ -1,4 +1,4 @@
-package org.mishpaha.project.data.dao;
+package org.mishpaha.project.data.dao.jdbc;
 
 import org.mishpaha.project.data.model.User;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package org.mishpaha.project.data.dao;
+package org.mishpaha.project.data.dao.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;

@@ -1,4 +1,4 @@
-package org.mishpaha.project.data.dao;
+package org.mishpaha.project.data.dao.jdbc;
 
 public interface Unit {
     Units getUnit();

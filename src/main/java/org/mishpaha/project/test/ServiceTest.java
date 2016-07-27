@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mishpaha.project.config.Application;
 import org.mishpaha.project.config.Constants;
-import org.mishpaha.project.data.dao.SecurityDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.SecurityDaoImpl;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.data.model.Region;
 import org.mishpaha.project.data.model.User;

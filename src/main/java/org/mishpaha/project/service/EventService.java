@@ -1,9 +1,9 @@
 package org.mishpaha.project.service;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.mishpaha.project.data.dao.EventDaoImpl;
-import org.mishpaha.project.data.dao.Unit;
-import org.mishpaha.project.data.dao.Unit.Units;
+import org.mishpaha.project.data.dao.jdbc.EventDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.Unit;
+import org.mishpaha.project.data.dao.jdbc.Unit.Units;
 import org.mishpaha.project.data.model.Event;
 import org.mishpaha.project.data.model.EventType;
 import org.mishpaha.project.data.model.Group;
@@ -17,10 +17,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Service
 public class EventService {

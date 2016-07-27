@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.mishpaha.project.config.Application;
 import org.mishpaha.project.config.Constants;
 import org.mishpaha.project.controller.EventController;
-import org.mishpaha.project.data.dao.EventDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.EventDaoImpl;
 import org.mishpaha.project.data.model.Event;
 import org.mishpaha.project.data.model.Group;
 import org.mishpaha.project.util.DateUtil;

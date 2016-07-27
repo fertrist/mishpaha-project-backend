@@ -1,10 +1,10 @@
 package org.mishpaha.project.service;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.mishpaha.project.data.dao.EventDaoImpl;
-import org.mishpaha.project.data.dao.EventDaoImpl.EventTypes;
+import org.mishpaha.project.data.dao.jdbc.EventDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.EventDaoImpl.EventTypes;
 import org.mishpaha.project.data.dao.GenericDao;
-import org.mishpaha.project.data.dao.PersonDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.PersonDaoImpl;
 import org.mishpaha.project.data.model.Event;
 import org.mishpaha.project.data.model.Person;
 import org.mishpaha.project.data.model.Report;
@@ -23,15 +23,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.mishpaha.project.data.dao.CategoryDaoImpl.Categories.blue;
-import static org.mishpaha.project.data.dao.CategoryDaoImpl.Categories.brown;
-import static org.mishpaha.project.data.dao.CategoryDaoImpl.Categories.green;
-import static org.mishpaha.project.data.dao.CategoryDaoImpl.Categories.guest;
-import static org.mishpaha.project.data.dao.CategoryDaoImpl.Categories.white;
-import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.count;
-import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.happened;
-import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.listed;
-import static org.mishpaha.project.data.dao.EventDaoImpl.ReportFields.type;
+import static org.mishpaha.project.data.dao.jdbc.CategoryDaoImpl.Categories.blue;
+import static org.mishpaha.project.data.dao.jdbc.CategoryDaoImpl.Categories.brown;
+import static org.mishpaha.project.data.dao.jdbc.CategoryDaoImpl.Categories.green;
+import static org.mishpaha.project.data.dao.jdbc.CategoryDaoImpl.Categories.guest;
+import static org.mishpaha.project.data.dao.jdbc.CategoryDaoImpl.Categories.white;
+import static org.mishpaha.project.data.dao.jdbc.EventDaoImpl.ReportFields.count;
+import static org.mishpaha.project.data.dao.jdbc.EventDaoImpl.ReportFields.happened;
+import static org.mishpaha.project.data.dao.jdbc.EventDaoImpl.ReportFields.listed;
+import static org.mishpaha.project.data.dao.jdbc.EventDaoImpl.ReportFields.type;
 
 @Service
 public class ReportService {

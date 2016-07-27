@@ -3,10 +3,9 @@ package org.mishpaha.project.test;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.mishpaha.project.data.dao.CategoryDaoImpl;
-import org.mishpaha.project.data.dao.CategoryDaoImpl.Categories;
-import org.mishpaha.project.data.dao.DataBaseDao;
-import org.mishpaha.project.data.dao.EventDaoImpl;
+import org.mishpaha.project.data.dao.jdbc.CategoryDaoImpl.Categories;
+import org.mishpaha.project.data.dao.jdbc.DataBaseDao;
+import org.mishpaha.project.data.dao.jdbc.EventDaoImpl;
 import org.mishpaha.project.data.dao.GenericDao;
 import org.mishpaha.project.data.model.Category;
 import org.mishpaha.project.data.model.Email;
@@ -28,11 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mishpaha.project.data.dao.CategoryDaoImpl.Categories.white;
-import static org.mishpaha.project.data.dao.EventDaoImpl.EventTypes.call;
-import static org.mishpaha.project.data.dao.EventDaoImpl.EventTypes.group;
-import static org.mishpaha.project.data.dao.EventDaoImpl.EventTypes.meeting;
-import static org.mishpaha.project.data.dao.EventDaoImpl.EventTypes.visit;
+import static org.mishpaha.project.data.dao.jdbc.CategoryDaoImpl.Categories.white;
+import static org.mishpaha.project.data.dao.jdbc.EventDaoImpl.EventTypes.call;
+import static org.mishpaha.project.data.dao.jdbc.EventDaoImpl.EventTypes.group;
+import static org.mishpaha.project.data.dao.jdbc.EventDaoImpl.EventTypes.meeting;
+import static org.mishpaha.project.data.dao.jdbc.EventDaoImpl.EventTypes.visit;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 abstract class BaseTestClass {

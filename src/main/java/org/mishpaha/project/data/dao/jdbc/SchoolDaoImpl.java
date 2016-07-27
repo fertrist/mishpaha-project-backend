@@ -1,4 +1,4 @@
-package org.mishpaha.project.data.dao;
+package org.mishpaha.project.data.dao.jdbc;
 
 import org.mishpaha.project.data.model.School;
 import org.mishpaha.project.util.DateUtil;
