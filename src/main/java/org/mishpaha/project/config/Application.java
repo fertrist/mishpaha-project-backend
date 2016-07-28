@@ -1,6 +1,7 @@
 package org.mishpaha.project.config;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.hibernate.SessionFactory;
 import org.mishpaha.project.data.dao.jdbc.CategoryDaoImpl;
 import org.mishpaha.project.data.dao.jdbc.ChangeRecordDaoImpl;
 import org.mishpaha.project.data.dao.jdbc.DataBaseDao;
@@ -37,6 +38,7 @@ import org.mishpaha.project.data.model.Training;
 import org.mishpaha.project.data.model.Tribe;
 import org.mishpaha.project.data.model.Volunteer;
 import org.mishpaha.project.util.ModelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -45,20 +47,29 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @SpringBootApplication
+@EnableTransactionManagement
 @ComponentScan(basePackages="org.mishpaha.project")
 @EnableAutoConfiguration
+@PropertySource(value = { "classpath:application.properties" })
 public class Application {
+
+    @Autowired
+    private Environment environment;
 
     @Bean CommandLineRunner init() {
         return (evt) -> {};
@@ -68,6 +79,14 @@ public class Application {
         SpringApplication springApplication = new SpringApplication(Application.class);
         springApplication.setAdditionalProfiles(Constants.PROFILE_DEV);
         springApplication.run(args);
+    }
+
+    @Bean
+    @Autowired
+    public HibernateTransactionManager transactionManager(SessionFactory s) {
+        HibernateTransactionManager txManager = new HibernateTransactionManager();
+        txManager.setSessionFactory(s);
+        return txManager;
     }
 
     @Bean
@@ -171,15 +190,22 @@ public class Application {
     }
 
     @Profile(Constants.PROFILE_DEV)
-    @Bean
+    @Bean @Autowired
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
         factoryBean.setPackagesToScan(new String[]{"org.mishpaha.project.data"});
-        Properties props = new Properties();
-        props.setProperty("dialect", "org.hibernate.dialect.H2Dialect");
-        factoryBean.setHibernateProperties(props);
+        factoryBean.setHibernateProperties(hibernateProperties());
         return factoryBean;
+    }
+
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("dialect", "org.hibernate.dialect.H2Dialect");
+//        properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
+//        properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
+//        properties.put("hibernate.format_sql", environment.getRequiredProperty("hibernate.format_sql"));
+        return properties;
     }
 
     @Profile(Constants.PROFILE_DEV)

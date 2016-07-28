@@ -7,41 +7,60 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import org.mishpaha.project.util.View;
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.List;
 
+@Entity
+@Table(name = "PERSON")
 public class Person {
 
-    @JsonView(View.Summary.class)
+    @Id @GeneratedValue
+    @Column(name = "id")
     private int id;
-    @JsonView(View.Summary.class)
+
+    @Column(name = "first_name")
     private String firstName;
-    @JsonView(View.Summary.class)
+
+    @Column(name = "middle_name")
     private String midName;
-    @JsonView(View.Summary.class)
+
+    @Column(name = "last_name")
     private String lastName;
-    private int groupId;
-    @JsonView(View.Summary.class)
-    private int categoryId;
-    //true means men
-    @JsonView(View.Summary.class)
-    private Boolean isJew;
-    @JsonView(View.Summary.class)
-    private Boolean givesTithe;
-    @JsonView(View.Summary.class)
-    private String comment;
-    @JsonView(View.Info.class)
+
+    @Column(name = "sex")
     private Boolean sex;
-    @JsonView(View.Info.class)
+
+    //true means men
+    @Column(name = "is_jew")
+    private Boolean isJew;
+
+    @Column(name = "birth_day")
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate birthDay;
-    @JsonView(View.Info.class)
+
+    @Column(name = "comment")
+    private String comment;
+
+    @ManyToOne
     private List<String> emails;
-    @JsonView(View.Info.class)
+
+    @ManyToOne
     private List<String> phones;
-    @JsonView(View.Info.class)
+
+    @Column(name = "address")
     private String address;
+
+    @Column
+    @Embedded
+    private PersonDetails personDetails;
 
     public Person(int id, String firstName, String midName, String lastName, boolean sex, LocalDate birthDay,
                   boolean isJew, boolean givesTithe, int categoryId, String address, String comment) {
@@ -57,6 +76,7 @@ public class Person {
         this.sex = sex;
         this.birthDay = birthDay;
         this.isJew = isJew;
+        this.personDetails = new
         this.givesTithe = givesTithe;
         this.categoryId = categoryId;
         this.comment = comment;
